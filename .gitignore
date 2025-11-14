@@ -40,4 +40,4 @@ app-example
 yarn.lock
 
 src/config.ts
-*.json
+
