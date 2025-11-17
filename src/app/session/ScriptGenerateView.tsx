@@ -2,6 +2,8 @@ import {FlatList, Text, View} from "react-native";
 import PulseLoader from "@/components/PulseLoader";
 import React from "react";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import {Video} from "expo-av";
+import VideoPlayer from "@/components/VideoPlayer";
 
 const ScriptGenerateView = ({data}: { data: any }) => {
     const {colors} = useTailwindVars();
@@ -86,12 +88,23 @@ const ScriptGenerateView = ({data}: { data: any }) => {
                                         </Text>
                                     </View>
 
-                                    {/* 拍摄风格 */}
                                     <View className={'px-3 py-2 border-b border-white/5'}>
-                                        <Text className={'text-grey0 text-xs mb-1'}>拍摄方式</Text>
-                                        <Text className={'text-grey2 text-xs leading-relaxed'}>
-                                            {item.shootingStyle}
-                                        </Text>
+                                        <Text className={'text-grey0 text-xs mb-1'}>参考视频画面</Text>
+
+                                        <View className={'mt-2 rounded-lg overflow-hidden'}>
+                                            <VideoPlayer
+                                                videoUri={item.reference?.url}
+                                                timeStart={timeStart}
+                                                timeEnd={timeEnd}
+                                            />
+                                            {/*<Video*/}
+                                            {/*    source={{ uri: item.reference?.url }}*/}
+                                            {/*    style={{ width: '100%', height: 200 }}*/}
+                                            {/*    useNativeControls*/}
+                                            {/*    resizeMode={"contain"}*/}
+                                            {/*    posterSource={item.reference?.coverUrl ? { uri: item.reference.coverUrl } : undefined}*/}
+                                            {/*/>*/}
+                                        </View>
                                     </View>
 
                                     {/* 场景描述 */}
