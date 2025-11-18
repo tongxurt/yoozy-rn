@@ -130,7 +130,6 @@ function RootLayoutNav() {
     const {themeMode, isDarkMode} = useThemeMode();
 
 
-
     const {fetchAsync: fetchSettings} = useSettings();
     // const {fetchAsync: fetchAccounts} = useAccounts();
 
@@ -246,7 +245,16 @@ function RootLayoutNav() {
                         }}
                     />
                     <Stack.Screen
-                        name="session/[id]"
+                        name="session/product"
+                        options={{
+                            headerShown: false,
+                            contentStyle: {
+                                backgroundColor: background,
+                            },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="session/[id]/index"
                         options={{
                             headerShown: false,
                         }}

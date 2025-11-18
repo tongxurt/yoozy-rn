@@ -1,4 +1,4 @@
-import {StyleSheet, TouchableOpacity, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, ActivityIndicator, StyleProp, ViewStyle} from 'react-native';
 import {ResizeMode, Video} from 'expo-av';
 import React, {useEffect, useRef, useState} from 'react';
 import {Ionicons} from '@expo/vector-icons';
@@ -9,9 +9,11 @@ interface VideoPlayerProps {
     timeEnd?: number;
     coverUrl?: string;
     shouldLoop?: boolean;
+
+    style?: StyleProp<ViewStyle>;
 }
 
-const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false}: VideoPlayerProps) => {
+const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false, style}: VideoPlayerProps) => {
     const videoRef = useRef<Video>(null);
     const [playbackStatus, setPlaybackStatus] = useState<any>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -93,7 +95,7 @@ const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false
                     useNativeControls={false}
                     resizeMode={ResizeMode.CONTAIN}
                     onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-                    style={styles.video}
+                    style={[styles.video, style]}
                 />
 
                 {/* 只在暂停时显示控制器 */}
@@ -105,7 +107,7 @@ const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false
                             activeOpacity={0.7}
                         >
                             {isLoading ? (
-                                <ActivityIndicator size="large" color="#fff" />
+                                <ActivityIndicator size="large" color="#fff"/>
                             ) : (
                                 <Ionicons
                                     name="play"
