@@ -149,6 +149,7 @@ function RootLayoutNav() {
       void addEvent({ name: "visit" });
     },
   });
+  // const {fetchAsync: fetchAccounts} = useAccounts();
 
   useEffect(() => {
     // SplashScreen.hideAsync();
@@ -169,12 +170,172 @@ function RootLayoutNav() {
   // 显示自定义启动屏幕
   if (!appReady) {
     return (
-      <CustomSplashScreen
-        isReady={appReady}
-        onFinish={() => {
-          setAppReady(true);
-        }}
-      />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <SafeAreaView
+          // edges={Platform.OS === "android" ? ["top","bottom"] : ["top", "bottom"]}
+          edges={["top", "bottom"]}
+          mode={"padding"}
+          style={{
+            flex: 1,
+            backgroundColor: background,
+          }}
+        >
+          {/*<OngoingQuestion/>*/}
+          <StatusBar
+            barStyle={isDarkMode ? "light-content" : "dark-content"}
+            backgroundColor={background}
+          />
+          {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
+          <Stack
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: background,
+              },
+              headerTintColor: grey0,
+              headerLeft: ({ canGoBack }) =>
+                canGoBack ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      router.back();
+                    }}
+                    style={{
+                      // width: 20,
+                      // height: 20,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginLeft: Platform.OS === "ios" ? 0 : 8,
+                    }}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    <Feather name="arrow-left" size={24} color={grey0} />
+                  </TouchableOpacity>
+                ) : null,
+            }}
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: background,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="session/starter"
+              options={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: background,
+                },
+                animation: "fade",
+                animationDuration: 1,
+              }}
+            />
+            <Stack.Screen
+              name="session/product"
+              options={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: background,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="session/[id]/index"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="inspiration/[id]"
+              options={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: background,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="settings/index"
+              // @ts-ignore
+              options={({ navigation }) => ({
+                // headerShown: false,
+                title: null,
+              })}
+            />
+            <Stack.Screen
+              name="user/me"
+              options={({ navigation }) => ({
+                headerTitle: t("user.profile"),
+              })}
+            />
+
+            <Stack.Screen
+              name="login"
+              options={{
+                headerShown: false,
+                animation: "slide_from_bottom",
+              }}
+            />
+
+            <Stack.Screen
+              name="(other)/accountAndSecure"
+              options={{
+                title: t("accountAndSecure"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/deleteAccount"
+              options={{
+                title: t("deleteAccount"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/community"
+              options={{
+                title: t("creatorCommunity"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/sub_terms"
+              options={{
+                title: t("subTerms"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/contact"
+              options={{
+                title: t("contactUs"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/problem"
+              options={{
+                title: t("faq"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/privacy"
+              options={{
+                title: t("privacyPolicy"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/terms"
+              options={{
+                title: t("serviceTerms"),
+              }}
+            />
+            <Stack.Screen
+              name="(other)/about"
+              options={{
+                title: t("aboutUs"),
+              }}
+            />
+          </Stack>
+        </SafeAreaView>
+      </ErrorBoundary>
     );
   }
 

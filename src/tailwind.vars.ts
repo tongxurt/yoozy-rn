@@ -1,8 +1,8 @@
 export const light = {
     "--plain": "255 255 255",
     "--background": "250 250 250",
-    "--background0": "240 240 240",
-    "--background1": "230 230 230",
+    "--background0": "238 238 245",
+    "--background1": "226 226 238",
     "--background2": "220 220 220",
     "--black": "17 24 39",
     "--disabled": "229 231 235",

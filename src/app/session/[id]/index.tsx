@@ -6,10 +6,10 @@ import {useQuery} from "@tanstack/react-query";
 import {fetchSession, updateSessionStatus} from "@/api/session";
 import React, {useEffect, useMemo, useState} from "react";
 import CommodityView from "@/app/session/CommodityView";
-import CommoditySellingPointsView from "@/app/session/CommoditySellingPointsView";
-import {Feather, FontAwesome} from "@expo/vector-icons";
-import TemplateSelectingView from "@/app/session/TemplateSelectingView";
-import ScriptGenerateView from "@/app/session/ScriptGenerateView";
+import CommoditySellingPointsView from "@/app/session/[id]/CommoditySellingPointsView";
+import {Feather, FontAwesome, Ionicons} from "@expo/vector-icons";
+import TemplateSelectingView from "@/app/session/[id]/TemplateSelectingView";
+import ScriptGenerateView from "@/app/session/[id]/ScriptGenerateView";
 import CreditEntry from "@/components/CreditEntry";
 
 
@@ -32,8 +32,8 @@ const Session = () => {
         },
         {
             index: 3,
-            title: '脚本生成',
-            icon: (color: string) => <MaterialCommunityIcons name="script-outline" size={20} color={color}/>
+            title: '视频生成',
+            icon: (color: string) => <Ionicons name="videocam" size={20} color={color}/>
         }
     ]
 
@@ -92,75 +92,67 @@ const Session = () => {
                 </TouchableOpacity>
             </View>
         </View>
-        {tab === 1 &&
-            <View className="flex-1 m-6 p-5 bg-background0 rounded-lg">
-                <ScrollView>
-                    <View className={'gap-8 '}>
-                        <View className={'flex-row gap-2'}>
-                            <MaterialCommunityIcons name="alarm-light-outline" size={16} color={colors.white}/>
-                            <Text className={'text-white text-md'}>需求收到，正在为您处理关键信息</Text>
+        <View className="flex-1 p-5">
+
+            {tab === 1 &&
+                <>
+                    <ScrollView>
+                        <View className={'gap-8 '}>
+                            <View className={'flex-row gap-2'}>
+                                <MaterialCommunityIcons name="alarm-light-outline" size={16} color={colors.white}/>
+                                <Text className={'text-white text-md'}>需求收到，正在为您处理关键信息</Text>
+                            </View>
+                            <View><CommodityView data={session}/></View>
+                            <View> <CommoditySellingPointsView data={session}/> </View>
                         </View>
-                        <View><CommodityView data={session}/></View>
-                        <View> <CommoditySellingPointsView data={session}/> </View>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
 
-                {
-                    session?.status === "commoditySellingPointsSelected" && <TouchableOpacity
-                        onPress={() => {
-                            updateStatus({id: id as string, status: 'hotTemplateSelecting'});
-                        }}
-                        className={'justify-center items-center flex-row gap-2'}>
-                        <Text className={'text-white'}>下一步</Text>
-                        <Feather name="chevrons-right" size={15} color={colors.white}/>
-                    </TouchableOpacity>
-                }
+                    {
+                        session?.status === "commoditySellingPointsSelected" && <TouchableOpacity
+                            onPress={() => {
+                                updateStatus({id: id as string, status: 'hotTemplateSelecting'});
+                            }}
+                            className={'justify-center items-center flex-row gap-2'}>
+                            <Text className={'text-white'}>下一步</Text>
+                            <Feather name="chevrons-right" size={15} color={colors.white}/>
+                        </TouchableOpacity>
+                    }
 
-            </View>
-        }
+                </>
+            }
 
-        {tab === 2 &&
-            <View className="flex-1 m-6 p-5 bg-background0 rounded-lg">
-                <ScrollView>
-                    <View className={'gap-8 '}>
-                        <View className={'flex-row gap-2'}>
-                            <MaterialCommunityIcons name="alarm-light-outline" size={16} color={colors.white}/>
-                            <Text className={'text-white text-md'}>结合抖音热点，选择合适模板</Text>
+            {tab === 2 &&
+                <>
+                    <ScrollView>
+                        <View className={'gap-8 '}>
+                            <View className={'flex-row gap-2'}>
+                                <MaterialCommunityIcons name="alarm-light-outline" size={16} color={colors.white}/>
+                                <Text className={'text-white text-md'}>结合抖音热点，选择合适模板</Text>
+                            </View>
+                            <TemplateSelectingView data={session}/>
                         </View>
-                        <TemplateSelectingView data={session}/>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
 
 
-                {
-                    session?.status === "hotTemplateSelected" && <TouchableOpacity
-                        onPress={() => {
-                            updateStatus({id: id as string, status: 'scriptGenerating'});
-                        }}
-                        className={'justify-center items-center flex-row gap-2'}>
-                        <Text className={'text-white'}>下一步</Text>
-                        <Feather name="chevrons-right" size={15} color={colors.white}/>
-                    </TouchableOpacity>
-                }
+                    {
+                        session?.status === "hotTemplateSelected" && <TouchableOpacity
+                            onPress={() => {
+                                updateStatus({id: id as string, status: 'scriptGenerating'});
+                            }}
+                            className={'justify-center items-center flex-row gap-2'}>
+                            <Text className={'text-white'}>下一步</Text>
+                            <Feather name="chevrons-right" size={15} color={colors.white}/>
+                        </TouchableOpacity>
+                    }
 
-            </View>
-        }
+                </>
+            }
 
 
-        {tab === 3 &&
-            <View className="flex-1 m-6 p-5 bg-background0 rounded-lg">
-                <ScrollView>
-                    <View className={'gap-8 '}>
-                        <View className={'flex-row gap-2'}>
-                            <MaterialCommunityIcons name="alarm-light-outline" size={16} color={colors.white}/>
-                            <Text className={'text-white text-md'}>生成爆款脚本</Text>
-                        </View>
-                        <ScriptGenerateView data={session}/>
-                    </View>
-                </ScrollView>
-
-            </View>
-        }
+            {tab === 3 &&
+                <ScriptGenerateView data={session}/>
+            }
+        </View>
 
 
         <View className={'gap-10 flex-row justify-center items-center'}>
