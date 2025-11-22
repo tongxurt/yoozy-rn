@@ -78,7 +78,7 @@ const Carousel: React.FC<CarouselProps> = (
             key={item.id || index}
             style={[styles.itemContainer, {width: itemWidth, height: itemHeight}]}
             onPress={() => onItemPress(item, index)}
-            activeOpacity={0.8}
+            activeOpacity={1}
         >
             {renderItem(item, index)}
         </TouchableOpacity>
@@ -116,7 +116,6 @@ const Carousel: React.FC<CarouselProps> = (
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={handleScroll}
-                style={styles.scrollView}
             >
                 {data.map((item, index) => renderCarouselItem(item, index))}
             </ScrollView>

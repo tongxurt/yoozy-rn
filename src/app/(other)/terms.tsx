@@ -21,7 +21,7 @@ export default function TermsScreen() {
   const { t } = useTranslation();
 
   return (
-    <ScrollView className="flex-1 bg-background">
+    <ScrollView className="flex-1 bg-plain">
       <View className="p-5">
         <Text className="text-2xl font-bold text-white mb-4">
           {t("termsTitle")}

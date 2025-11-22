@@ -40,7 +40,7 @@ const ExpandableText = ({
 
     return (
         <View>
-            <Animated.View style={{opacity: fadeAnim}}>
+            <Animated.View style={{opacity: 1}}>
                 <Text className={className}>
                     {displayText}
                 </Text>
@@ -50,7 +50,7 @@ const ExpandableText = ({
                 <TouchableOpacity
                     onPress={handleToggle}
                     className="mt-[2px]"
-                    activeOpacity={0.7}
+                    activeOpacity={1}
                 >
                     <Text className="text-sm text-primary font-medium">
                         {isExpanded ? '收起' : '查看全部'}

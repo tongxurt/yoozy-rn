@@ -30,7 +30,7 @@ export default function AboutScreen() {
   const { t } = useTranslation();
 
   return (
-    <ScrollView className="flex-1 bg-background">
+    <ScrollView className="flex-1 bg-plain">
       {/* 顶部标题区域 */}
       <View className="items-center py-8">
         <Text className="text-2xl font-bold text-white mb-3">

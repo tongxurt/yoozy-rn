@@ -117,7 +117,7 @@ export default function MyScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-background"
+      className="flex-1 bg-plain"
       showsVerticalScrollIndicator={false}
       // style={{overflow: "hidden"}}
       // contentContainerStyle={{overflow: "visible"}}
@@ -136,7 +136,7 @@ export default function MyScreen() {
             </TouchableOpacity>
 
             <Text
-              className="text-sm text-grey2 leading-5 max-w-[120px]"
+              className="text-md text-white leading-5 max-w-[200px]"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -216,7 +216,7 @@ export default function MyScreen() {
         {menuItems.map((section, index) => (
           <View
             key={index}
-            className="mt-3 bg-cardBg/70 rounded-xl"
+            className="mt-3 bg-background/70 rounded-xl"
             // style={{overflow: "visible"}}
           >
             {section.map((item, itemIndex) => (

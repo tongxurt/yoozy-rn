@@ -131,7 +131,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { background, grey0 } = useColors();
+  const { background, grey0, plain } = useColors();
   const { t } = useTranslation();
   const { themeMode, isDarkMode } = useThemeMode();
 
@@ -177,19 +177,19 @@ function RootLayoutNav() {
           mode={"padding"}
           style={{
             flex: 1,
-            backgroundColor: background,
+            backgroundColor: plain,
           }}
         >
           {/*<OngoingQuestion/>*/}
           <StatusBar
             barStyle={isDarkMode ? "light-content" : "dark-content"}
-            backgroundColor={background}
+            backgroundColor={plain}
           />
           {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
           <Stack
             screenOptions={{
               headerStyle: {
-                backgroundColor: background,
+                backgroundColor: plain,
               },
               headerTintColor: grey0,
               headerLeft: ({ canGoBack }) =>
@@ -217,16 +217,16 @@ function RootLayoutNav() {
               options={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor: background,
+                  backgroundColor: plain,
                 },
               }}
             />
             <Stack.Screen
               name="session/starter"
               options={{
-                headerShown: false,
+                headerShown: false, 
                 contentStyle: {
-                  backgroundColor: background,
+                  backgroundColor: plain,
                 },
                 animation: "fade",
                 animationDuration: 1,
@@ -347,19 +347,19 @@ function RootLayoutNav() {
         mode={"padding"}
         style={{
           flex: 1,
-          backgroundColor: background,
+          backgroundColor: plain,
         }}
       >
         {/*<OngoingQuestion/>*/}
         <StatusBar
           barStyle={isDarkMode ? "light-content" : "dark-content"}
-          backgroundColor={background}
+          backgroundColor={plain}
         />
         {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
         <Stack
           screenOptions={{
             headerStyle: {
-              backgroundColor: background,
+              backgroundColor: plain,
             },
             headerTintColor: grey0,
             headerLeft: ({ canGoBack }) =>
@@ -387,7 +387,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: background,
+                backgroundColor: plain,
               },
             }}
           />
@@ -396,7 +396,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: background,
+                backgroundColor: plain,
               },
               animation: "fade",
               animationDuration: 1,
@@ -407,7 +407,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: background,
+                backgroundColor: plain,
               },
               animation: "fade",
               animationDuration: 1,
@@ -421,6 +421,16 @@ function RootLayoutNav() {
           />
           <Stack.Screen
             name="detail/inspiration/[id]"
+            options={{
+              // headerShown: false,
+              title: t("details"),
+              contentStyle: {
+                backgroundColor: background,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="detail/commodity/[id]"
             options={{
               // headerShown: false,
               title: t("details"),

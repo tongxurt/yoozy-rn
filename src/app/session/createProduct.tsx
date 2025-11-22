@@ -64,7 +64,7 @@ const Starter = () => {
   };
 
   return (
-    <View className={"flex-1 bg-background"}>
+    <View className={"flex-1"}>
       <View className={"px-5 pb-4 flex-row justify-between items-center"}>
         <Text className={"text-[22px] text-white font-bold"}>新建商品</Text>
         <View className={"flex-row items-center gap-2"}>
@@ -77,6 +77,7 @@ const Starter = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
+            activeOpacity={1}
           >
             <MaterialCommunityIcons
               name="arrow-collapse"
