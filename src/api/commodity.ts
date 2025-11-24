@@ -14,3 +14,13 @@ export const createCommodities = async (params: any) => {
     data: params,
   });
 };
+
+export const deleteCommodities = async (id: string) => {
+  return instance.request<any>({
+    url: `/api/proj/v1/commodities/${id}`,
+    method: "PATCH",
+    data: {
+      action: "delete"
+    },
+  });
+};

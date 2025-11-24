@@ -2,17 +2,29 @@ import Carousel from '@/components/ui/Carousel';
 import ExpandableText from '@/components/ui/ExpandableText';
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather, MaterialIcons } from '@expo/vector-icons';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useMemo } from 'react';
-import { View, TouchableOpacity, ScrollView, Platform, Text, Image, Dimensions, StatusBar } from 'react-native';
+import { useMemo, useState } from 'react';
+import { View, TouchableOpacity, ScrollView, Platform, Text, Image, Dimensions, StatusBar, Modal, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { deleteCommodities } from '@/api/commodity';
 
 export default () => {
   const { width: screenWidth } = Dimensions.get("window");
   const { id } = useLocalSearchParams<{ id: string }>();
   const queryClient = useQueryClient();
   const { colors } = useTailwindVars();
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const {mutate: deleteCommodity} = useMutation({
+    mutationFn: () => deleteCommodities(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["commodity"],
+      });
+      router.back();
+    },
+  })
 
   // 取出所有以 ["items"] 开头的查询结果（包含不同 tab、搜索词的分页）
   const allPages = queryClient.getQueriesData({
@@ -39,16 +51,66 @@ export default () => {
       <View className="flex-1 bg-background">
         {/* 顶部导航栏 - 沉浸式 */}
 
-        <ScrollView className="flex-1 relative" showsVerticalScrollIndicator={false} bounces={false}>
+        <ScrollView 
+          className="flex-1 relative" 
+          showsVerticalScrollIndicator={false} 
+          bounces={false}
+        >
+        {/* 全屏透明覆盖层 - 用于点击外部关闭下拉菜单 */}
+        {showDropdown && (
+          <Pressable
+            className="absolute inset-0 z-40"
+            onPress={() => setShowDropdown(false)}
+          />
+        )}
+
         <View 
           className="absolute top-0 left-0 right-0 z-50 flex-row items-center justify-end px-4 pt-5 pb-4"
         >
-          <TouchableOpacity
-            className="w-10 h-10 items-center justify-center rounded-full bg-black/30 backdrop-blur-md border border-white/10"
-            activeOpacity={1}
-          >
-            <MaterialIcons name="more-horiz" size={24} color="#fff" />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              className="w-10 h-10 items-center justify-center rounded-full bg-black/30 backdrop-blur-md border border-white/10"
+              activeOpacity={0.7}
+              onPress={() => setShowDropdown(!showDropdown)}
+            >
+              <MaterialIcons name="more-horiz" size={24} color="#fff" />
+            </TouchableOpacity>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <View 
+                className="absolute top-12 right-0 w-40 bg-plain/95 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden shadow-2xl"
+                style={{ elevation: 5 }}
+              >
+                {/* <TouchableOpacity
+                  className="flex-row items-center gap-3 px-4 py-3.5 active:bg-white/5"
+                  activeOpacity={1}
+                  onPress={() => {
+                    setShowDropdown(false);
+                    // TODO: Implement edit functionality
+                    console.log('Edit commodity:', id);
+                  }}
+                >
+                  <Feather name="edit-2" size={18} color="#7150FF" />
+                  <Text className="text-white text-base font-medium">编辑</Text>
+                </TouchableOpacity>
+
+                <View className="h-px bg-white/5 mx-3" /> */}
+
+                <TouchableOpacity
+                  className="flex-row items-center gap-3 px-4 py-3.5 active:bg-white/5"
+                  activeOpacity={1}
+                  onPress={() => {
+                    // setShowDropdown(false);
+                    deleteCommodity()
+                  }}
+                >
+                  <Feather name="trash-2" size={18} color="#EF4444" />
+                  <Text className="text-red-500 text-base font-medium">删除</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </View>
           {/* 图片轮播区域 */}
           <View className="relative">
