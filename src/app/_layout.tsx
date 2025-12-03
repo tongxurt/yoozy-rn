@@ -224,7 +224,7 @@ function RootLayoutNav() {
             <Stack.Screen
               name="session/starter"
               options={{
-                headerShown: false, 
+                headerShown: false,
                 contentStyle: {
                   backgroundColor: plain,
                 },
@@ -244,7 +244,11 @@ function RootLayoutNav() {
             <Stack.Screen
               name="session/[id]/index"
               options={{
-                headerShown: false,
+                // headerShown: false,
+                headerTitle: t("details"),
+                contentStyle: {
+                  backgroundColor: background,
+                },
               }}
             />
             <Stack.Screen
@@ -414,9 +418,13 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="session/[id]"
+            name="session/[id]/index"
             options={{
-              headerShown: false,
+              // headerShown: false,
+              headerTitle: t("details"),
+              contentStyle: {
+                backgroundColor: background,
+              },
             }}
           />
           <Stack.Screen

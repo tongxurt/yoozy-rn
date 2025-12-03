@@ -10,12 +10,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useMemo, useCallback } from "react";
 import useDateFormatter from "@/hooks/useDateFormatter";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
-import { useTranslation } from "@/i18n/translation";
 import { listSessions } from "@/api/session";
 import { router } from "expo-router";
 
 const CARD_BASE =
-  "mx-4 mb-4 rounded-3xl overflow-hidden bg-background0 bg-surface shadow-soft";
+  "mx-4 mb-4 rounded-3xl overflow-hidden bg-background bg-surface shadow-soft";
 
 function SessionList() {
   const { formatToNow } = useDateFormatter();
@@ -155,22 +154,28 @@ function SessionList() {
                 <View className="flex-row flex-wrap gap-2">
                   {getStatusBadge(item.status)}
                   {script?.style ? (
-                    <View className="px-3 py-1 rounded-full bg-background2">
-                      <Text className="text-xs text-grey2" numberOfLines={1}>
+                    <View className="px-3 py-1 rounded-full bg-primary/10 border border-primary/5">
+                      <Text
+                        className="text-xs text-primary font-medium"
+                        numberOfLines={1}
+                      >
                         {script.style}
                       </Text>
                     </View>
                   ) : null}
                   {script?.sceneStyle ? (
-                    <View className="px-3 py-1 rounded-full bg-background2">
-                      <Text className="text-xs text-grey2" numberOfLines={1}>
+                    <View className="px-3 py-1 rounded-full bg-primary/10 border border-primary/5">
+                      <Text
+                        className="text-xs text-primary font-medium"
+                        numberOfLines={1}
+                      >
                         {script.sceneStyle}
                       </Text>
                     </View>
                   ) : null}
                   {script?.segments?.length ? (
-                    <View className="px-3 py-1 rounded-full bg-background2">
-                      <Text className="text-xs text-grey2">
+                    <View className="px-3 py-1 rounded-full bg-primary/10 border border-primary/5">
+                      <Text className="text-xs text-primary font-medium">
                         {script.segments.length} 段
                       </Text>
                     </View>
@@ -180,14 +185,14 @@ function SessionList() {
             </View>
 
             <View className="flex-row justify-between items-center">
-              <Text className="text-grey3 text-xs">
+              <Text className="text-grey3 text-base">
                 {createdAt ? formatToNow(createdAt * 1000) : "未知时间"}
               </Text>
               <TouchableOpacity
                 onPress={() => router.navigate(`/session/${item._id}`)}
                 className="px-4 py-1.5 rounded-full"
               >
-                <Text className="text-xs font-semibold text-primary">
+                <Text className="text-base font-semibold text-primary">
                   查看详情
                 </Text>
               </TouchableOpacity>
