@@ -457,7 +457,7 @@ export default {
   privacyEffectiveDate: "Effective: April 02, 2025",
 
   // Terms of Service
-  termsTitle: "Veogo.ai Terms of Service",
+  termsTitle: "yoozy Terms of Service",
   termsUpdateDate: "Updated: April 02, 2025",
   termsEffectiveDate: "Effective: April 02, 2025",
   termsIntro:

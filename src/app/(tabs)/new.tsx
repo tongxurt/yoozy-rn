@@ -16,39 +16,39 @@ const FEATURE_ITEMS = [
     title: "输入灵感, 智能生视频",
     route: "/session/starter",
   },
-  {
-    id: "ai-design",
-    icon: "apps",
-    sparkle: true,
-    title: "AI 图片设计",
-    route: "/ai-design",
-    badge: "限时免费",
-  },
-  {
-    id: "smooth-transition",
-    icon: "videocam",
-    sparkle: true,
-    title: "一镜到底, 丝滑转场",
-    route: "/transition",
-  },
-  {
-    id: "photo-talk",
-    icon: "chatbubble-ellipses",
-    title: "照片会说话",
-    route: "/photo-talk",
-  },
-  {
-    id: "digital-human",
-    icon: "person",
-    title: "数字人讲解",
-    route: "/digital-human",
-  },
-  {
-    id: "change-background",
-    icon: "grid",
-    title: "智能换背景",
-    route: "/change-background",
-  },
+  // {
+  //   id: "ai-design",
+  //   icon: "apps",
+  //   sparkle: true,
+  //   title: "AI 图片设计",
+  //   route: "/ai-design",
+  //   badge: "限时免费",
+  // },
+  // {
+  //   id: "smooth-transition",
+  //   icon: "videocam",
+  //   sparkle: true,
+  //   title: "一镜到底, 丝滑转场",
+  //   route: "/transition",
+  // },
+  // {
+  //   id: "photo-talk",
+  //   icon: "chatbubble-ellipses",
+  //   title: "照片会说话",
+  //   route: "/photo-talk",
+  // },
+  // {
+  //   id: "digital-human",
+  //   icon: "person",
+  //   title: "数字人讲解",
+  //   route: "/digital-human",
+  // },
+  // {
+  //   id: "change-background",
+  //   icon: "grid",
+  //   title: "智能换背景",
+  //   route: "/change-background",
+  // },
 ];
 
 // 功能项组件
@@ -108,7 +108,7 @@ export default function Screen() {
         <Text className={"text-[22px] text-white font-bold"}>创作</Text>
         <View className={"flex-row items-center gap-2"}>
           <CreditEntry />
-          <AuthInfo />
+          {/* <AuthInfo /> */}
         </View>
       </View>
 

@@ -575,7 +575,7 @@ export default {
   privacyEffectiveDate: "生效日期：2025年04月02日",
 
   // Terms of Service
-  termsTitle: "Veogo.ai 服务条款",
+  termsTitle: "yoozy 服务条款",
   termsUpdateDate: "更新日期：2025年04月02日",
   termsEffectiveDate: "生效日期：2025年04月02日",
   termsIntro:

@@ -8,7 +8,7 @@ export default function MyScreen() {
     <View className={"flex-1"}>
       <View className={"px-5 pb-6 flex-row justify-between items-center"}>
         <Text className={"text-[25px] text-white font-bold"}>记录</Text>
-        <AuthInfo />
+        {/* <AuthInfo /> */}
       </View>
       <SessionList />
     </View>

@@ -8,6 +8,9 @@ import VideoPlayer from "@/components/VideoPlayer";
 
 const ItemView = ({ item }: { item: any }) => {
   const [segmentIndex, setSegmentIndex] = useState<any>(undefined);
+  const [expandedSegments, setExpandedSegments] = useState<Set<number>>(
+    new Set()
+  );
   const videoRef = useRef<any>(null);
   const { colors } = useTailwindVars();
   const seekToTime = async (timeStart: number) => {
@@ -42,14 +45,25 @@ const ItemView = ({ item }: { item: any }) => {
         ItemSeparatorComponent={() => <View className={"w-2.5"} />}
         renderItem={({ item: segment, index: i }) => {
           const isSelected = segmentIndex === i;
+          const isExpanded = expandedSegments.has(i);
           const duration = (segment.timeEnd || 0) - (segment.timeStart || 0);
           const order = i + 1; // 分段序号（1 起）
 
+          const toggleExpand = () => {
+            const newExpanded = new Set(expandedSegments);
+            if (isExpanded) {
+              newExpanded.delete(i);
+            } else {
+              newExpanded.add(i);
+            }
+            setExpandedSegments(newExpanded);
+          };
+
           return (
             <TouchableOpacity
-              activeOpacity={0.9}
+              activeOpacity={1}
               onPress={() => {
-                setSegmentIndex(i);
+                // setSegmentIndex(i);
                 if (segment.timeStart) {
                   seekToTime(segment.timeStart);
                 }
@@ -63,19 +77,42 @@ const ItemView = ({ item }: { item: any }) => {
                 <Text className={"text-primary text-sm font-bold"}>
                   镜头 {order}
                 </Text>
+                {(segment.subtitle || segment.description) && (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={toggleExpand}
+                    className={"p-1"}
+                  >
+                    <MaterialCommunityIcons
+                      name={isExpanded ? "chevron-up" : "chevron-down"}
+                      size={15}
+                      color={colors.primary}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
 
-              {/* 字幕 */}
-              {segment.subtitle && (
-                <Text className={"text-white/90 font-semibold text-base mb-2"}>
-                  {segment.subtitle}
-                </Text>
-              )}
-              {/* 描述 */}
-              {segment.description && (
-                <Text className={"text-white/60 text-sm mb-2"}>
-                  {segment.description}
-                </Text>
+              {(segment.subtitle || segment.description) && (
+                <View className={"mb-2"}>
+                  {segment.subtitle && (
+                    <Text
+                      className={"text-white/90 font-semibold text-sm mb-1"}
+                      numberOfLines={isExpanded ? undefined : 2}
+                      ellipsizeMode="tail"
+                    >
+                      {segment.subtitle}
+                    </Text>
+                  )}
+                  {segment.description && (
+                    <Text
+                      className={"text-white/60 text-xs leading-4"}
+                      numberOfLines={isExpanded ? undefined : 2}
+                      ellipsizeMode="tail"
+                    >
+                      {segment.description}
+                    </Text>
+                  )}
+                </View>
               )}
               {/* 时间信息 */}
               <View className={"flex-row items-center gap-2 mb-3"}>
