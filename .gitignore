@@ -36,6 +36,7 @@ yarn-error.*
 .env.*.local
 
 # yarn
+yarn.lock
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
