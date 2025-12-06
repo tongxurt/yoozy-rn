@@ -39,5 +39,4 @@ app-example
 .idea/
 yarn.lock
 
-src/config.ts
 
