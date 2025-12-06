@@ -54,6 +54,13 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     eas: {
       projectId: "8d0ef25f-b839-4094-b191-49f57d2c4e4d",
     },
+    // 从环境变量读取密钥，不要硬编码
+    TOS_ACCESS_KEY_ID: process.env.TOS_ACCESS_KEY_ID,
+    TOS_ACCESS_KEY_SECRET: process.env.TOS_ACCESS_KEY_SECRET,
+    OSS_ACCESSKEY: process.env.OSS_ACCESSKEY,
+    OSS_ACCESSSECRET: process.env.OSS_ACCESSSECRET,
+    ACCESSKEY: process.env.ACCESSKEY,
+    ACCESSSECRET: process.env.ACCESSSECRET,
   },
   updates: {
     url: "https://u.expo.dev/8d0ef25f-b839-4094-b191-49f57d2c4e4d",
