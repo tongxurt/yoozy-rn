@@ -13,6 +13,7 @@ import { extractLinks, getImageName } from "@/utils/upload/utils";
 import { Toast } from "react-native-toast-notifications";
 import SpinningIcon from "@/components/loading";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { upload } from "@/utils/upload/tos";
 const Starter = () => {
   const { colors } = useTailwindVars();
   const [files, setFiles] = useState<any[]>([]);
@@ -45,7 +46,7 @@ const Starter = () => {
       const images = [];
       if (files?.length) {
         for (let i = 0; i < files.length; i++) {
-          const url = await performSingleUpload(files[i], (p) => {});
+          const url = await upload(files[i]);
           images.push({
             mimeType: files[i].type,
             name: getImageName(files[i].uri),

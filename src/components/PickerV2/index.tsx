@@ -1,21 +1,16 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-
-interface MediaItem {
-  uri: string;
-  type: "image" | "video";
-  duration?: number;
-  id: string;
-}
+import usePicker from "@/hooks/usePicker";
 
 const Picker = ({
   files,
   onFilesChange,
 }: {
-  files: MediaItem[];
-  onFilesChange: (items: MediaItem[]) => void;
+  files: any[];
+  onFilesChange: (items: any[]) => void;
 }) => {
+  const { pick } = usePicker();
   // 请求媒体权限
   const requestPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -30,23 +25,17 @@ const Picker = ({
     const hasPermission = await requestPermissions();
     if (!hasPermission) return;
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsMultipleSelection: true,
-      quality: 0.8,
-      allowsEditing: false,
-    });
+    // const result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //   allowsMultipleSelection: true,
+    //   quality: 0.8,
+    //   allowsEditing: false,
+    // });
 
-    if (!result.canceled && result.assets) {
-      const newFiles = result.assets.map((asset, index) => ({
-        uri: asset.uri,
-        type: asset.type === "video" ? "video" : ("image" as "image" | "video"),
-        duration: asset.duration,
-        id: `${Date.now()}-${index}`,
-      }));
+    const result = await pick({ mediaTypes: ["images"] });
 
-      // @ts-ignore
-      onFilesChange([...files, ...newFiles]);
+    if (result?.length) {
+      onFilesChange([...files, result[0]]);
     }
   };
 

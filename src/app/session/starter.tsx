@@ -14,9 +14,8 @@ import { createSession } from "@/api/session";
 import Picker from "@/components/PickerV2";
 import { Ionicons } from "@expo/vector-icons";
 import CreditEntry from "@/components/CreditEntry";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { upload } from "@/utils/upload/tos";
 
 const Starter = () => {
   const { colors } = useTailwindVars();
@@ -34,7 +33,7 @@ const Starter = () => {
     const images = [];
     if (files?.length) {
       for (let i = 0; i < files.length; i++) {
-        const url = await performSingleUpload(files[i], (p) => {});
+        const url = await upload(files[i]);
         images.push(url);
       }
     }
