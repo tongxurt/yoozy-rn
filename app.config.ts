@@ -1,19 +1,19 @@
-import { ExpoConfig, ConfigContext } from "@expo/config";
+import { ConfigContext, ExpoConfig } from "@expo/config";
 
 const config = ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "Veogo",
-  slug: "veogo",
+  name: "Yoozy",
+  slug: "yoozy",
   version: "2.0.10",
   runtimeVersion: "2.0.10",
   orientation: "portrait",
   icon: "./src/assets/images/app_icon.png",
-  scheme: "veogoapp",
+  scheme: "yoozyapp",
   userInterfaceStyle: "automatic",
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.tuturduck.veogoapp",
+    bundleIdentifier: "com.yoozy.app",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSCameraUsageDescription:
@@ -37,14 +37,24 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#ffffff",
     },
     // edgeToEdgeEnabled: true,
-    package: "com.tuturduck.veogoapp",
+    package: "com.yoozy.app",
   },
   web: {
     bundler: "metro",
     output: "static",
     favicon: "./src/assets/images/favicon.png",
   },
-  plugins: ["expo-router"],
+  plugins: [
+    "expo-router",
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          useFrameworks: "static",
+        },
+      },
+    ],
+  ],
   experiments: {
     typedRoutes: true,
   },
@@ -52,7 +62,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     ENV: process.env.ENV, // 对应 eas.json中的ENV
     router: {},
     eas: {
-      projectId: "8d0ef25f-b839-4094-b191-49f57d2c4e4d",
+      projectId: "d72e48c3-8218-4dc5-8165-893539688de8",
     },
     // 从环境变量读取密钥，不要硬编码
     TOS_ACCESS_KEY_ID: process.env.TOS_ACCESS_KEY_ID,
@@ -63,7 +73,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     ACCESSSECRET: process.env.ACCESSSECRET,
   },
   updates: {
-    url: "https://u.expo.dev/8d0ef25f-b839-4094-b191-49f57d2c4e4d",
+    url: "https://u.expo.dev/d72e48c3-8218-4dc5-8165-893539688de8",
   },
 });
 
