@@ -3,7 +3,7 @@ import { ConfigContext, ExpoConfig } from "@expo/config";
 const config = ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Yoozy",
-  slug: "yoozy",
+  slug: "yoozy-cbn4rtgddfys-lbvlkdpi",
   version: "2.0.10",
   runtimeVersion: "2.0.10",
   orientation: "portrait",
@@ -13,7 +13,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.yoozy.app",
+    bundleIdentifier: "com.trafigura.pricingportal",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSCameraUsageDescription:
@@ -37,7 +37,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#ffffff",
     },
     // edgeToEdgeEnabled: true,
-    package: "com.yoozy.app",
+    package: "com.trafigura.pricingportal",
   },
   web: {
     bundler: "metro",
@@ -62,7 +62,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     ENV: process.env.ENV, // 对应 eas.json中的ENV
     router: {},
     eas: {
-      projectId: "d72e48c3-8218-4dc5-8165-893539688de8",
+      projectId: "04f85269-b343-4c8e-8dc1-ca6704b3bac5",
     },
     // 从环境变量读取密钥，不要硬编码
     TOS_ACCESS_KEY_ID: process.env.TOS_ACCESS_KEY_ID,
@@ -73,7 +73,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     ACCESSSECRET: process.env.ACCESSSECRET,
   },
   updates: {
-    url: "https://u.expo.dev/d72e48c3-8218-4dc5-8165-893539688de8",
+    url: "https://u.expo.dev/04f85269-b343-4c8e-8dc1-ca6704b3bac5",
   },
 });
 
