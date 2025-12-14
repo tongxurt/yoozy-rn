@@ -1,6 +1,6 @@
 import instance from "@/providers/api";
 
-export const commodities = async (params: any) => {
+export const fetchCommodities = async (params: any) => {
   return instance.request<any>({
     url: `/api/proj/v1/commodities`,
     params,
@@ -22,5 +22,11 @@ export const deleteCommodities = async (id: string) => {
     data: {
       action: "delete"
     },
+  });
+};
+
+export const getCommodity = async (id: string) => {
+  return instance.request<any>({
+    url: `/api/proj/v1/commodities/${id}`,
   });
 };

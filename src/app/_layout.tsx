@@ -1,10 +1,24 @@
-import { router, Stack } from "expo-router";
 import { StripeProvider } from "@stripe/stripe-react-native";
+import { router, Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { addEvent } from "@/api/event";
+import ErrorFallback from "@/components/ErrorCallback";
+import { useColors } from "@/hooks/uesColors";
+import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
+import { useSettings } from "@/hooks/useSettings";
+import { useThemeMode } from "@/hooks/useThemeMode";
+import { useTranslation } from "@/i18n/translation";
 import AppThemeProvider from "@/providers/theme";
-import "react-native-gesture-handler";
+import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient } from "@tanstack/react-query";
+import {
+  PersistedClient,
+  Persister,
+  persistQueryClient,
+  PersistQueryClientProvider,
+} from "@tanstack/react-query-persist-client";
 import {
   Platform,
   StatusBar,
@@ -12,26 +26,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { QueryClient } from "@tanstack/react-query";
-import { ToastProvider } from "react-native-toast-notifications";
-import { useColors } from "@/hooks/uesColors";
-import { useTranslation } from "@/i18n/translation";
-import { useThemeMode } from "@/hooks/useThemeMode";
-import CustomSplashScreen from "@/components/Splash";
-import { useSettings } from "@/hooks/useSettings";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  PersistedClient,
-  Persister,
-  persistQueryClient,
-  PersistQueryClientProvider,
-} from "@tanstack/react-query-persist-client";
 import ErrorBoundary from "react-native-error-boundary";
-import { addEvent } from "@/api/event";
-import { Feather } from "@expo/vector-icons";
-import ErrorFallback from "@/components/ErrorCallback";
-import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
-import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { ToastProvider } from "react-native-toast-notifications";
 
 // @ts-ignore
 Text.defaultProps = Text.defaultProps || {};
@@ -180,12 +178,10 @@ function RootLayoutNav() {
             backgroundColor: plain,
           }}
         >
-          {/*<OngoingQuestion/>*/}
-          <StatusBar
+          {/* <StatusBar
             barStyle={isDarkMode ? "light-content" : "dark-content"}
             backgroundColor={plain}
           />
-          {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
           <Stack
             screenOptions={{
               headerStyle: {
@@ -337,7 +333,7 @@ function RootLayoutNav() {
                 title: t("aboutUs"),
               }}
             />
-          </Stack>
+          </Stack> */}
         </SafeAreaView>
       </ErrorBoundary>
     );
@@ -363,7 +359,7 @@ function RootLayoutNav() {
         <Stack
           screenOptions={{
             headerStyle: {
-              backgroundColor: plain,
+              backgroundColor: background,
             },
             headerTintColor: grey0,
             headerLeft: ({ canGoBack }) =>
@@ -428,6 +424,15 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
+            name="commodity/[id]"
+            options={{
+              headerTitle: "商品详情",
+              contentStyle: {
+                backgroundColor: background,
+              },
+            }}
+          />
+          <Stack.Screen
             name="detail/inspiration/[id]"
             options={{
               // headerShown: false,
@@ -437,16 +442,7 @@ function RootLayoutNav() {
               },
             }}
           />
-          <Stack.Screen
-            name="detail/commodity/[id]"
-            options={{
-              // headerShown: false,
-              title: t("details"),
-              contentStyle: {
-                backgroundColor: background,
-              },
-            }}
-          />
+
           <Stack.Screen
             name="detail/video/[id]"
             options={{

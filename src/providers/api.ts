@@ -1,20 +1,13 @@
-import axios from "axios";
-import { Platform } from "react-native";
-import { getAuthToken } from "@/utils";
-import { Toast } from "react-native-toast-notifications";
-import { router } from "expo-router";
-import Constants from "expo-constants";
 import { getConfig } from "@/config";
+import { getAuthToken } from "@/utils";
+import axios from "axios";
+import Constants from "expo-constants";
+import { router } from "expo-router";
+import { Platform } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import { Toast } from "react-native-toast-notifications";
 
 const instance = axios.create({});
-
-// 这是用法
-// instance.request({
-//     url: '',
-//     params: {},
-//     data: {}
-// })
 
 instance.interceptors.request.use(
   async function (config) {
@@ -33,7 +26,12 @@ instance.interceptors.request.use(
     // config.headers.set('Version', Constants.expoConfig.version ?? '')
     // config.headers.set('U-Version', conf.version)
 
-    // console.log(`--------- ${new Date().valueOf()} http sending request...`, config);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.baseURL);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.url);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.params);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.data);
+    // console.log(`--------- ${new Date().valueOf()} http sending request...`, config.headers);
 
     return config;
   },
@@ -49,6 +47,8 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    // console.log(`--------- ${new Date().valueOf()} http sending request...`, response);
+
 
     if (response.status !== 200) {
       Toast.show("服务器繁忙, 请稍后重试");

@@ -1,14 +1,16 @@
+import { getConfig } from "@/config";
+import { Resource } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
-import {Platform} from "react-native";
-import {isImage, isVideo} from "./resource";
 import * as VideoThumbnails from "expo-video-thumbnails";
-import {Resource} from "@/types";
+import { Platform } from "react-native";
+import { isImage, isVideo } from "./resource";
 
-export const TOKEN_KEY = "user_auth";
+
+export const TOKEN_KEY = "user_auth2" + getConfig().ENV;
 
 export const getAuthToken = async () => {
-    return (await AsyncStorage.getItem("user_auth")) ?? "";
+    return (await AsyncStorage.getItem(TOKEN_KEY)) ?? "";
     // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cyI6MTc1MTc4MTI0NiwidXNlcl9pZCI6IjU2MzEifQ.tNbqF5iQ433lsrbznMMfm71TgE76jZBNgqVAzpUsz88"
 
     // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cyI6MTc0Mjk3MTUwOSwidXNlcl9pZCI6IjEifQ.y0puv0MgV7J23G27St9X6nDlNj0HvXdoQFUjgFjZAc8";

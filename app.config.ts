@@ -59,18 +59,11 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
     typedRoutes: true,
   },
   extra: {
-    ENV: process.env.ENV, // 对应 eas.json中的ENV
+    ENV: process.env.ENV || "development", // 对应 eas.json中的ENV
     router: {},
     eas: {
       projectId: "04f85269-b343-4c8e-8dc1-ca6704b3bac5",
     },
-    // 从环境变量读取密钥，不要硬编码
-    TOS_ACCESS_KEY_ID: process.env.TOS_ACCESS_KEY_ID,
-    TOS_ACCESS_KEY_SECRET: process.env.TOS_ACCESS_KEY_SECRET,
-    OSS_ACCESSKEY: process.env.OSS_ACCESSKEY,
-    OSS_ACCESSSECRET: process.env.OSS_ACCESSSECRET,
-    ACCESSKEY: process.env.ACCESSKEY,
-    ACCESSSECRET: process.env.ACCESSSECRET,
   },
   updates: {
     url: "https://u.expo.dev/04f85269-b343-4c8e-8dc1-ca6704b3bac5",

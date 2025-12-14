@@ -85,6 +85,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-markdown-display": "^7.0.2",
     "react-native-marked": "^7.0.2",
+    "react-native-pager-view": "^7.0.2",
     "react-native-permissions": "^5.4.2",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
