@@ -175,7 +175,7 @@ function RootLayoutNav() {
           mode={"padding"}
           style={{
             flex: 1,
-            backgroundColor: plain,
+            backgroundColor: background,
           }}
         >
           {/* <StatusBar
@@ -347,13 +347,13 @@ function RootLayoutNav() {
         mode={"padding"}
         style={{
           flex: 1,
-          backgroundColor: plain,
+          backgroundColor: background,
         }}
       >
         {/*<OngoingQuestion/>*/}
         <StatusBar
           barStyle={isDarkMode ? "light-content" : "dark-content"}
-          backgroundColor={plain}
+          backgroundColor={background}
         />
         {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
         <Stack
@@ -387,7 +387,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: plain,
+                backgroundColor: background,
               },
             }}
           />
@@ -396,7 +396,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: plain,
+                backgroundColor: background,
               },
               animation: "fade",
               animationDuration: 1,
@@ -407,7 +407,7 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
               contentStyle: {
-                backgroundColor: plain,
+                backgroundColor: background,
               },
               animation: "fade",
               animationDuration: 1,
@@ -433,9 +433,17 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="detail/inspiration/[id]"
+            name="commodity/create"
             options={{
-              // headerShown: false,
+              headerTitle: "添加商品",
+              contentStyle: {
+                backgroundColor: background,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="inspiration/[id]"
+            options={{
               title: t("details"),
               contentStyle: {
                 backgroundColor: background,
@@ -444,9 +452,8 @@ function RootLayoutNav() {
           />
 
           <Stack.Screen
-            name="detail/video/[id]"
+            name="template/[id]"
             options={{
-              // headerShown: false,
               title: t("details"),
               contentStyle: {
                 backgroundColor: background,

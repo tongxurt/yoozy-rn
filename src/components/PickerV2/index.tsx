@@ -1,7 +1,7 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import usePicker from "@/hooks/usePicker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import usePicker from "@/hooks/usePicker";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 const Picker = ({
   files,
@@ -35,7 +35,7 @@ const Picker = ({
     const result = await pick({ mediaTypes: ["images"] });
 
     if (result?.length) {
-      onFilesChange([...files, result[0]]);
+      onFilesChange([...files, ...result]);
     }
   };
 

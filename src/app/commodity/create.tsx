@@ -6,7 +6,7 @@ import { upload } from "@/utils/upload/tos";
 import { extractLinks, getImageName } from "@/utils/upload/utils";
 import { Feather } from "@expo/vector-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { router, Stack } from "expo-router";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
     Keyboard,
@@ -80,14 +80,6 @@ export default function CreateCommodityScreen() {
 
     return (
         <View className="flex-1 bg-background">
-            <Stack.Screen
-                options={{
-                    headerTitle: "新建商品",
-                    headerStyle: { backgroundColor: colors.background },
-                    headerShadowVisible: false,
-                    headerBackTitle: "",
-                }}
-            />
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAwareScrollView
                     className="flex-1"
@@ -114,11 +106,11 @@ export default function CreateCommodityScreen() {
 
                         {/* Link Input */}
                         <View>
-                            <Text className="text-sm font-medium text-black mb-3">商品链接 / 描述</Text>
+                            <Text className="text-sm font-medium text-black mb-3">商品链接</Text>
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
-                                placeholder="粘贴商品链接，或输入简单的商品描述..."
+                                placeholder="粘贴商品链接..."
                                 placeholderTextColor={colors.grey3}
                                 multiline
                                 className="text-base text-black leading-6 min-h-[100px]"
@@ -126,11 +118,6 @@ export default function CreateCommodityScreen() {
                             />
                         </View>
                     </View>
-
-                    {/* Tip */}
-                    <Text className="text-center text-grey2 text-xs mt-6">
-                        支持粘贴淘宝、京东、抖音等主流电商平台商品链接
-                    </Text>
 
                 </KeyboardAwareScrollView>
             </TouchableWithoutFeedback>

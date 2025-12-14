@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { router, Tabs } from "expo-router";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { Pressable, Text, View } from "react-native";
-import SceneSelector from "@/components/scene/SceneSelector";
-import "../../global.css";
-import { getAuthToken } from "@/utils";
-import { useTranslation } from "@/i18n/translation";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import useAppUpdate from "@/hooks/useAppUpdate";
-import Starter from "@/components/Starter";
-import useTailwindVars from "@/hooks/useTailwindVars";
-import { useAuthUser } from "@/hooks/useAuthUser";
 import { useColors } from "@/hooks/uesColors";
+import useAppUpdate from "@/hooks/useAppUpdate";
+import { useAuthUser } from "@/hooks/useAuthUser";
+import useTailwindVars from "@/hooks/useTailwindVars";
+import { useTranslation } from "@/i18n/translation";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { router, Tabs } from "expo-router";
+import React, { useState } from "react";
+import { Pressable, Text, View } from "react-native";
+import "../../global.css";
 
 const barHeight = 50;
 
@@ -28,7 +25,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <>
       <View
-        className={`flex-row justify-around items-center h-[${barHeight}px] bg-plain absolute bottom-0 left-0 right-0`}
+        className={`flex-row justify-around items-center h-[${barHeight}px] bg-background absolute bottom-0 left-0 right-0`}
       >
         {state?.routes.map((route, index) => {
           const { options } = descriptors[route.key];
@@ -66,9 +63,8 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
               })}
               <Text
                 style={{ fontWeight: 600 }}
-                className={`text-xs mt-[2px] ${
-                  isFocused ? "text-white" : "text-grey3"
-                }`}
+                className={`text-xs mt-[2px] ${isFocused ? "text-white" : "text-grey3"
+                  }`}
               >
                 {t(`tab.${route.name}`)}
               </Text>
