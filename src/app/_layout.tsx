@@ -391,6 +391,7 @@ function RootLayoutNav() {
               },
             }}
           />
+
           <Stack.Screen
             name="session/starter"
             options={{
@@ -403,24 +404,15 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="session/createProduct"
+            name="session/[id]/index"
             options={{
               headerShown: false,
+              // headerTitle: t("details"),
               contentStyle: {
                 backgroundColor: background,
               },
               animation: "fade",
               animationDuration: 1,
-            }}
-          />
-          <Stack.Screen
-            name="session/[id]/index"
-            options={{
-              // headerShown: false,
-              headerTitle: t("details"),
-              contentStyle: {
-                backgroundColor: background,
-              },
             }}
           />
           <Stack.Screen

@@ -68,8 +68,8 @@ export default function CreateCommodityScreen() {
 
             createCommodity({
                 url: urls[0],
-                medias: medias.length > 0 ? medias : undefined,
-                description: text // Optional: send full text as description? Or just rely on URL
+                medias: medias?.length ? medias : undefined,
+                // description: text // Optional: send full text as description? Or just rely on URL
             });
 
         } catch (e) {
@@ -85,61 +85,51 @@ export default function CreateCommodityScreen() {
                     className="flex-1"
                     contentContainerStyle={{ padding: 16 }}
                     keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
                 >
-                    <View
-                        className="bg-background2 rounded-2xl p-4 gap-4"
-                        style={{
-                            shadowColor: "#000",
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.05,
-                            shadowRadius: 8,
-                            elevation: 2,
-                        }}
-                    >
-                        {/* File Picker */}
-                        <View>
-                            <Text className="text-sm font-medium text-black mb-3">上传图片/视频</Text>
-                            <Picker files={files} onFilesChange={setFiles} />
-                        </View>
-
-                        <View className="h-[1px] bg-divider" />
-
-                        {/* Link Input */}
-                        <View>
-                            <Text className="text-sm font-medium text-black mb-3">商品链接</Text>
-                            <TextInput
-                                value={text}
-                                onChangeText={setText}
-                                placeholder="粘贴商品链接..."
-                                placeholderTextColor={colors.grey3}
-                                multiline
-                                className="text-base text-black leading-6 min-h-[100px]"
-                                textAlignVertical="top"
-                            />
-                        </View>
+                    {/* Media Section */}
+                    <View className="bg-cardBg rounded-2xl p-4 mb-4">
+                        <Text className="text-sm font-medium text-black mb-3">上传图片/视频</Text>
+                        <Picker files={files} onFilesChange={setFiles} />
                     </View>
 
+                    {/* Link/Text Section */}
+                    <View className="bg-cardBg rounded-2xl p-4">
+                        <Text className="text-sm font-medium text-black mb-3">商品链接</Text>
+                        <TextInput
+                            value={text}
+                            onChangeText={setText}
+                            placeholder="粘贴商品链接，或输入详细描述..."
+                            placeholderTextColor={colors.grey3}
+                            multiline
+                            className="text-base text-black leading-6 min-h-[120px]"
+                            textAlignVertical="top"
+                        />
+                    </View>
                 </KeyboardAwareScrollView>
             </TouchableWithoutFeedback>
 
-            {/* Floating Submit Button or Bottom Bar */}
-            <View
-                className="px-4 py-4 bg-background"
-                style={{ paddingBottom: Math.max(insets.bottom, 16) }}
+            {/* Bottom Action Bar */}
+            <View className="px-5"
             >
                 <TouchableOpacity
                     onPress={handleCreate}
                     disabled={isDisabled || isPending}
-                    className={`w-full py-3.5 rounded-full flex-row items-center justify-center gap-2 ${isDisabled ? "bg-grey4" : "bg-primary"
-                        }`}
-                    activeOpacity={0.8}
+                    className="w-full h-11 rounded-full flex-row items-center justify-center gap-2"
+                    style={{
+                        backgroundColor: isDisabled ? colors.grey4 : colors.primary,
+                    }}
+                    activeOpacity={0.85}
                 >
                     {isPending ? (
-                        <SpinningIcon name="circle-notch" size={20} color="white" />
+                        <SpinningIcon name="circle-notch" size={20} color={isDisabled ? colors.grey2 : 'white'} />
                     ) : (
                         <>
-                            <Feather name="plus" size={20} color="white" />
-                            <Text className={`text-base font-bold text-white`}>
+                            <Feather name="plus" size={18} color={isDisabled ? colors.grey2 : 'white'} />
+                            <Text
+                                className="text-base font-bold"
+                                style={{ color: isDisabled ? colors.grey2 : 'white' }}
+                            >
                                 立即创建
                             </Text>
                         </>

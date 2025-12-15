@@ -1,10 +1,9 @@
-import {Animated, Text, View} from "react-native";
-import Modal from "@/components/ui/Modal";
-import {useEffect, useRef} from "react";
-import {useTranslation} from "@/i18n/translation";
 import CommodityInput from "@/components/CommodityInput";
-import {createQuestion, createSession} from "@/api/session";
-import {router} from "expo-router";
+import Modal from "@/components/ui/Modal";
+import { useTranslation } from "@/i18n/translation";
+import { router } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Animated, Text, View } from "react-native";
 
 export default function Starter(
     {
@@ -17,7 +16,7 @@ export default function Starter(
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     // 添加淡入动画
     useEffect(() => {
@@ -58,7 +57,7 @@ export default function Starter(
                 <Text className="text-sm text-white/60">{t("selectSceneSubtitle")}</Text>
             </View>
 
-            <CommodityInput onConfirm={onConfirm}/>
+            <CommodityInput onConfirm={onConfirm} />
         </Modal>
     );
 }
