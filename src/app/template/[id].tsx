@@ -1,16 +1,18 @@
+import { getTemplate } from "@/api/resource";
 import ImagePreview from "@/components/ImagePreview";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import Video from "react-native-video";
 
@@ -20,39 +22,34 @@ const Template = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const [paused, setPaused] = useState(true);
-  const [previewImages, setPreviewImages] = useState<
-    Array<{ url: string; desc?: string }>
-  >([]);
+  const [previewImages, setPreviewImages] = useState<Array<{ url: string; desc?: string }>>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
 
   const { colors } = useTailwindVars();
-  const queryClient = useQueryClient();
 
   // Data Fetching
-  const allPages = queryClient.getQueriesData({
-    queryKey: ["items"],
-    type: "all",
+  const { data, isLoading } = useQuery({
+    queryKey: ["template", id],
+    queryFn: () => getTemplate({ id }),
+    enabled: !!id,
   });
 
-  const flatItems = useMemo(() => {
-    return allPages.flatMap(([, data]: any) => {
-      const pages = data?.pages ?? [];
-      return pages.flatMap((p: any) => p?.data?.data?.list ?? []);
-    });
-  }, [allPages]);
-
-  const current = useMemo(
-    () => flatItems.find((it: any) => String(it?._id) === String(id)),
-    [flatItems, id]
-  );
+  const current = data?.data?.data;
 
   const coverUrl =
-    current?.root?.coverUrl ||
     current?.highlightFrames?.[0]?.url ||
     current?.coverUrl;
 
   const segments: Array<any> = current?.segments || [];
   const videoUrl = current?.url;
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-background">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-background">
@@ -100,16 +97,6 @@ const Template = () => {
             <Text className="text-xl font-bold text-grey0 mb-2 leading-tight">
               {current?.commodity?.name || current?.description || '未命名项目'}
             </Text>
-
-            {/* <View className="flex-row items-center gap-3">
-              <View className={`px-2 py-0.5 rounded ${current?.status === 'completed' ? 'bg-green-500/10' : 'bg-primary/10'}`}>
-                <Text className={`text-[10px] font-medium ${current?.status === 'completed' ? 'text-green-600' : 'text-primary'}`}>
-                  {current?.status === 'completed' ? '已完成' : current?.status || '处理中'}
-                </Text>
-              </View>
-              <Text className="text-xs text-grey2">ID: {current?._id}</Text>
-              <Text className="text-xs text-grey2 ml-auto">{formatDate(current?.updatedAt)}</Text>
-            </View> */}
 
             {current?.commodity?.tags?.length > 0 && (
               <View className="flex-row flex-wrap gap-2 mt-3">

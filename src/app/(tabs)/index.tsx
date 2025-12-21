@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type TabType = "video" | "inspiration";
 const tabList: { id: number; name: string; value: TabType }[] = [
@@ -28,7 +27,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { colors } = useTailwindVars();
-  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<TabType>(tabList[0].value);
 
   return (

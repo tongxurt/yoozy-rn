@@ -18,7 +18,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: screenWidth } = Dimensions.get("window");
 const numColumns = 2;
@@ -29,8 +28,8 @@ const columnWidth =
     numColumns;
 
 export default function TemplateList() {
+
     const { colors } = useTailwindVars();
-    const insets = useSafeAreaInsets();
     const [searchQuery, setSearchQuery] = useState("");
     const [finalSearchQuery, setFinalSearchQuery] = useState("");
 
@@ -54,7 +53,12 @@ export default function TemplateList() {
     } = useInfiniteQuery({
         queryKey: ["items", "video", finalSearchQuery],
         queryFn: ({ pageParam }) => {
-            const params = { page: pageParam || 1, keyword: finalSearchQuery };
+            const params = {
+                page: pageParam || 1,
+                size: 20,
+                keyword: finalSearchQuery,
+                returnFields: 'coverUrl,status,commodity.name'
+            };
             return listItems(params);
         },
         getNextPageParam: (lastPage) => {
@@ -66,11 +70,12 @@ export default function TemplateList() {
     });
 
     const flatData = useMemo(() => {
-        return data?.pages.flatMap((page) => page?.data?.data?.list || []) || [];
+        return data?.pages?.flatMap((page) => page?.data?.data?.list || []) || [];
     }, [data]);
 
     const { leftData, rightData } = useMemo(() => {
         const left: any[] = [];
+
         const right: any[] = [];
         flatData.forEach((item, index) => {
             if (index % 2 === 0) left.push(item);
@@ -145,6 +150,7 @@ export default function TemplateList() {
     return (
         <View className="flex-1">
             {/* Search Header */}
+
             <View className="px-3 py-4 backdrop-blur-sm">
                 <View className="gap-2 flex-row items-center bg-background rounded-xl px-4 py-3">
                     <Feather name="search" size={14} color={colors.white} />
@@ -183,7 +189,6 @@ export default function TemplateList() {
                     contentContainerStyle={{
                         paddingHorizontal: containerPadding,
                         paddingTop: 10,
-                        paddingBottom: Math.max(insets.bottom, 20)
                     }}
                     refreshControl={
                         <CustomRefreshControl

@@ -58,3 +58,24 @@ export const updateSessionStatus = (params: { id: string; status: string }) => {
     },
   });
 };
+
+export const startSelectTemplate = (params: { id: string }) => {
+  return instance.request<any>({
+    url: `/api/proj/v1/sessions/${params.id}`,
+    method: "PATCH",
+    data: {
+      action: "startSelectTemplate",
+    },
+  });
+};
+
+export const confirmSelectTemplate = (params: { id: string, templateId: string }) => {
+  return instance.request<any>({
+    url: `/api/proj/v1/sessions/${params.id}`,
+    method: "PATCH",
+    data: {
+      action: "confirmSelectTemplate",
+      params: { templateId: params.templateId },
+    },
+  });
+};

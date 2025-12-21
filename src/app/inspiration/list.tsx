@@ -47,7 +47,19 @@ export default function InspirationList() {
     } = useInfiniteQuery({
         queryKey: ["items", "inspiration", finalSearchQuery],
         queryFn: ({ pageParam }) => {
-            const params = { page: pageParam || 1, keyword: finalSearchQuery };
+            const params = {
+                page: pageParam || 1,
+                size: 20,
+                keyword: finalSearchQuery,
+                returnFields: [
+                    "highlightFrames",
+                    "status",
+                    "typedTags.text",
+                    "typedTags.picture",
+                    "typedTags.scene",
+                    "description"
+                ].join(",")
+            };
             return listResourceSegments(params);
         },
         getNextPageParam: (lastPage) => {

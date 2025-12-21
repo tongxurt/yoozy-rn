@@ -27,6 +27,7 @@ instance.interceptors.request.use(
     // config.headers.set('U-Version', conf.version)
 
     console.log(`--------- ${new Date().valueOf()} http sending request...`);
+    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.method);
     console.log(`--------- ${new Date().valueOf()} http sending request...`, config.baseURL);
     console.log(`--------- ${new Date().valueOf()} http sending request...`, config.url);
     console.log(`--------- ${new Date().valueOf()} http sending request...`, config.params);

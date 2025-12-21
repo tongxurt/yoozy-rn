@@ -1,24 +1,21 @@
-import { listItems } from "@/api/resource";
-import { fetchSession, updateSessionStatus } from "@/api/session";
+import { confirmSelectTemplate, fetchSession, startSelectTemplate } from "@/api/session";
 import CreditEntry from "@/components/CreditEntry";
+import ButtonV2 from "@/components/ui/ButtonV2";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { LinearGradient } from "expo-linear-gradient";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import CommoditySelect from "./CommoditySelect";
-import Step2 from "./Step2";
 import Step3 from "./Step3";
+import TemplateSelect from "./TemplateSelect";
 
 const Session = () => {
     const { id } = useLocalSearchParams();
-
     const { colors } = useTailwindVars();
-
-    const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
 
     // Step definitions
     const steps = [
@@ -31,86 +28,26 @@ const Session = () => {
     const { data: ur, refetch } = useQuery({
         queryKey: ["session", id],
         queryFn: () => fetchSession({ id: id as string }),
-        // refetchInterval: 1000,
     });
+
+    const [pendingTemplate, setPendingTemplate] = useState<any>(null);
+
     const session = useMemo(() => ur?.data?.data, [ur]);
-    const status = session?.status || ''
-
-    const config = useMemo(() => {
-
-
-    }, [])
-
-    // Templates Data
-    const { data: templateList } = useInfiniteQuery({
-        queryKey: ["items", "video", ""],
-        queryFn: ({ pageParam }) => listItems({ page: pageParam || 1 }),
-        getNextPageParam: (lastPage) => {
-            const { size, total, page } = lastPage?.data?.data;
-            return size * page < total ? page + 1 : undefined;
-        },
-        enabled: !status?.startsWith('commodity')
-    });
+    const status = session?.status || '';
 
     // Derive real step from status
     const realTab = useMemo(() => {
-        if (status?.startsWith("commodity")) return 1;
-        if (status?.startsWith("hotTemplate")) return 2;
-        return 3;
+        if (status?.startsWith("chanceSelected")) return 1;
+        if (status?.startsWith("templateSelecting")) return 2;
+        if (status?.startsWith("generating")) return 3;
+        return 1;
     }, [status]);
 
     const [tab, setTab] = useState(realTab);
     useEffect(() => { setTab(realTab); }, [realTab]);
 
-    const updateStatus = ({ id, status }: { id: string; status: string }) => {
-        updateSessionStatus({ id, status }).then(() => void refetch());
-    };
-
     const handleTabChange = (index: number) => {
         if (realTab >= index) setTab(index);
-    };
-
-    // Render bottom button based on current tab
-    const renderBottomButton = () => {
-        if (tab === 1) {
-            return (
-                <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() => updateStatus({ id: id as string, status: 'hotTemplateSelecting' })}
-                    disabled={status === 'commodityMetadataParsing'}
-                    style={{ opacity: status === 'commodityMetadataParsing' ? 0.5 : 1 }}
-                >
-                    <LinearGradient
-                        colors={[colors.primary, colors.primary + 'cc']}
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                        style={{ borderRadius: 28, paddingVertical: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}
-                    >
-                        <Text style={{ color: '#fff', fontWeight: '700', fontSize: 17 }}>进入模板选择</Text>
-                        <MaterialCommunityIcons name="arrow-right" size={22} color="#fff" />
-                    </LinearGradient>
-                </TouchableOpacity>
-            );
-        }
-        if (tab === 2) {
-            return (
-                <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() => { if (selectedTemplateId) updateStatus({ id: id as string, status: 'scriptGenerating' }); }}
-                    disabled={!selectedTemplateId}
-                    style={{ opacity: selectedTemplateId ? 1 : 0.5 }}
-                >
-                    <LinearGradient
-                        colors={[colors.primary, colors.primary + 'cc']}
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                        style={{ borderRadius: 28, paddingVertical: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}
-                    >
-                        <Text style={{ color: '#fff', fontWeight: '700', fontSize: 17 }}>开始智能生成</Text>
-                        <Ionicons name="sparkles" size={22} color="#fff" />
-                    </LinearGradient>
-                </TouchableOpacity>
-            );
-        }
-        return null;
     };
 
     return (
@@ -130,7 +67,6 @@ const Session = () => {
             <View className="px-5 pt-2 pb-3">
                 <View
                     className="flex-row items-center justify-between bg-plain rounded-full p-1"
-                    style={{ shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }}
                 >
                     {steps.map((step) => {
                         const isActive = step.index === tab;
@@ -166,23 +102,58 @@ const Session = () => {
                 </View>
             </View>
 
-            {/* Content Area - Full Screen Scrollable Card */}
+            {/* Content Area */}
             <View className="flex-1 px-5">
-
-                <ScrollView
-                    className="flex-1"
-                    showsVerticalScrollIndicator={false}
-                // contentContainerStyle={{ paddingVertical: 24 }}
-                >
-                    {tab === 1 && <CommoditySelect session={session} />}
-                    {tab === 2 && <Step2 templateList={templateList} selectedTemplateId={selectedTemplateId} setSelectedTemplateId={setSelectedTemplateId} />}
-                    {tab === 3 && <Step3 status={status} />}
-                </ScrollView>
-            </View>
-
-            {/* Fixed Bottom Button */}
-            <View style={{ paddingHorizontal: 20, paddingTop: 12, backgroundColor: colors.background }}>
-                {renderBottomButton()}
+                {tab === 1 && (
+                    <>
+                        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                            <CommoditySelect session={session} />
+                        </ScrollView>
+                        <View style={{ paddingTop: 12, paddingBottom: 12, backgroundColor: colors.background }}>
+                            <ButtonV2
+                                text="去选择模版"
+                                size="lg"
+                                icon={<MaterialCommunityIcons name="arrow-right" size={22} color="#fff" />}
+                                disabled={status !== 'chanceSelected'}
+                                onPress={() => {
+                                    startSelectTemplate({
+                                        id: id as string,
+                                    }).then(() => refetch());
+                                }}
+                            />
+                        </View>
+                    </>
+                )}
+                {tab === 2 &&
+                    <>
+                        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                            <TemplateSelect
+                                session={session}
+                                pendingTemplate={pendingTemplate}
+                                onSelect={setPendingTemplate}
+                            />
+                        </ScrollView>
+                        <View style={{ paddingTop: 12, paddingBottom: 16, backgroundColor: colors.background }}>
+                            <ButtonV2
+                                text="确认模版并开始创作"
+                                size="lg"
+                                icon={<MaterialCommunityIcons name="arrow-right" size={22} color="#fff" />}
+                                disabled={status !== 'templateSelecting' || !pendingTemplate}
+                                onPress={() => {
+                                    confirmSelectTemplate({
+                                        id: id as string,
+                                        templateId: pendingTemplate._id,
+                                    }).then(() => refetch());
+                                }}
+                            />
+                        </View>
+                    </>
+                }
+                {tab === 3 && (
+                    <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                        <Step3 session={session} />
+                    </ScrollView>
+                )}
             </View>
         </View>
     );
