@@ -1,6 +1,6 @@
 import { getTemplateSegment } from "@/api/resource";
 import ImagePreview from "@/components/ImagePreview";
-import { PageContainer } from "@/components/PageContainer";
+import ScreenContainer from "@/components/ScreenContainer";
 import ExpandableText from "@/components/ui/ExpandableText";
 import Modal from "@/components/ui/Modal";
 import useTailwindVars from "@/hooks/useTailwindVars";
@@ -78,7 +78,7 @@ const Inspiration = () => {
   }
 
   return (
-    <PageContainer edges={[]}
+    <ScreenContainer edges={[]}
       style={{ flex: 1, backgroundColor: 'black' }}
       barStyle="light-content">
 
@@ -221,7 +221,7 @@ const Inspiration = () => {
               <View className="gap-3">
                 <Text className="text-white/60 text-sm font-medium">分镜脚本</Text>
                 <View className="gap-3">
-                  {current.segments.map((seg, i) => (
+                  {current.segments.map((seg: any, i: number) => (
                     <View key={i} className="flex-row gap-3 bg-white/5 p-3 rounded-lg">
                       <View className="w-20 h-14 bg-white/10 rounded overflow-hidden flex-shrink-0">
                         {seg.startFrame && <Image source={{ uri: seg.startFrame }} className="w-full h-full" resizeMode="cover" />}
@@ -263,7 +263,7 @@ const Inspiration = () => {
                 <View className="gap-3">
                   <Text className="text-white/60 text-sm font-medium">标签</Text>
                   <View className="flex-row flex-wrap gap-2">
-                    {(current?.tags || []).map((t, i) => (
+                    {(current?.tags || []).map((t: any, i: number) => (
                       <View
                         key={`${t}-${i}`}
                         className="px-3 py-1.5 rounded-full bg-white/10"
@@ -320,7 +320,7 @@ const Inspiration = () => {
         onClose={() => setPreviewImages([])}
         onIndexChange={(index) => setPreviewIndex(index)}
       />
-    </PageContainer>
+    </ScreenContainer>
   );
 };
 

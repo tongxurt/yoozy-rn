@@ -1,20 +1,26 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import { useTranslation } from "@/i18n/translation";
-import React from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { useColors } from "@/hooks/uesColors";
-import { router } from "expo-router";
-import AuthInfo from "@/components/AuthInfo";
 import CreditEntry from "@/components/CreditEntry";
+import { useColors } from "@/hooks/uesColors";
+import { useTranslation } from "@/i18n/translation";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 // 功能项配置
 const FEATURE_ITEMS = [
   {
-    id: "generate-video",
+    id: "segment-replication",
+    icon: "play",
+    sparkle: true,
+    title: "高光视频复刻",
+    route: "/create/segment-replication",
+  },
+  {
+    id: "smark-video",
     icon: "play",
     sparkle: true,
     title: "输入灵感, 智能生视频",
-    route: "/session/starter",
+    route: "/create/smark-video",
   },
   // {
   //   id: "ai-design",
@@ -98,7 +104,7 @@ export default function Screen() {
   };
 
   const handleCreate = () => {
-    router.navigate(`/session/starter`);
+    router.navigate(`/create/smark-video`);
   };
 
   return (

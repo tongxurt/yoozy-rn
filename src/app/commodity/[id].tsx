@@ -1,9 +1,10 @@
 import { getCommodity } from "@/api/commodity";
+import ScreenContainer from "@/components/ScreenContainer";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState, } from "react";
 import {
     Dimensions,
@@ -48,8 +49,7 @@ export default function CommodityDetailScreen() {
 
     if (isLoading) {
         return (
-            <View className="flex-1 bg-background">
-                <Stack.Screen options={{ title: "商品详情" }} />
+            <ScreenContainer className="flex-1 bg-background" edges={['bottom']}>
                 <SkeletonLoader width={screenWidth} height={screenHeight * 0.55} />
                 <View className="flex-1 -mt-8 bg-background rounded-t-3xl p-6 gap-6">
                     <View className="gap-2">
@@ -59,15 +59,13 @@ export default function CommodityDetailScreen() {
                     <SkeletonLoader width="100%" height={100} />
                     <SkeletonLoader width="100%" height={150} />
                 </View>
-            </View>
+            </ScreenContainer>
         );
     }
     const carouselHeight = screenHeight * 0.55;
 
     return (
-        <View className="flex-1 bg-background">
-            {/* <StatusBar barStyle="light-content" translucent /> */}
-            <Stack.Screen options={{ title: "商品详情" }} />
+        <ScreenContainer className="flex-1 bg-background" edges={[]}>
             <ScrollView
                 className="flex-1"
                 showsVerticalScrollIndicator={false}
@@ -244,6 +242,6 @@ export default function CommodityDetailScreen() {
 
 
 
-        </View>
+        </ScreenContainer>
     );
 }

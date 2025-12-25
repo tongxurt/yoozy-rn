@@ -408,12 +408,12 @@ function RootLayoutNav() {
               animationDuration: 1,
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="commodity/[id]"
             options={{
               headerTitle: "商品详情",
             }}
-          />
+          /> */}
           <Stack.Screen
             name="commodity/create"
             options={{

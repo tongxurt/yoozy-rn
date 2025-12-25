@@ -46,7 +46,7 @@ export interface InspirationSegment {
 }
 
 export const getTemplateSegment = async (params: { id: string }) => {
-  return instance.request<{ data: InspirationSegment }>({
+  return instance.request<any>({
     url: `/api/am/v2/resource-segments/${params.id}`,
     params,
   });

@@ -1,10 +1,12 @@
 import { useColors } from '@/hooks/uesColors';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Stack } from 'expo-router';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
 import { StatusBar, StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
 
-interface PageContainerProps {
+interface ScreenContainerProps {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
     edges?: Edge[];
@@ -12,9 +14,12 @@ interface PageContainerProps {
     barStyle?: StatusBarStyle;
     statusBarColor?: string;
     translucent?: boolean;
+    headerShown?: boolean;
+    stackScreenProps?: NativeStackNavigationOptions;
+    title?: string;
 }
 
-export const PageContainer: React.FC<PageContainerProps> = ({
+const ScreenContainer: React.FC<ScreenContainerProps> = ({
     children,
     style,
     edges = ['top', 'bottom'], // Default to top and bottom safe areas
@@ -22,6 +27,9 @@ export const PageContainer: React.FC<PageContainerProps> = ({
     barStyle,
     statusBarColor = 'transparent',
     translucent = true,
+    headerShown = false,
+    title,
+    stackScreenProps,
 }) => {
     const { background } = useColors();
     const { colorScheme } = useColorScheme();
@@ -39,6 +47,13 @@ export const PageContainer: React.FC<PageContainerProps> = ({
             ]}
             className={className}
         >
+            <Stack.Screen options={{
+                headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
+                headerTransparent: true, // Optional: useful for full screen
+                ...stackScreenProps,
+                ...(headerShown !== undefined && { headerShown }),
+                ...(title !== undefined && { title }),
+            }} />
             <StatusBar
                 barStyle={barStyle || (isDarkMode ? "light-content" : "dark-content")}
                 backgroundColor={statusBarColor}
@@ -48,3 +63,5 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         </SafeAreaView>
     );
 };
+
+export default ScreenContainer;

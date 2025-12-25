@@ -1,4 +1,4 @@
-import { PageContainer } from "@/components/PageContainer";
+import ScreenContainer from "@/components/ScreenContainer";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColors } from "@/hooks/uesColors";
 import useAppUpdate from "@/hooks/useAppUpdate";
@@ -84,7 +84,7 @@ export default function TabLayout() {
   const { user } = useAuthUser({ fetchImmediately: true });
 
   return (
-    <PageContainer>
+    <ScreenContainer>
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
@@ -149,6 +149,6 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-    </PageContainer>
+    </ScreenContainer>
   );
 }
