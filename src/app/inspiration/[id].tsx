@@ -1,16 +1,26 @@
 import { getTemplateSegment } from "@/api/resource";
 import ImagePreview from "@/components/ImagePreview";
+import { PageContainer } from "@/components/PageContainer";
 import ExpandableText from "@/components/ui/ExpandableText";
+import Modal from "@/components/ui/Modal";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
-import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Video from "react-native-video";
+
+const { width, height } = Dimensions.get("window");
 
 const Inspiration = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [paused, setPaused] = useState(true);
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const [paused, setPaused] = useState(false);
+  const [detailsVisible, setDetailsVisible] = useState(false);
   const [previewImages, setPreviewImages] = useState<Array<{ url: string; desc?: string }>>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
 
@@ -23,191 +33,286 @@ const Inspiration = () => {
     enabled: !!id,
   });
 
+
+  // Mock data removed
   const current = data?.data?.data;
 
   const coverUrl =
     current?.highlightFrames?.[0]?.url ||
-    current?.coverUrl;
+    current?.root?.coverUrl;
 
   const videoUrl = current?.root?.url;
 
+  const videoRef = useRef<any>(null);
+  const startTime = current?.timeStart || 0;
+  const endTime = current?.timeEnd;
+
+  const onProgress = (data: { currentTime: number }) => {
+    if (endTime && data.currentTime >= endTime) {
+      videoRef.current?.seek(startTime);
+    }
+  };
+
+  const onLoad = () => {
+    if (startTime > 0) {
+      videoRef.current?.seek(startTime);
+    }
+  };
+
   const tags: string[] =
-    current?.tags ||
-    [];
+    [
+      ...(current?.typedTags?.text || []),
+      ...(current?.typedTags?.picture || []),
+      ...(current?.typedTags?.scene || []),
+    ];
 
   const highlightFrames: Array<{ url: string; desc?: string }> =
     current?.highlightFrames || [];
 
   if (isLoading) {
     return (
-      <View className="flex-1 justify-center items-center bg-background">
+      <View className="flex-1 justify-center items-center bg-black">
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   return (
-    <>
-      <ScrollView
-        className="flex-1 bg-background"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
-      >
-        {/* 视频/封面 */}
-        {videoUrl ? (
-          <View style={{ position: "relative" }}>
-            <Video
-              source={{ uri: videoUrl }}
-              style={{ width: "100%", aspectRatio: 10 / 12 }}
-              controls={true}
-              paused={paused}
-              resizeMode="contain"
-            />
-            {paused && (
-              <TouchableOpacity
-                onPress={() => setPaused(false)}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                activeOpacity={0.8}
-              >
-                <View
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 40,
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ color: "white", fontSize: 32, marginLeft: 4 }}>▶</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          </View>
-        ) : coverUrl ? (
-          <Image
-            source={{ uri: coverUrl }}
-            className="w-full aspect-[9/12]"
-            resizeMode="cover"
-          />
-        ) : null}
+    <PageContainer edges={[]}
+      style={{ flex: 1, backgroundColor: 'black' }}
+      barStyle="light-content">
 
-        <View className="px-5 py-6 gap-6">
-          {/* 基本信息 (描述 + 标签) */}
-          <View className="gap-4">
-            <View className="flex-row items-center gap-2">
-              <View className="w-1 h-4 rounded-full bg-primary" />
-              <Text className="text-white text-lg font-bold">基本信息</Text>
+      {/* Video Background */}
+      {videoUrl ? (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setPaused(!paused)}
+          style={StyleSheet.absoluteFill}
+        >
+          <Video
+            ref={videoRef}
+            source={{ uri: videoUrl }}
+            style={StyleSheet.absoluteFill}
+            resizeMode="cover"
+            repeat={!endTime} // Only use native repeat if no custom end time
+            paused={paused}
+            poster={coverUrl}
+            posterResizeMode="cover"
+            onProgress={onProgress}
+            onLoad={onLoad}
+            progressUpdateInterval={50} // Check more frequently for tighter loops
+          />
+          {paused && (
+            <View className="absolute inset-0 justify-center items-center bg-black/20">
+              <Ionicons name="play" size={60} color="rgba(255,255,255,0.8)" />
+            </View>
+          )}
+        </TouchableOpacity>
+      ) : (
+        <Image
+          source={{ uri: coverUrl }}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
+      )}
+
+      <TouchableOpacity
+        onPress={() => router.back()}
+        className="absolute left-4 z-10 w-10 h-10 items-center justify-center rounded-full bg-black/20"
+        style={{ top: insets.top + 10 }}
+      >
+        <Ionicons name="chevron-back" size={28} color="white" />
+      </TouchableOpacity>
+
+      {/* Bottom Overlay & Action Bar */}
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.8)']}
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0, paddingBottom: 34, paddingTop: 120 }}
+        pointerEvents="box-none"
+      >
+        <View className="px-4 gap-4">
+
+          {/* Text Info */}
+          <TouchableOpacity
+            className="gap-2"
+            activeOpacity={0.8}
+            onPress={() => setDetailsVisible(true)}
+          >
+            {/* <Text className="font-bold text-lg" style={{ color: 'white' }}>@{current?.author?.name || '小云雀官方精选'}</Text> */}
+
+            {tags.length > 0 && (
+              <View className="flex-row flex-wrap gap-2">
+                {tags.map((t, i) => (
+                  <View key={i} className="px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md">
+                    <Text className="text-[white] text-xs font-medium">{t}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+          </TouchableOpacity>
+
+          {/* Horizontal Action Bar */}
+          <View className="flex-row items-stretch gap-3 mt-2">
+            {/* Like Button (Left) */}
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                borderRadius: 12,
+                paddingHorizontal: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 8,
+                height: 48,
+              }}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="heart-outline" size={24} color="white" />
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>1376</Text>
+            </TouchableOpacity>
+
+            {/* Test It Button (Right - Expands) */}
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                backgroundColor: 'white',
+                borderRadius: 12,
+                height: 48,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              activeOpacity={0.9}
+              onPress={() => {
+                // Navigate to edit or use template
+              }}
+            >
+              <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>测一测</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      </LinearGradient>
+
+
+      {/* Details Modal */}
+      <Modal
+        visible={detailsVisible}
+        onClose={() => setDetailsVisible(false)}
+        position="bottom"
+        contentStyle={{ maxHeight: height * 0.7, borderTopLeftRadius: 24, borderTopRightRadius: 24, }}
+      >
+        <ScrollView className="px-5 py-2 mb-6" showsVerticalScrollIndicator={false}>
+          {/* Header */}
+          <View className="flex-row justify-between items-center mb-6">
+            <Text className="text-white text-xl font-bold">作品详情</Text>
+          </View>
+
+          <View className="gap-6 pb-10">
+            {/* Description Full */}
+            <View className="gap-3">
+              <Text className="text-white/60 text-sm font-medium">作品描述</Text>
+              <Text className="text-white/90 text-base leading-6">
+                {current?.description || '暂无描述'}
+              </Text>
             </View>
 
-            <View className="bg-plain rounded-2xl p-5 gap-4">
-              {/* 描述 */}
-              <View>
-                <Text className="text-white/80 text-lg font-semibold leading-tight">
-                  {current?.description || '暂无描述'}
-                </Text>
-              </View>
-
-              {/* 标签 */}
-              {!!tags?.length && (
-                <View className="flex-row flex-wrap gap-2 pt-4 border-t border-white/5">
-                  {tags.slice(0, 12).map((t, i) => (
-                    <View
-                      key={`${t}-${i}`}
-                      className="px-3 py-1.5 rounded-full bg-primary/10 border border-primary/5"
-                    >
-                      <Text className="text-xs text-primary font-medium">{t}</Text>
+            {/* Script Segments (New) */}
+            {current?.segments && current.segments.length > 0 && (
+              <View className="gap-3">
+                <Text className="text-white/60 text-sm font-medium">分镜脚本</Text>
+                <View className="gap-3">
+                  {current.segments.map((seg, i) => (
+                    <View key={i} className="flex-row gap-3 bg-white/5 p-3 rounded-lg">
+                      <View className="w-20 h-14 bg-white/10 rounded overflow-hidden flex-shrink-0">
+                        {seg.startFrame && <Image source={{ uri: seg.startFrame }} className="w-full h-full" resizeMode="cover" />}
+                      </View>
+                      <View className="flex-1 gap-1">
+                        <View className="flex-row justify-between">
+                          <Text className="text-white/40 text-xs">镜头 {i + 1}</Text>
+                          <Text className="text-white/40 text-xs">{seg.timeStart ? seg.timeStart.toFixed(1) : '0.0'}s - {seg.timeEnd.toFixed(1)}s</Text>
+                        </View>
+                        <Text className="text-white/90 text-sm leading-5">{seg.description}</Text>
+                      </View>
                     </View>
                   ))}
                 </View>
-              )}
-            </View>
-          </View>
-
-          {/* 商品信息 */}
-          {!!current?.root?.commodity?.name && (
-            <View className="gap-4">
-              <View className="flex-row items-center gap-2">
-                <View className="w-1 h-4 rounded-full bg-primary" />
-                <Text className="text-white text-lg font-bold">商品信息</Text>
               </View>
+            )}
 
-              <View className="bg-plain rounded-2xl p-5">
-                <Text className="text-base text-white/80 leading-6">
-                  {current?.root?.commodity?.name}
-                </Text>
-              </View>
-            </View>
-          )}
-
-
-          {/* 关键帧预览 */}
-          {!!highlightFrames?.length && (
-            <View className="gap-4">
-              <View className="flex-row items-center gap-2">
-                <View className="w-1 h-4 rounded-full bg-primary" />
-                <Text className="text-white text-lg font-bold">关键帧</Text>
-              </View>
-
-              <View className="bg-plain rounded-2xl p-5">
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  scrollEnabled={true}
-                  nestedScrollEnabled={false}
-                  contentContainerStyle={{ gap: 12 }}
-                >
-                  {highlightFrames.map((f, i) => (
-                    <TouchableOpacity
-                      key={`${f.url}-${i}`}
-                      onPress={() => {
-                        setPreviewImages(highlightFrames);
-                        setPreviewIndex(i);
-                      }}
-                      activeOpacity={0.8}
-                    >
-                      <Image
-                        source={{ uri: f.url }}
-                        className="w-32 h-44 rounded-lg bg-white/5"
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity>
+            {/* Structured Tags (New - replacing simple tags if available) */}
+            {current?.typedTags ? (
+              <View className="gap-3">
+                <Text className="text-white/60 text-sm font-medium">标签信息</Text>
+                <View className="gap-4">
+                  {Object.entries(current.typedTags).map(([category, tags]) => (
+                    <View key={category} className="gap-2">
+                      <Text className="text-white/40 text-xs uppercase">{category}</Text>
+                      <View className="flex-row flex-wrap gap-2">
+                        {(tags as string[]).map((t, i) => (
+                          <View key={`${category}-${i}`} className="px-2.5 py-1 rounded bg-white/10">
+                            <Text className="text-white/80 text-xs">{t}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
                   ))}
-                </ScrollView>
+                </View>
               </View>
-            </View>
-          )}
+            ) : (
+              (current?.tags?.length || 0) > 0 && (
+                <View className="gap-3">
+                  <Text className="text-white/60 text-sm font-medium">标签</Text>
+                  <View className="flex-row flex-wrap gap-2">
+                    {(current?.tags || []).map((t, i) => (
+                      <View
+                        key={`${t}-${i}`}
+                        className="px-3 py-1.5 rounded-full bg-white/10"
+                      >
+                        <Text className="text-sm text-white/90">{t}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              )
+            )}
 
-          {/* 拍摄说明 */}
-          {!!current?.shootingStyle && (
-            <View className="gap-4">
-              <View className="flex-row items-center gap-2">
-                <View className="w-1 h-4 rounded-full bg-primary" />
-                <Text className="text-white text-lg font-bold">拍摄说明</Text>
+            {/* Commodity Info */}
+            {!!current?.root?.commodity?.name && (
+              <View className="gap-3">
+                <Text className="text-white/60 text-sm font-medium">关联商品</Text>
+                <View className="bg-white/5 rounded-xl p-4 flex-row items-center gap-3">
+                  <View className="w-12 h-12 bg-white/10 rounded-lg overflow-hidden">
+                    {current?.root?.commodity?.coverUrl && (
+                      <Image source={{ uri: current.root.commodity.coverUrl }} className="w-full h-full" resizeMode="cover" />
+                    )}
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-white/90 text-base font-medium" numberOfLines={1}>{current?.root?.commodity?.name}</Text>
+                    <Text className="text-white/50 text-xs mt-1">品牌: {current?.root?.commodity?.brand || '未知'}</Text>
+                  </View>
+                  <TouchableOpacity className="bg-primary/20 px-3 py-1.5 rounded-full">
+                    <Text className="text-primary text-xs font-bold">去购买</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
+            )}
 
-              <View className="bg-plain rounded-2xl p-5">
+            {/* Shooting Style */}
+            {!!current?.shootingStyle && (
+              <View className="gap-3">
+                <Text className="text-white/60 text-sm font-medium">拍摄说明</Text>
                 <ExpandableText
                   content={current?.shootingStyle}
                   maxLength={150}
-                  className="text-sm text-white/80 leading-6"
+                  className="text-white/90 text-base leading-6"
                 />
               </View>
-            </View>
-          )}
+            )}
+          </View>
+        </ScrollView>
+      </Modal>
 
-        </View>
-      </ScrollView>
-
-      {/* Image Preview */}
+      {/* Image Preview Helper */}
       <ImagePreview
         images={previewImages}
         initialIndex={previewIndex}
@@ -215,7 +320,7 @@ const Inspiration = () => {
         onClose={() => setPreviewImages([])}
         onIndexChange={(index) => setPreviewIndex(index)}
       />
-    </>
+    </PageContainer>
   );
 };
 

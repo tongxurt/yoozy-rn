@@ -1,5 +1,5 @@
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { router, Stack } from "expo-router";
+import { router, Stack, usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
 
 import { addEvent } from "@/api/event";
@@ -25,6 +25,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
@@ -132,6 +133,7 @@ function RootLayoutNav() {
   const { background, grey0, plain } = useColors();
   const { t } = useTranslation();
   const { themeMode, isDarkMode } = useThemeMode();
+  const pathname = usePathname();
 
   const { fetchAsync: fetchSettings } = useSettings();
   // const {fetchAsync: fetchAccounts} = useAccounts();
@@ -341,10 +343,7 @@ function RootLayoutNav() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <SafeAreaView
-        // edges={Platform.OS === "android" ? ["top","bottom"] : ["top", "bottom"]}
-        edges={["top", "bottom"]}
-        mode={"padding"}
+      <View
         style={{
           flex: 1,
           backgroundColor: background,
@@ -352,10 +351,11 @@ function RootLayoutNav() {
       >
         {/*<OngoingQuestion/>*/}
         <StatusBar
+          // Default status bar style, pages can override
           barStyle={isDarkMode ? "light-content" : "dark-content"}
-          backgroundColor={background}
+          backgroundColor="transparent"
+          translucent={true}
         />
-        {/*<Text style={{color: 'white'}}>{pathname}</Text>*/}
         <Stack
           screenOptions={{
             headerStyle: {
@@ -380,15 +380,15 @@ function RootLayoutNav() {
                   <Feather name="arrow-left" size={24} color={grey0} />
                 </TouchableOpacity>
               ) : null,
+            contentStyle: {
+              backgroundColor: background,
+            }
           }}
         >
           <Stack.Screen
             name="(tabs)"
             options={{
               headerShown: false,
-              contentStyle: {
-                backgroundColor: background,
-              },
             }}
           />
 
@@ -396,9 +396,6 @@ function RootLayoutNav() {
             name="session/starter"
             options={{
               headerShown: false,
-              contentStyle: {
-                backgroundColor: background,
-              },
               animation: "fade",
               animationDuration: 1,
             }}
@@ -407,10 +404,6 @@ function RootLayoutNav() {
             name="session/[id]/index"
             options={{
               headerShown: false,
-              // headerTitle: t("details"),
-              contentStyle: {
-                backgroundColor: background,
-              },
               animation: "fade",
               animationDuration: 1,
             }}
@@ -419,27 +412,18 @@ function RootLayoutNav() {
             name="commodity/[id]"
             options={{
               headerTitle: "商品详情",
-              contentStyle: {
-                backgroundColor: background,
-              },
             }}
           />
           <Stack.Screen
             name="commodity/create"
             options={{
               headerTitle: "添加商品",
-              contentStyle: {
-                backgroundColor: background,
-              },
             }}
           />
           <Stack.Screen
             name="inspiration/[id]"
             options={{
-              title: t("details"),
-              contentStyle: {
-                backgroundColor: background,
-              },
+              headerShown: false,
             }}
           />
 
@@ -447,9 +431,6 @@ function RootLayoutNav() {
             name="template/[id]"
             options={{
               title: t("details"),
-              contentStyle: {
-                backgroundColor: background,
-              },
             }}
           />
           <Stack.Screen
@@ -530,7 +511,7 @@ function RootLayoutNav() {
             }}
           />
         </Stack>
-      </SafeAreaView>
+      </View>
     </ErrorBoundary>
   );
 }

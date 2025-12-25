@@ -1,4 +1,17 @@
+import AppleLogin from "@/components/AppleLogin";
+import { useColors } from "@/hooks/uesColors";
+import { useTranslation } from "@/i18n/translation";
+import {
+  useLoginWithEmail,
+  useLoginWithPhone,
+  useSendCodeWithEmail,
+  useSendCodeWithPhone,
+} from "@/reactQuery/user";
+import { Feather } from "@expo/vector-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Platform,
@@ -8,23 +21,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Controller, useForm } from "react-hook-form";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { Toast } from "react-native-toast-notifications";
 import { z } from "zod";
 import Error from "../components/RormValidationError";
-import {
-  useLoginWithEmail,
-  useLoginWithPhone,
-  useSendCodeWithEmail,
-  useSendCodeWithPhone,
-} from "@/reactQuery/user";
-import { Toast } from "react-native-toast-notifications";
-import AppleLogin from "@/components/AppleLogin";
-import { useTranslation } from "@/i18n/translation";
-import { useColors } from "@/hooks/uesColors";
-import { Feather } from "@expo/vector-icons";
 
 type LoginType = "email" | "phone";
 
@@ -199,7 +199,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View className="flex-1 bg-plain justify-center">
+    <SafeAreaView className="flex-1 bg-plain justify-center">
       <View className="flex-1 content-center">
         <View className="flex-row items-center px-4" style={{}}>
           <TouchableOpacity
@@ -230,9 +230,8 @@ export default function LoginScreen() {
                     opacity: pressed ? 0.8 : 1,
                   },
                 ]}
-                className={`flex-1 py-3 rounded-md items-center ${
-                  loginType === "phone" ? "bg-primary" : ""
-                }`}
+                className={`flex-1 py-3 rounded-md items-center ${loginType === "phone" ? "bg-primary" : ""
+                  }`}
               >
                 <Text className="text-plain">{t("phone")}</Text>
               </Pressable>
@@ -247,9 +246,8 @@ export default function LoginScreen() {
                     opacity: pressed ? 0.8 : 1,
                   },
                 ]}
-                className={`flex-1 py-3 rounded-md items-center ${
-                  loginType === "email" ? "bg-primary" : ""
-                }`}
+                className={`flex-1 py-3 rounded-md items-center ${loginType === "email" ? "bg-primary" : ""
+                  }`}
               >
                 <Text className="text-white">{t("email")}</Text>
               </Pressable>
@@ -330,8 +328,8 @@ export default function LoginScreen() {
                               ? 0.5
                               : 1
                             : !isPhoneValid() || countdown > 0
-                            ? 0.5
-                            : 1,
+                              ? 0.5
+                              : 1,
                       }}
                       className={`w-28 h-12 rounded-lg items-center justify-center bg-primary`}
                       onPress={handleSendCode}
@@ -365,9 +363,8 @@ export default function LoginScreen() {
               >
                 {isAgreed && (
                   <View
-                    className={`w-2.5 h-2.5 rounded-full ${
-                      isAgreed ? "bg-primary" : "bg-transparent"
-                    }`}
+                    className={`w-2.5 h-2.5 rounded-full ${isAgreed ? "bg-primary" : "bg-transparent"
+                      }`}
                   />
                 )}
               </TouchableOpacity>
@@ -381,9 +378,8 @@ export default function LoginScreen() {
 
             {/* 下一步按钮 */}
             <TouchableOpacity
-              className={`h-12 rounded-lg items-center justify-center mb-6 bg-primary flex-row ${
-                buttonDisabled() ? "1" : "opacity-50"
-              }`}
+              className={`h-12 rounded-lg items-center justify-center mb-6 bg-primary flex-row ${buttonDisabled() ? "1" : "opacity-50"
+                }`}
               onPress={loginForm.handleSubmit(submit)}
               disabled={!buttonDisabled()}
             >
@@ -402,13 +398,13 @@ export default function LoginScreen() {
 
       {/* 其他登录方式放到底部 */}
       {Platform.OS === "ios" && (
-        <View className="pb-8" style={{ marginBottom: insets.bottom }}>
+        <View className="pb-8">
           <Text className="text-grey2 text-center mb-6">{t("otherLogin")}</Text>
           <View className="flex-row justify-center">
             <AppleLogin onSuccess={onLoginSuccess} />
           </View>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }

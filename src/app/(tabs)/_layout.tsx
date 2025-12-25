@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/PageContainer";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColors } from "@/hooks/uesColors";
 import useAppUpdate from "@/hooks/useAppUpdate";
@@ -83,7 +84,7 @@ export default function TabLayout() {
   const { user } = useAuthUser({ fetchImmediately: true });
 
   return (
-    <>
+    <PageContainer>
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
@@ -127,7 +128,6 @@ export default function TabLayout() {
             ),
           }}
         />
-        alipay-circle
         <Tabs.Screen
           name="record"
           options={{
@@ -149,6 +149,6 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-    </>
+    </PageContainer>
   );
 }
