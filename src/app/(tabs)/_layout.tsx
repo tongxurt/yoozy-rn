@@ -84,7 +84,7 @@ export default function TabLayout() {
   const { user } = useAuthUser({ fetchImmediately: true });
 
   return (
-    <ScreenContainer>
+    <ScreenContainer edges={['bottom']}>
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
@@ -131,6 +131,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="record"
           options={{
+            headerShown: true,
             // title: t("tab.my"),
             sceneStyle: { marginBottom: barHeight, backgroundColor: plain },
             tabBarIcon: ({ size, color }) => (

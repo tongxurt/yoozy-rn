@@ -1,24 +1,19 @@
-import React, { useCallback } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import LetterAvatar from "@/components/LatterAvatar";
+import ScreenContainer from "@/components/ScreenContainer";
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import { useColors } from "@/hooks/uesColors";
+import useAppUpdate from "@/hooks/useAppUpdate";
+import { useAuthUser } from "@/hooks/useAuthUser";
+import { useTranslation } from "@/i18n/translation";
 import {
   AntDesign,
-  Feather,
-  Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons,
+  MaterialIcons
 } from "@expo/vector-icons";
-import { useColors } from "@/hooks/uesColors";
-import { router, useFocusEffect } from "expo-router";
-import { HStack, Stack } from "react-native-flex-layout";
-import LetterAvatar from "@/components/LatterAvatar";
-import { useTranslation } from "@/i18n/translation";
-import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/api/api";
-import { FlashIcon } from "@/constants/scene_icons";
-import useAppUpdate from "@/hooks/useAppUpdate";
-import { fetchCreditState } from "@/api/payment";
-import { useAuthUser } from "@/hooks/useAuthUser";
+import { router } from "expo-router";
+import React from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Stack } from "react-native-flex-layout";
 
 export default function MyScreen() {
   const colors = useColors();
@@ -116,138 +111,139 @@ export default function MyScreen() {
   ];
 
   return (
-    <ScrollView
-      className="flex-1 bg-plain"
-      showsVerticalScrollIndicator={false}
+    <ScreenContainer edges={['top']}>
+      <ScrollView
+        className="flex-1 bg-plain"
+        showsVerticalScrollIndicator={false}
       // style={{overflow: "hidden"}}
       // contentContainerStyle={{overflow: "visible"}}
-    >
-      {/* 用户信息区域 */}
-      {user ? (
-        <View className="p-5 h-[120px]">
-          <View className="flex-col items-center gap-4">
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => {
-                // router.navigate("/user/me")
-              }}
-            >
-              <LetterAvatar name={user._id!} size={70} />
-            </TouchableOpacity>
+      >
+        {/* 用户信息区域 */}
+        {user ? (
+          <View className="p-5 h-[120px]">
+            <View className="flex-col items-center gap-4">
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                  // router.navigate("/user/me")
+                }}
+              >
+                <LetterAvatar name={user._id!} size={70} />
+              </TouchableOpacity>
 
-            <Text
-              className="text-md text-white leading-5 max-w-[200px]"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              Yoozy ID: {user?._id}
-            </Text>
-          </View>
-        </View>
-      ) : (
-        <View className="p-5 pt-10 h-[120px]">
-          <View className="flex-row items-center gap-[15px]">
-            <SkeletonLoader circle width={55} height={55} />
-            <View className="flex-1 gap-[5px]">
-              <SkeletonLoader width={120} height={15} />
-              <SkeletonLoader width={60} height={15} />
-              <SkeletonLoader width={200} height={15} />
+              <Text
+                className="text-md text-white leading-5 max-w-[200px]"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                Yoozy ID: {user?._id}
+              </Text>
             </View>
           </View>
-        </View>
-      )}
-
-      {/* 菜单列表 */}
-      <Stack ph={15} spacing={10} mt={15}>
-        {/* 主题与语言设置 */}
-        <View
-          className="mb-6 bg-cardBg/70 rounded-xl"
-          style={{ overflow: "visible" }}
-        >
-          {/*/!* 主题切换 *!/*/}
-          {/*<View className="px-4 py-4 flex-row items-center justify-between">*/}
-          {/*    <View className="flex-row items-center">*/}
-          {/*        <Feather*/}
-          {/*            name="sun"*/}
-          {/*            size={20}*/}
-          {/*            color={grey0}*/}
-          {/*            style={{marginRight: 12}}*/}
-          {/*        />*/}
-          {/*        <Text className="text-white text-base text-sm">*/}
-          {/*            {t('theme')}*/}
-          {/*        </Text>*/}
-          {/*    </View>*/}
-          {/*    <SimpleSelect*/}
-          {/*        options={getThemeOptions().map((option) => ({*/}
-          {/*            label: t(option.label),*/}
-          {/*            value: option.value,*/}
-          {/*        }))}*/}
-          {/*        value={themeMode}*/}
-          {/*        onSelect={(value) => changeTheme(value as any)}*/}
-          {/*        style={{minWidth: 120}}*/}
-          {/*    />*/}
-          {/*</View>*/}
-
-          {/*/!* 语言切换 *!/*/}
-          {/*<View className="px-4 py-4 flex-row items-center justify-between">*/}
-          {/*    <View className="flex-row items-center">*/}
-          {/*        <MaterialIcons*/}
-          {/*            name="language"*/}
-          {/*            size={20}*/}
-          {/*            color={grey0}*/}
-          {/*            style={{marginRight: 12}}*/}
-          {/*        />*/}
-          {/*        <Text className="text-white text-base  text-sm">*/}
-          {/*            {t("language")}*/}
-          {/*        </Text>*/}
-          {/*    </View>*/}
-          {/*    <SimpleSelect*/}
-          {/*        options={availableLanguages.map((language) => ({*/}
-          {/*            label: language.name,*/}
-          {/*            value: language.code,*/}
-          {/*        }))}*/}
-          {/*        value={locale}*/}
-          {/*        onSelect={(value) => changeLanguage(value)}*/}
-          {/*        style={{minWidth: 100}}*/}
-          {/*    />*/}
-          {/*</View>*/}
-        </View>
-
-        {menuItems.map((section, index) => (
-          <View
-            key={index}
-            className="mt-3 bg-background/70 rounded-xl"
-            // style={{overflow: "visible"}}
-          >
-            {section.map((item, itemIndex) => (
-              <TouchableOpacity
-                key={itemIndex}
-                activeOpacity={0.9}
-                onPress={item?.onPress}
-                className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
-              >
-                <View className="flex-row gap-[8px] items-center">
-                  {item.icon(20, colors.grey0)}
-                  <Text
-                    className={`text-white  text-sm ${
-                      item.isDanger ? "text-red-500" : "text-white"
-                    }`}
-                  >
-                    {t(item.title)}
-                  </Text>
-                </View>
-
-                <View className={"flex-row gap-0.5"}>
-                  {item.right}
-                  {item.onPress && (
-                    <AntDesign name="right" size={14} color={colors.grey3} />
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
+        ) : (
+          <View className="p-5 pt-10 h-[120px]">
+            <View className="flex-row items-center gap-[15px]">
+              <SkeletonLoader circle width={55} height={55} />
+              <View className="flex-1 gap-[5px]">
+                <SkeletonLoader width={120} height={15} />
+                <SkeletonLoader width={60} height={15} />
+                <SkeletonLoader width={200} height={15} />
+              </View>
+            </View>
           </View>
-        ))}
-      </Stack>
-    </ScrollView>
+        )}
+
+        {/* 菜单列表 */}
+        <Stack ph={15} spacing={10} mt={15}>
+          {/* 主题与语言设置 */}
+          <View
+            className="mb-6 bg-cardBg/70 rounded-xl"
+            style={{ overflow: "visible" }}
+          >
+            {/*/!* 主题切换 *!/*/}
+            {/*<View className="px-4 py-4 flex-row items-center justify-between">*/}
+            {/*    <View className="flex-row items-center">*/}
+            {/*        <Feather*/}
+            {/*            name="sun"*/}
+            {/*            size={20}*/}
+            {/*            color={grey0}*/}
+            {/*            style={{marginRight: 12}}*/}
+            {/*        />*/}
+            {/*        <Text className="text-white text-base text-sm">*/}
+            {/*            {t('theme')}*/}
+            {/*        </Text>*/}
+            {/*    </View>*/}
+            {/*    <SimpleSelect*/}
+            {/*        options={getThemeOptions().map((option) => ({*/}
+            {/*            label: t(option.label),*/}
+            {/*            value: option.value,*/}
+            {/*        }))}*/}
+            {/*        value={themeMode}*/}
+            {/*        onSelect={(value) => changeTheme(value as any)}*/}
+            {/*        style={{minWidth: 120}}*/}
+            {/*    />*/}
+            {/*</View>*/}
+
+            {/*/!* 语言切换 *!/*/}
+            {/*<View className="px-4 py-4 flex-row items-center justify-between">*/}
+            {/*    <View className="flex-row items-center">*/}
+            {/*        <MaterialIcons*/}
+            {/*            name="language"*/}
+            {/*            size={20}*/}
+            {/*            color={grey0}*/}
+            {/*            style={{marginRight: 12}}*/}
+            {/*        />*/}
+            {/*        <Text className="text-white text-base  text-sm">*/}
+            {/*            {t("language")}*/}
+            {/*        </Text>*/}
+            {/*    </View>*/}
+            {/*    <SimpleSelect*/}
+            {/*        options={availableLanguages.map((language) => ({*/}
+            {/*            label: language.name,*/}
+            {/*            value: language.code,*/}
+            {/*        }))}*/}
+            {/*        value={locale}*/}
+            {/*        onSelect={(value) => changeLanguage(value)}*/}
+            {/*        style={{minWidth: 100}}*/}
+            {/*    />*/}
+            {/*</View>*/}
+          </View>
+
+          {menuItems.map((section, index) => (
+            <View
+              key={index}
+              className="mt-3 bg-background/70 rounded-xl"
+            // style={{overflow: "visible"}}
+            >
+              {section.map((item, itemIndex) => (
+                <TouchableOpacity
+                  key={itemIndex}
+                  activeOpacity={0.9}
+                  onPress={item?.onPress}
+                  className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
+                >
+                  <View className="flex-row gap-[8px] items-center">
+                    {item.icon(20, colors.grey0)}
+                    <Text
+                      className={`text-white  text-sm ${item.isDanger ? "text-red-500" : "text-white"
+                        }`}
+                    >
+                      {t(item.title)}
+                    </Text>
+                  </View>
+
+                  <View className={"flex-row gap-0.5"}>
+                    {item.right}
+                    {item.onPress && (
+                      <AntDesign name="right" size={14} color={colors.grey3} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </Stack>
+      </ScrollView>
+    </ScreenContainer>
   );
 }

@@ -21,7 +21,7 @@ interface ScreenContainerProps {
 const ScreenContainer: React.FC<ScreenContainerProps> = ({
     children,
     style,
-    edges = ['top', 'bottom'],
+    edges = ['left', 'right', 'top', 'bottom'] as Edge[],
     className,
     barStyle,
     statusBarColor = 'transparent',
@@ -49,7 +49,6 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
                 options={{
                     headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
                     headerTransparent: true, // Optional: useful for full screen
-                    headerShown: false,
                     ...stackScreenProps,
                 }}
             />

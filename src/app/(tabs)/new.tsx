@@ -1,4 +1,5 @@
 import CreditEntry from "@/components/CreditEntry";
+import ScreenContainer from "@/components/ScreenContainer";
 import { useColors } from "@/hooks/uesColors";
 import { useTranslation } from "@/i18n/translation";
 import { Ionicons } from "@expo/vector-icons";
@@ -108,7 +109,7 @@ export default function Screen() {
   };
 
   return (
-    <View className={"flex-1"}>
+    <ScreenContainer edges={['top']}>
       {/* 顶部标题栏 */}
       <View className={"px-5 pb-4 flex-row justify-between items-center"}>
         <Text className={"text-[22px] text-white font-bold"}>创作</Text>
@@ -171,6 +172,6 @@ export default function Screen() {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScreenContainer>
   );
 }

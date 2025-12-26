@@ -1,5 +1,6 @@
 import InspirationList from "@/app/inspiration/list";
 import TemplateList from "@/app/template/list";
+import ScreenContainer from "@/components/ScreenContainer";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import React, { useState } from "react";
 import {
@@ -28,7 +29,7 @@ export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<TabType>(tabList[0].value);
 
   return (
-    <View className="flex-1 bg-background">
+    <ScreenContainer edges={['top']} >
       {/* Premium Header Area - Clean & Spacious */}
 
       {/* Minimalist Tab Bar */}
@@ -74,6 +75,6 @@ export default function HomeScreen() {
           <InspirationList />
         )}
       </View>
-    </View>
+    </ScreenContainer>
   );
 }
