@@ -19,3 +19,11 @@ export const listAssets = async (params: { page?: number, [key: string]: any }) 
     });
 };
 
+export const getAsset = async (params: { id: string }) => {
+    return instance.request<any>({
+        url: `/api/proj/v2/assets/${params.id}`,
+        method: "GET",
+    });
+};
+
+

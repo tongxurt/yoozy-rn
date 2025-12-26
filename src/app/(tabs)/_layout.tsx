@@ -1,5 +1,4 @@
 import ScreenContainer from "@/components/ScreenContainer";
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColors } from "@/hooks/uesColors";
 import useAppUpdate from "@/hooks/useAppUpdate";
 import { useAuthUser } from "@/hooks/useAuthUser";
@@ -88,10 +87,10 @@ export default function TabLayout() {
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
-          tabBarStyle: {
-            display: "none", // Hide default tab bar
-          },
-          headerShown: useClientOnlyValue(false, false),
+          // tabBarStyle: {
+          //   display: "none", // Hide default tab bar
+          // },
+          // headerShown: useClientOnlyValue(false, false),
         }}
       >
         <Tabs.Screen

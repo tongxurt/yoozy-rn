@@ -47,6 +47,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
         >
             <Stack.Screen
                 options={{
+                    headerShown: false,
                     headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
                     headerTransparent: true, // Optional: useful for full screen
                     ...stackScreenProps,
