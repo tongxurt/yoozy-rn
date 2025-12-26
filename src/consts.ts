@@ -1,0 +1,81 @@
+
+export const assetWorkflowJobConfig: Record<string, any> = {
+    commodityReplacementJob: {
+        label: '商品替换',
+        status: {
+            waiting: {
+                name: '商品替换等待中',
+                color: 'text-gray-500',
+                bg: 'bg-gray-50'
+            },
+            running: {
+                name: '商品替换运行中',
+                color: 'text-blue-500',
+                bg: 'bg-blue-50'
+            },
+            confirming: {
+                name: '商品替换确认中',
+                color: 'text-yellow-500',
+                bg: 'bg-yellow-50'
+            },
+            completed: {
+                name: '商品替换完成',
+                color: 'text-green-500',
+                bg: 'bg-green-50'
+            },
+        },
+        dataKey: 'videoFramesChanges'
+    },
+    videoSegmentsGenerationJob: {
+        label: '片段复刻',
+        status: {
+            waiting: {
+                name: '片段复刻等待中',
+                color: 'text-gray-500',
+                bg: 'bg-gray-50'
+            },
+            running: {
+                name: '片段复刻运行中',
+                color: 'text-blue-500',
+                bg: 'bg-blue-50'
+            },
+            confirming: {
+                name: '片段复刻确认中',
+                color: 'text-yellow-500',
+                bg: 'bg-yellow-50'
+            },
+            completed: {
+                name: '片段复刻完成',
+                color: 'text-green-500',
+                bg: 'bg-green-50'
+            },
+        },
+        dataKey: 'videoGenerations'
+    },
+    videoSegmentsRemixJob: {
+        label: '片段混剪',
+        status: {
+            waiting: {
+                name: '片段混剪等待中',
+                color: 'text-gray-500',
+                bg: 'bg-gray-50'
+            },
+            running: {
+                name: '片段混剪运行中',
+                color: 'text-blue-500',
+                bg: 'bg-blue-50'
+            },
+            confirming: {
+                name: '片段混剪确认中',
+                color: 'text-yellow-500',
+                bg: 'bg-yellow-50'
+            },
+            completed: {
+                name: '片段混剪完成',
+                color: 'text-green-500',
+                bg: 'bg-green-50'
+            },
+        },
+        dataKey: 'segmentsRemix'
+    }
+};

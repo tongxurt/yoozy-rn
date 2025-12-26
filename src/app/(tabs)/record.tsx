@@ -1,16 +1,16 @@
-import React, { useCallback } from "react";
-import SessionList from "@/components/session/List";
-import { View, Text } from "react-native";
-import AuthInfo from "@/components/AuthInfo";
+import ScreenContainer from "@/components/ScreenContainer";
+import useTailwindVars from "@/hooks/useTailwindVars";
+import React from "react";
+import { Text } from "react-native";
 
 export default function MyScreen() {
+
+  const { colors } = useTailwindVars();
+
   return (
-    <View className={"flex-1"}>
-      <View className={"px-5 pb-6 flex-row justify-between items-center"}>
-        <Text className={"text-[25px] text-white font-bold"}>记录</Text>
-        {/* <AuthInfo /> */}
-      </View>
-      <SessionList />
-    </View>
+    <ScreenContainer>
+      <Text>record</Text>
+      {/* <AssetList /> */}
+    </ScreenContainer>
   );
 }

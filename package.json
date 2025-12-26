@@ -39,6 +39,7 @@
     "@volcengine/tos-sdk": "^2.7.5",
     "airwallex-payment-react-native": "^0.1.0",
     "ali-oss": "^6.23.0",
+    "antd-mobile": "^5.41.1",
     "axios": "^1.10.0",
     "expo": "~53.0.24",
     "expo-apple-authentication": "~7.2.4",

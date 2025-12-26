@@ -1,6 +1,6 @@
+import { createAssetV2 } from "@/api/asset";
 import { getCommodity } from "@/api/commodity";
 import { getTemplateSegment } from "@/api/resource";
-import { createSession } from "@/api/session";
 import CommoditySelectorModal from "@/components/commodity/selector_modal";
 import CreditEntry from "@/components/CreditEntry";
 import InspirationSelectorModal from "@/components/inspiration/selector_modal";
@@ -166,9 +166,9 @@ const SegmentReplication = () => {
                 // inspirationId: selectedInspiration._id, // Add this if backend needs exact name
             };
 
-            const session = await createSession(payload);
+            const session = await createAssetV2(payload);
             if (session?.data?.data?._id) {
-                router.replace(`/session/${session.data.data._id}`);
+                // router.replace(`/session/${session.data.data._id}`);
             } else {
                 Toast.show("创建会话失败");
             }

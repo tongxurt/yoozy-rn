@@ -1,5 +1,5 @@
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { router, Stack, usePathname } from "expo-router";
+import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 
 import { addEvent } from "@/api/event";
@@ -7,10 +7,7 @@ import ErrorFallback from "@/components/ErrorCallback";
 import { useColors } from "@/hooks/uesColors";
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
 import { useSettings } from "@/hooks/useSettings";
-import { useThemeMode } from "@/hooks/useThemeMode";
-import { useTranslation } from "@/i18n/translation";
 import AppThemeProvider from "@/providers/theme";
-import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
 import {
@@ -20,12 +17,8 @@ import {
   PersistQueryClientProvider,
 } from "@tanstack/react-query-persist-client";
 import {
-  Platform,
-  StatusBar,
   Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+  TextInput
 } from "react-native";
 import ErrorBoundary from "react-native-error-boundary";
 import "react-native-gesture-handler";
@@ -130,13 +123,9 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { background, grey0, plain } = useColors();
-  const { t } = useTranslation();
-  const { themeMode, isDarkMode } = useThemeMode();
-  const pathname = usePathname();
+  const { background } = useColors();
 
   const { fetchAsync: fetchSettings } = useSettings();
-  // const {fetchAsync: fetchAccounts} = useAccounts();
 
   const [appReady, setAppReady] = useState<boolean>(false);
 
@@ -343,78 +332,78 @@ function RootLayoutNav() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <View
+      {/* <View
         style={{
           flex: 1,
           backgroundColor: background,
         }}
-      >
-        {/*<OngoingQuestion/>*/}
-        <StatusBar
+      > */}
+      {/*<OngoingQuestion/>*/}
+      {/* <StatusBar
           // Default status bar style, pages can override
           barStyle={isDarkMode ? "light-content" : "dark-content"}
           backgroundColor="transparent"
           translucent={true}
-        />
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: background,
-            },
-            headerTintColor: grey0,
-            headerLeft: ({ canGoBack }) =>
-              canGoBack ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    router.back();
-                  }}
-                  style={{
-                    // width: 20,
-                    // height: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: Platform.OS === "ios" ? 0 : 8,
-                  }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  <Feather name="arrow-left" size={24} color={grey0} />
-                </TouchableOpacity>
-              ) : null,
-            contentStyle: {
-              backgroundColor: background,
-            }
-          }}
-        >
-          <Stack.Screen
+        /> */}
+      <Stack
+        screenOptions={{
+          // headerStyle: {
+          //   backgroundColor: background,
+          // },
+          // headerTintColor: grey0,
+          // headerLeft: ({ canGoBack }) =>
+          //   canGoBack ? (
+          //     <TouchableOpacity
+          //       onPress={() => {
+          //         router.back();
+          //       }}
+          //       style={{
+          //         // width: 20,
+          //         // height: 20,
+          //         justifyContent: "center",
+          //         alignItems: "center",
+          //         marginLeft: Platform.OS === "ios" ? 0 : 8,
+          //       }}
+          //       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          //     >
+          //       <Feather name="arrow-left" size={24} color={grey0} />
+          //     </TouchableOpacity>
+          //   ) : null,
+          // contentStyle: {
+          //   backgroundColor: background,
+          // }
+        }}
+      >
+        {/* <Stack.Screen
             name="(tabs)"
             options={{
               headerShown: false,
             }}
-          />
+          /> */}
 
-          <Stack.Screen
+        {/* <Stack.Screen
             name="session/starter"
             options={{
               headerShown: false,
               animation: "fade",
               animationDuration: 1,
             }}
-          />
-          <Stack.Screen
+          /> */}
+        {/* <Stack.Screen
             name="session/[id]/index"
             options={{
               headerShown: false,
               animation: "fade",
               animationDuration: 1,
             }}
-          />
-          {/* <Stack.Screen
+          /> */}
+        {/* <Stack.Screen
             name="commodity/[id]"
             options={{
               headerTitle: "商品详情",
             }}
           /> */}
-          <Stack.Screen
+        {/* <Stack.Screen
             name="commodity/create"
             options={{
               headerTitle: "添加商品",
@@ -425,9 +414,9 @@ function RootLayoutNav() {
             options={{
               headerShown: false,
             }}
-          />
+          /> */}
 
-          <Stack.Screen
+        {/* <Stack.Screen
             name="template/[id]"
             options={{
               title: t("details"),
@@ -440,8 +429,8 @@ function RootLayoutNav() {
               // headerShown: false,
               title: null,
             })}
-          />
-          <Stack.Screen
+          /> */}
+        {/* <Stack.Screen
             name="user/me"
             options={({ navigation }) => ({
               headerTitle: t("user.profile"),
@@ -454,9 +443,9 @@ function RootLayoutNav() {
               headerShown: false,
               animation: "slide_from_bottom",
             }}
-          />
+          /> */}
 
-          <Stack.Screen
+        {/* <Stack.Screen
             name="(other)/accountAndSecure"
             options={{
               title: t("accountAndSecure"),
@@ -509,9 +498,9 @@ function RootLayoutNav() {
             options={{
               title: t("aboutUs"),
             }}
-          />
-        </Stack>
-      </View>
+          /> */}
+      </Stack>
+      {/* </View> */}
     </ErrorBoundary>
   );
 }

@@ -3,10 +3,9 @@ import TemplateList from "@/app/template/list";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import React, { useState } from "react";
 import {
-  Dimensions,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 type TabType = "video" | "inspiration";
@@ -23,7 +22,6 @@ const tabList: { id: number; name: string; value: TabType }[] = [
   },
 ];
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { colors } = useTailwindVars();

@@ -1,9 +1,10 @@
 import { useColors } from '@/hooks/uesColors';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
-import { StatusBar, StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
+import { StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
 
 interface ScreenContainerProps {
@@ -14,23 +15,20 @@ interface ScreenContainerProps {
     barStyle?: StatusBarStyle;
     statusBarColor?: string;
     translucent?: boolean;
-    headerShown?: boolean;
     stackScreenProps?: NativeStackNavigationOptions;
-    title?: string;
 }
 
 const ScreenContainer: React.FC<ScreenContainerProps> = ({
     children,
     style,
-    edges = ['top', 'bottom'], // Default to top and bottom safe areas
+    edges = ['top', 'bottom'],
     className,
     barStyle,
     statusBarColor = 'transparent',
     translucent = true,
-    headerShown = false,
-    title,
     stackScreenProps,
 }) => {
+
     const { background } = useColors();
     const { colorScheme } = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
@@ -47,15 +45,17 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
             ]}
             className={className}
         >
-            <Stack.Screen options={{
-                headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
-                headerTransparent: true, // Optional: useful for full screen
-                ...stackScreenProps,
-                ...(headerShown !== undefined && { headerShown }),
-                ...(title !== undefined && { title }),
-            }} />
+            <Stack.Screen
+                options={{
+                    headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
+                    headerTransparent: true, // Optional: useful for full screen
+                    headerShown: false,
+                    ...stackScreenProps,
+                }}
+            />
+
             <StatusBar
-                barStyle={barStyle || (isDarkMode ? "light-content" : "dark-content")}
+                style={barStyle === 'light-content' ? 'light' : barStyle === 'dark-content' ? 'dark' : (isDarkMode ? 'light' : 'dark')}
                 backgroundColor={statusBarColor}
                 translucent={translucent}
             />
