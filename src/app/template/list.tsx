@@ -2,7 +2,7 @@ import { listItems } from "@/api/resource";
 import { CustomRefreshControl } from "@/components/CustomRefreshControl";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
@@ -137,12 +137,15 @@ export default function TemplateList() {
                     style={{ width: '100%', aspectRatio: 9 / 12 }}
                     resizeMode="cover"
                 />
-                <Text
+                {/* <Text
                     className="text-sm text-white leading-6 py-2 px-2"
                     numberOfLines={2}
                 >
                     {item?.description || item?.commodity?.name}
-                </Text>
+                </Text> */}
+                <View className="absolute top-2 right-2 bg-black/40 rounded-full p-1.5 backdrop-blur-sm">
+                    <Ionicons name="play" size={12} color="white" />
+                </View>
             </TouchableOpacity>
         );
     };

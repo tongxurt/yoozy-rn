@@ -2,7 +2,7 @@ import instance from "@/providers/api";
 
 export const getTemplate = async (params: { id: string }) => {
   return instance.request<any>({
-    url: `/api/proj/v1/templates/${params.id}`,
+    url: `/api/proj/v2/templates/${params.id}`,
     params,
   });
 };

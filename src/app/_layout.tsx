@@ -347,6 +347,7 @@ function RootLayoutNav() {
         /> */}
       <Stack
         screenOptions={{
+          headerShown: false,
           // headerStyle: {
           //   backgroundColor: background,
           // },
