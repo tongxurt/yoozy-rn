@@ -88,19 +88,19 @@ export default function CreateCommodityScreen() {
                     showsVerticalScrollIndicator={false}
                 >
                     {/* Media Section */}
-                    <View className="bg-cardBg rounded-2xl p-4 mb-4">
+                    <View className="bg-card rounded-2xl p-4 mb-4">
                         <Text className="text-sm font-medium text-black mb-3">上传图片/视频</Text>
                         <Picker files={files} onFilesChange={setFiles} />
                     </View>
 
                     {/* Link/Text Section */}
-                    <View className="bg-cardBg rounded-2xl p-4">
+                    <View className="bg-card rounded-2xl p-4">
                         <Text className="text-sm font-medium text-black mb-3">商品链接</Text>
                         <TextInput
                             value={text}
                             onChangeText={setText}
                             placeholder="粘贴商品链接，或输入详细描述..."
-                            placeholderTextColor={colors.grey3}
+                            placeholderTextColor={colors['muted-foreground']}
                             multiline
                             className="text-base text-black leading-6 min-h-[120px]"
                             textAlignVertical="top"
@@ -117,18 +117,18 @@ export default function CreateCommodityScreen() {
                     disabled={isDisabled || isPending}
                     className="w-full h-11 rounded-full flex-row items-center justify-center gap-2"
                     style={{
-                        backgroundColor: isDisabled ? colors.grey4 : colors.primary,
+                        backgroundColor: isDisabled ? colors.border : colors.primary,
                     }}
                     activeOpacity={0.85}
                 >
                     {isPending ? (
-                        <SpinningIcon name="circle-notch" size={20} color={isDisabled ? colors.grey2 : 'white'} />
+                        <SpinningIcon name="circle-notch" size={20} color={isDisabled ? colors['muted-foreground'] : 'white'} />
                     ) : (
                         <>
-                            <Feather name="plus" size={18} color={isDisabled ? colors.grey2 : 'white'} />
+                            <Feather name="plus" size={18} color={isDisabled ? colors['muted-foreground'] : 'white'} />
                             <Text
                                 className="text-base font-bold"
-                                style={{ color: isDisabled ? colors.grey2 : 'white' }}
+                                style={{ color: isDisabled ? colors['muted-foreground'] : 'white' }}
                             >
                                 立即创建
                             </Text>

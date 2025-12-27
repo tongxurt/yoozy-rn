@@ -64,7 +64,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                             <Text style={{
                                 fontSize: this.fontSizes.fontSizeMD + 2 || 18,
                                 fontWeight: '600',
-                                color: this.colors.grey0,
+                                color: this.colors.foreground,
                                 letterSpacing: 0.2,
                             }}>
                                 {text}
@@ -107,7 +107,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
         return (
             <View key={this.getKey()} className={'my-4'}>
                 <Text style={{
-                    color: this.colors.grey1 || this.colors.white,
+                    color: this.colors['muted-foreground'] || this.colors.white,
                     fontSize: this.fontSizes.fontSizeMD,
                     lineHeight: this.fontSizes.fontSizeMD * 1.6, // 增加行高提升阅读性
                     textAlign: 'justify',
@@ -126,7 +126,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                 {/* 代码内容 */}
                 <ScrollView
                     horizontal
-                    className={`bg-background1 rounded-lg`}
+                    className={`bg-muted rounded-lg`}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{
                         paddingHorizontal: 16,
@@ -136,7 +136,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                 >
                     <Text style={{
                         fontFamily: 'monospace',
-                        color: this.colors.grey0 || this.colors.white,
+                        color: this.colors.foreground || this.colors.white,
                         fontSize: this.fontSizes.fontSizeSM,
                         lineHeight: this.fontSizes.fontSizeSM * 1.4,
                         ...textStyle,
@@ -153,7 +153,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
         return (
             <Text key={this.getKey()} style={{
                 fontStyle: 'italic',
-                color: this.colors.grey0 || this.colors.white,
+                color: this.colors.foreground || this.colors.white,
                 ...styles,
             }}>
                 {children}
@@ -166,7 +166,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
         return (
             <Text key={this.getKey()} style={{
                 textDecorationLine: 'line-through',
-                color: this.colors.grey2 || '#999',
+                color: this.colors['muted-foreground'] || '#999',
                 opacity: 0.7,
                 ...styles,
             }}>
@@ -183,7 +183,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                 {/*    className={'h-px rounded-full'}*/}
                 {/*    style={{*/}
                 {/*        width: '60%',*/}
-                {/*        backgroundColor: this.colors.grey3 + '60' || '#666',*/}
+                {/*        backgroundColor: this.colors['muted-foreground'] + '60' || '#666',*/}
                 {/*        ...styles,*/}
                 {/*    }}*/}
                 {/*/>*/}
@@ -235,7 +235,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
     html(text: string | React.ReactNode[], styles?: TextStyle): React.ReactNode {
         return (
             <Text key={this.getKey()} style={{
-                color: this.colors.grey2,
+                color: this.colors['muted-foreground'],
                 fontSize: this.fontSizes.fontSizeSM,
                 ...styles,
             }}>

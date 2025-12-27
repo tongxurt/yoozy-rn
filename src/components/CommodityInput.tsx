@@ -38,9 +38,9 @@ const CommodityInput = ({onConfirm}: {
 
     return (
         <View className={'p-5 gap-5'}>
-            <View className={'flex-col gap-5  bg-background0 rounded-[20px]'}>
+            <View className={'flex-col gap-5  bg-card rounded-[20px]'}>
                 <AdvancedInput value={url} placeholder={'输入抖音商品链接'} onChangeText={setUrl}
-                               style={{height: 150, borderWidth: 0, backgroundColor: colors.background0}}/>
+                               style={{height: 150, borderWidth: 0, backgroundColor: colors.card}}/>
 
                 <View className={'p-5'}>
                     <Picker files={files} allowedTypes={['image']} onChange={setFiles}/>

@@ -46,18 +46,18 @@ const Search = () => {
                     }}
                     name="arrow-left"
                     size={24}
-                    color={colors.grey0}
+                    color={colors.foreground}
                 />
                 <View
-                    className={'flex-1 flex-row gap-2 items-center justify-between bg-background1 rounded-full px-5 py-3'}>
-                    <Octicons name="search" color={colors.grey3} size={17}/>
+                    className={'flex-1 flex-row gap-2 items-center justify-between bg-muted rounded-full px-5 py-3'}>
+                    <Octicons name="search" color={colors['muted-foreground']} size={17}/>
                     <TextInput value={inputKeyword}
                                onChangeText={text => setInputKeyword(text)} autoFocus maxLength={20}
                                className={'text-white flex-1'} placeholder={t("leaderboard.search")}/>
 
                     {
                         inputKeyword && <Ionicons onPress={() => setInputKeyword('')} name="close-circle" size={16}
-                                                  color={colors.grey3}/>
+                                                  color={colors['muted-foreground']}/>
                     }
                 </View>
                 <TouchableOpacity

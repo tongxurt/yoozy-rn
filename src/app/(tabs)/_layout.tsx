@@ -1,5 +1,5 @@
 import ScreenContainer from "@/components/ScreenContainer";
-import { useColors } from "@/hooks/uesColors";
+
 import useAppUpdate from "@/hooks/useAppUpdate";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import useTailwindVars from "@/hooks/useTailwindVars";
@@ -59,11 +59,11 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
               {options.tabBarIcon?.({
                 focused: isFocused,
                 size: 20,
-                color: isFocused ? colors.white : colors.grey4,
+                color: isFocused ? colors.white : colors.border,
               })}
               <Text
                 style={{ fontWeight: 600 }}
-                className={`text-xs mt-[2px] ${isFocused ? "text-white" : "text-grey3"
+                className={`text-xs mt-[2px] ${isFocused ? "text-white" : "text-muted-foreground"
                   }`}
               >
                 {t(`tab.${route.name}`)}
@@ -78,7 +78,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
 export default function TabLayout() {
   const { t } = useTranslation();
-  const { plain } = useColors();
+  const { colors } = useTailwindVars();
   useAppUpdate();
   const { user } = useAuthUser({ fetchImmediately: true });
 
@@ -97,7 +97,7 @@ export default function TabLayout() {
           name="index"
           options={{
             // title: t("tab.index"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: plain },
+            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome6 name="house-fire" size={size} color={color} />
             ),
@@ -107,7 +107,7 @@ export default function TabLayout() {
           name="commodity"
           options={{
             // title: t("tab.session"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: plain },
+            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="briefcase" size={size} color={color} />
             ),
@@ -117,7 +117,7 @@ export default function TabLayout() {
           name="new"
           options={{
             // title: t("tab.session"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: plain },
+            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5
                 name="star-and-crescent"
@@ -132,7 +132,7 @@ export default function TabLayout() {
           options={{
             headerShown: true,
             // title: t("tab.my"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: plain },
+            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="history" size={size} color={color} />
             ),

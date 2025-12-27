@@ -1,11 +1,12 @@
 import React from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import Button from "@/components/ui/Button";
 import {HStack} from "react-native-flex-layout";
 import {Ionicons} from "@expo/vector-icons";
 import {Text, View} from "react-native";
 import {useSettings} from "@/hooks/useSettings";
 import {useTranslation} from "@/i18n/translation";
-import {useColors} from "@/hooks/uesColors";
+
 
 const SubmitButton = ({
                           onSubmit,
@@ -33,10 +34,10 @@ const SubmitButton = ({
                     // style={{ opacity: disabled ? 0.5 : 1 }}
                 >
                     <HStack items={"center"} spacing={5}>
-                        <Ionicons name="flash" size={18} color={colors.grey0}/>
+                        <Ionicons name="flash" size={18} color={colors.foreground}/>
                         <Text
                             style={{
-                                color: colors.grey0,
+                                color: colors.foreground,
                                 fontSize: 16,
                             }}
                         >
@@ -46,7 +47,7 @@ const SubmitButton = ({
                     </HStack>
                     <Text
                         style={{
-                            color: colors.grey0,
+                            color: colors.foreground,
                             fontSize: 16,
                         }}
                     >

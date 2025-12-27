@@ -39,7 +39,7 @@ const SelectorCard = ({
             <View className="flex-row items-center justify-between mb-2 px-1">
                 <View className="flex-row items-center gap-1">
                     {required && <Text className="text-red-500 font-bold">*</Text>}
-                    <Text className="text-sm font-bold opacity-60" style={{ color: colors.grey0 }}>{title}</Text>
+                    <Text className="text-sm font-bold opacity-60" style={{ color: colors.foreground }}>{title}</Text>
                 </View>
                 {item && (
                     <TouchableOpacity onPress={onPress}>
@@ -53,19 +53,19 @@ const SelectorCard = ({
                 onPress={onPress}
                 className="w-full aspect-[2.5/1] bg-white rounded-2xl overflow-hidden border border-dashed relative shadow-sm"
                 style={{
-                    backgroundColor: item ? colors.plain : colors.background2, // Use plain for selected, background2 for empty
+                    backgroundColor: item ? colors.plain : colors.muted, // Use plain for selected, background2 for empty
                     borderColor: item ? 'transparent' : colors.divider,
                 }}
             >
                 {item ? (
                     <View className="flex-1 flex-row">
                         {/* Image */}
-                        <View className="h-full aspect-[3/4] bg-background2">
+                        <View className="h-full aspect-[3/4] bg-muted">
                             {imageUrl ? (
                                 <Image source={{ uri: imageUrl }} className="w-full h-full" resizeMode="cover" />
                             ) : (
                                 <View className="w-full h-full items-center justify-center">
-                                    <Feather name="image" size={24} color={colors.grey2} />
+                                    <Feather name="image" size={24} color={colors['muted-foreground']} />
                                 </View>
                             )}
                         </View>
@@ -74,12 +74,12 @@ const SelectorCard = ({
                             <Text
                                 numberOfLines={2}
                                 className="text-sm font-bold leading-5"
-                                style={{ color: colors.grey0 }}
+                                style={{ color: colors.foreground }}
                             >
                                 {item.title || item.description || item.name || "未命名"}
                             </Text>
                             {item.brand && (
-                                <Text className="text-xs opacity-60 font-bold tracking-wider" style={{ color: colors.grey1 }}>
+                                <Text className="text-xs opacity-60 font-bold tracking-wider" style={{ color: colors['muted-foreground'] }}>
                                     {item.brand}
                                 </Text>
                             )}
@@ -92,9 +92,9 @@ const SelectorCard = ({
                 ) : (
                     <View className="flex-1 items-center justify-center gap-3 opacity-60">
                         <View className="w-12 h-12 rounded-full items-center justify-center bg-white shadow-sm">
-                            <Feather name={icon} size={20} color={colors.grey1} />
+                            <Feather name={icon} size={20} color={colors['muted-foreground']} />
                         </View>
-                        <Text className="text-sm font-medium" style={{ color: colors.grey1 }}>{placeholder}</Text>
+                        <Text className="text-sm font-medium" style={{ color: colors['muted-foreground'] }}>{placeholder}</Text>
                     </View>
                 )}
             </TouchableOpacity>
@@ -193,7 +193,7 @@ const SegmentReplication = () => {
 
             {/* Content */}
             <View className="flex-1 px-5 pt-4">
-                <Text className="text-sm opacity-60 mb-6 leading-5" style={{ color: colors.grey1 }}>
+                <Text className="text-sm opacity-60 mb-6 leading-5" style={{ color: colors['muted-foreground'] }}>
                     选择一个灵感视频片段，我们将为您复刻其运镜和风格，应用到您的商品上。
                 </Text>
 
@@ -220,7 +220,7 @@ const SegmentReplication = () => {
 
             {/* Footer Action */}
             <View className="px-5 pb-8 pt-4 bg-background" style={{ paddingBottom: 40 }}>
-                <Text style={{ fontSize: 12, color: colors.grey2, textAlign: "center", marginBottom: 16 }}>
+                <Text style={{ fontSize: 12, color: colors['muted-foreground'], textAlign: "center", marginBottom: 16 }}>
                     视频每秒消耗1积分, 实际消耗与最终输出的视频时长相关
                 </Text>
                 <TouchableOpacity

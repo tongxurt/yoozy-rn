@@ -1,7 +1,8 @@
 import {ActivityIndicator, Platform, StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {ReactNode} from 'react';
 import {HStack} from 'react-native-flex-layout';
-import {useColors} from '@/hooks/uesColors';
+
 
 const Button = (
     {
@@ -20,14 +21,14 @@ const Button = (
         style?: StyleProp<ViewStyle>;
     }) => {
 
-    const {primary, grey4, grey3} = useColors();
+    const { colors } = useTailwindVars();
 
     const buttonStyle = {
-        backgroundColor: disabled ? grey4 : primary,
+        backgroundColor: disabled ? colors.border : colors.primary,
         // 阴影效果
         ...Platform.select({
             ios: {
-                shadowColor: disabled ? 'transparent' : primary,
+                shadowColor: disabled ? 'transparent' : colors.primary,
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: disabled ? 0 : 0.3,
                 shadowRadius: 4,
@@ -52,7 +53,7 @@ const Button = (
                     text ?
                         <Text
                             className="text-[#fff] text-md font-semibold"
-                            style={disabled ? {color: grey3} : {}}
+                            style={disabled ? {color: colors['muted-foreground']} : {}}
                         >
                             {text}
                         </Text>

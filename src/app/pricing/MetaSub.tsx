@@ -1,9 +1,10 @@
 import React, {useCallback, useMemo, useState} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {Text, TouchableOpacity, View} from "react-native";
 import {useTranslation} from "@/i18n/translation";
 import Button from "@/components/ui/Button";
 import {FlashIcon} from "@/constants/scene_icons";
-import {useColors} from "@/hooks/uesColors";
+
 import {useQuery} from "@tanstack/react-query";
 import {fetchCreditState, fetchPaymentState} from "@/api/payment";
 import {router, useFocusEffect} from "expo-router";
@@ -89,11 +90,11 @@ const MetaSub = ({onSubmit, disabled}: {
                         {/* 余额展示区域 */}
                         <View className="items-center mb-8">
                             <View
-                                className="w-20 h-20 mb-4 rounded-full bg-background1 shadow-lg justify-center items-center">
+                                className="w-20 h-20 mb-4 rounded-full bg-muted shadow-lg justify-center items-center">
                                 <FlashIcon size={35} color={colors.primary}/>
                             </View>
 
-                            <Text className="text-grey2 text-base mb-2">
+                            <Text className="text-muted-foreground text-base mb-2">
                                 {t('payment.balance')}
                             </Text>
 
@@ -103,8 +104,8 @@ const MetaSub = ({onSubmit, disabled}: {
 
                             {
                                 state?.expireAt &&
-                                <View className="bg-background1 px-4 py-2 rounded-full flex-row items-center">
-                                    <Text className="text-grey2 text-sm">
+                                <View className="bg-muted px-4 py-2 rounded-full flex-row items-center">
+                                    <Text className="text-muted-foreground text-sm">
                                         {t("payment.expireAt")}{formatFromNow(state?.expireAt)}
                                     </Text>
                                 </View>
@@ -121,7 +122,7 @@ const MetaSub = ({onSubmit, disabled}: {
                         {
                             paymentState?.subscribingPlanId ?
                                 <View className="gap-2 flex-1">
-                                    <View className="bg-background1 rounded-2xl p-6 ">
+                                    <View className="bg-muted rounded-2xl p-6 ">
                                         <View className="flex-row items-center justify-between mb-4">
                                             <Text className="text-white text-lg font-semibold">
                                                 {t('payment.currentSubscription')}
@@ -144,11 +145,11 @@ const MetaSub = ({onSubmit, disabled}: {
                                                     <Text className="text-white text-xl font-bold mb-1">
                                                         {currentPlan?.title}
                                                     </Text>
-                                                    <Text className="text-grey2 text-sm">
+                                                    <Text className="text-muted-foreground text-sm">
                                                         ¥{currentPlan?.amount}/{t('payment.month')}
                                                     </Text>
                                                     {paymentState?.nextRenewalDate && (
-                                                        <Text className="text-grey2 text-xs mt-1">
+                                                        <Text className="text-muted-foreground text-xs mt-1">
                                                             {t('payment.nextRenewal')}: {formatFromNow(paymentState.nextRenewalDate)}
                                                         </Text>
                                                     )}
@@ -180,8 +181,8 @@ const MetaSub = ({onSubmit, disabled}: {
                                                           onPress={() => setCurrent(option)}
                                                           className={`p-2 pt-9 rounded-xl border-2 items-center relative ${
                                                               option.id === current?.id
-                                                                  ? "border-primary bg-background1"
-                                                                  : "border-grey4 bg-background1"
+                                                                  ? "border-primary bg-muted"
+                                                                  : "border-border bg-muted"
                                                           }`}
                                                       >
                                                           {option.tag && (
@@ -196,7 +197,7 @@ const MetaSub = ({onSubmit, disabled}: {
                                                           <View className="flex-row items-center mb-3 gap-0.5">
                                                               {/*<FlashIcon size={20} color={colors.primary}/>*/}
                                                               <Text
-                                                                  className="text-grey1 text-md">{option.title}</Text>
+                                                                  className="text-muted-foreground text-md">{option.title}</Text>
                                                           </View>
 
                                                           <Text
@@ -226,7 +227,7 @@ const MetaSub = ({onSubmit, disabled}: {
                                                 />
                                             )}
                                         </TouchableOpacity>
-                                        <Text className="text-grey3 text-xs">
+                                        <Text className="text-muted-foreground text-xs">
                                             {t("agreeTerms")}
                                             <Text className="text-primary"
                                                   onPress={() => router.push('/sub_terms')}>《Veogo付费协议》(含自动付费条款)，</Text>

@@ -29,13 +29,13 @@ const QuestionView = ({data}: { data: Question }) => {
                 {/* 左侧信息 */}
                 <View className="flex-1 pr-4">
                     <View className="flex-row items-center mb-2">
-                        <Text className="text-xl font-bold text-grey0 flex-1">
+                        <Text className="text-xl font-bold text-foreground flex-1">
                             {sceneName}
                         </Text>
                     </View>
                     <View className="flex-row items-center">
                         <View className="w-1.5 h-1.5 bg-grey2 rounded-full mr-2 opacity-60"/>
-                        <Text className="text-sm text-grey2 font-medium">
+                        <Text className="text-sm text-muted-foreground font-medium">
                             {createdTime}
                         </Text>
                     </View>

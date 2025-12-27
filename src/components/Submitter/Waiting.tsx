@@ -90,13 +90,13 @@ const WaitingModal = ({
                     <View className="relative mb-6">
                         {/* 外圈脉冲效果 */}
                         <Animated.View
-                            className="absolute inset-0 w-20 h-20 rounded-full bg-grey0/20"
+                            className="absolute inset-0 w-20 h-20 rounded-full bg-foreground/20"
                             style={{transform: [{scale: pulseValue}]}}
                         />
 
                         {/* 旋转的圆环 */}
                         <Animated.View
-                            className="w-20 h-20 rounded-full border-4 border-grey4/30 border-t-grey0"
+                            className="w-20 h-20 rounded-full border-4 border-border/30 border-t-grey0"
                             style={{transform: [{rotate: spinInterpolate}]}}
                         />
 
@@ -106,7 +106,7 @@ const WaitingModal = ({
                             <Image style={{width: 20, height: 20, objectFit: 'contain'}}
                                    source={require("../../assets/images/icon.png")}/>
                             {progress !== undefined && (
-                                <Text className="text-grey0 text-xs mt-1">
+                                <Text className="text-foreground text-xs mt-1">
                                     {Math.round(progress)}%
                                 </Text>
                             )}
@@ -114,11 +114,11 @@ const WaitingModal = ({
                     </View>
 
                     {/* 标题 */}
-                    <Text className="text-xl font-bold text-grey0 mb-2 align-middle">
+                    <Text className="text-xl font-bold text-foreground mb-2 align-middle">
                         {t("uploading")}
                     </Text>
 
-                    <Text className="text-md font-bold text-grey0 mb-2 align-middle">
+                    <Text className="text-md font-bold text-foreground mb-2 align-middle">
                         {t("uploading2")}
                     </Text>
                     {/*/!* 进度条 *!/*/}
@@ -132,13 +132,13 @@ const WaitingModal = ({
                     {/* 温馨提示 */}
                     <Text
                         style={{lineHeight: 20}}
-                        className="text-xs text-grey3 text-center leading-4 mb-2"
+                        className="text-xs text-muted-foreground text-center leading-4 mb-2"
                     >
                         {t("uploadingWaiting")}
                     </Text>
                     <Text
                         style={{lineHeight: 20}}
-                        className="text-xs text-grey3 text-center leading-4"
+                        className="text-xs text-muted-foreground text-center leading-4"
                     >
                         {t("uploadingWaitingTip")}
                     </Text>

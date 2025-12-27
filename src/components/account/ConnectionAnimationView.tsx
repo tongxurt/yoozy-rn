@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {Animated, Image, View} from "react-native";
-import {useColors} from "@/hooks/uesColors";
+
 import SocialIcon from "@/assets/svgs";
 
 interface ConnectionAnimationViewProps {
@@ -74,7 +75,7 @@ const ConnectionAnimationView: React.FC<ConnectionAnimationViewProps> = ({
                                 width: 64,
                                 borderRadius: 10,
                                 borderWidth: 1,
-                                borderColor: colors.grey1
+                                borderColor: colors['muted-foreground']
                             }}
                             source={require('@/assets/images/app_icon.png')}
                         />

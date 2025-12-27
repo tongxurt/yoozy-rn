@@ -38,18 +38,18 @@ const QuestionView = ({data, defaultExpanded}: { data: Question, defaultExpanded
     }, [data])
 
     return (
-        <View className="bg-background1 rounded-lg p-5">
+        <View className="bg-muted rounded-lg p-5">
             <View className="flex-row justify-between items-center">
                 {/* 左侧信息 */}
                 <View className="flex-1 pr-4">
                     <View className="flex-row items-center mb-2">
-                        <Text className="text-xl font-bold text-grey0 flex-1">
+                        <Text className="text-xl font-bold text-foreground flex-1">
                             {sceneName}
                         </Text>
                     </View>
                     <View className="flex-row items-center">
                         <View className="w-1.5 h-1.5 bg-grey2 rounded-full mr-2 opacity-60"/>
-                        <Text className="text-sm text-grey2 font-medium">
+                        <Text className="text-sm text-muted-foreground font-medium">
                             {createdTime}
                         </Text>
                     </View>
@@ -99,7 +99,7 @@ const QuestionView = ({data, defaultExpanded}: { data: Question, defaultExpanded
                             className="rounded-lg"
                         >
                             <Text
-                                className="text-sm text-grey1 leading-6"
+                                className="text-sm text-muted-foreground leading-6"
                             >
                                 {summary}
                             </Text>
@@ -114,16 +114,16 @@ const QuestionView = ({data, defaultExpanded}: { data: Question, defaultExpanded
                             <Feather
                                 name="eye"
                                 size={16}
-                                color={colors.grey1}
+                                color={colors['muted-foreground']}
                                 style={{marginRight: 8}}
                             />
-                            <Text className="text-sm font-medium text-grey1">
+                            <Text className="text-sm font-medium text-muted-foreground">
                                 查看完整内容
                             </Text>
                             <Feather
                                 name="chevron-down"
                                 size={16}
-                                color={colors.grey1}
+                                color={colors['muted-foreground']}
                                 style={{marginLeft: 8}}
                             />
                         </TouchableOpacity>
@@ -144,16 +144,16 @@ const QuestionView = ({data, defaultExpanded}: { data: Question, defaultExpanded
                             <Feather
                                 name="eye-off"
                                 size={16}
-                                color={colors.grey1}
+                                color={colors['muted-foreground']}
                                 style={{marginRight: 8}}
                             />
-                            <Text className="text-sm font-medium text-grey1">
+                            <Text className="text-sm font-medium text-muted-foreground">
                                 收起内容
                             </Text>
                             <Feather
                                 name="chevron-up"
                                 size={16}
-                                color={colors.grey1}
+                                color={colors['muted-foreground']}
                                 style={{marginLeft: 8}}
                             />
                         </TouchableOpacity>

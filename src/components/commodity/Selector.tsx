@@ -77,7 +77,7 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                 key={`skeleton-${index}`}
                 style={{ width: cardWidth, marginBottom: 16 }}
             >
-                <View className="rounded-lg overflow-hidden mb-2" style={{ backgroundColor: colors.background2 }}>
+                <View className="rounded-lg overflow-hidden mb-2" style={{ backgroundColor: colors.muted }}>
                     <SkeletonLoader
                         width="100%"
                         height={cardWidth * 1.33}
@@ -108,7 +108,7 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                 <View
                     className="rounded-lg overflow-hidden mb-2 relative"
                     style={{
-                        backgroundColor: colors.background2,
+                        backgroundColor: colors.muted,
                         borderWidth: isSelected ? 2 : 0,
                         borderColor: colors.primary
                     }}
@@ -131,7 +131,7 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                                 alignItems: "center",
                             }}
                         >
-                            <Feather name="image" size={24} color={colors.grey3} />
+                            <Feather name="image" size={24} color={colors['muted-foreground']} />
                         </View>
                     )}
                 </View>
@@ -141,7 +141,7 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                     {item?.brand && (
                         <Text
                             className="text-[10px] font-bold tracking-widest uppercase mb-0.5"
-                            style={{ color: colors.grey1 }}
+                            style={{ color: colors['muted-foreground'] }}
                             numberOfLines={1}
                         >
                             {item.brand}
@@ -149,7 +149,7 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                     )}
                     <Text
                         className="font-medium text-xs leading-4"
-                        style={{ color: isSelected ? colors.primary : colors.grey0 }}
+                        style={{ color: isSelected ? colors.primary : colors.foreground }}
                         numberOfLines={2}
                     >
                         {item.title || item.name || "未命名商品"}
@@ -163,13 +163,13 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
         <View className="flex-1">
             {/* Search Header */}
             <View className="px-4 py-3 flex-row items-center gap-3">
-                <View className="flex-1 flex-row items-center rounded-lg px-3 py-2.5" style={{ backgroundColor: colors.background1 }}>
-                    <Feather name="search" size={16} color={colors.grey2} />
+                <View className="flex-1 flex-row items-center rounded-lg px-3 py-2.5" style={{ backgroundColor: colors.muted }}>
+                    <Feather name="search" size={16} color={colors['muted-foreground']} />
                     <TextInput
                         className="flex-1 ml-2 text-sm leading-tight"
-                        style={{ color: colors.grey0, paddingVertical: 0 }}
+                        style={{ color: colors.foreground, paddingVertical: 0 }}
                         placeholder="搜索商品..."
-                        placeholderTextColor={colors.grey2}
+                        placeholderTextColor={colors['muted-foreground']}
                         onChangeText={handleSearch}
                         returnKeyType="search"
                         autoCapitalize="none"
@@ -216,14 +216,14 @@ const CommoditySelector = ({ value, onChange }: { value: any, onChange: (value: 
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={
                         <View className="items-center justify-center py-20">
-                            <Feather name="search" size={32} color={colors.grey3} />
-                            <Text className="text-sm mt-3" style={{ color: colors.grey2 }}>未找到相关商品</Text>
+                            <Feather name="search" size={32} color={colors['muted-foreground']} />
+                            <Text className="text-sm mt-3" style={{ color: colors['muted-foreground'] }}>未找到相关商品</Text>
                         </View>
                     }
                     ListFooterComponent={
                         isFetchingNextPage ? (
                             <View className="py-4 items-center">
-                                <ActivityIndicator size="small" color={colors.grey3} />
+                                <ActivityIndicator size="small" color={colors['muted-foreground']} />
                             </View>
                         ) : <View className="h-4" />
                     }

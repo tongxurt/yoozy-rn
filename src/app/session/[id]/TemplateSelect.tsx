@@ -49,7 +49,7 @@ const TemplateSelect = ({ session, pendingTemplate, onSelect }: TemplateSelectPr
                 <>
                     <View
                         style={{
-                            backgroundColor: colors.background0,
+                            backgroundColor: colors.card,
                             borderRadius: 16,
                             padding: 12,
                             flexDirection: 'row',
@@ -64,16 +64,16 @@ const TemplateSelect = ({ session, pendingTemplate, onSelect }: TemplateSelectPr
                         <View style={{ flex: 1, paddingVertical: 4, justifyContent: 'space-between' }}>
                             <View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                                    <Text style={{ fontWeight: '700', fontSize: 15, color: colors.grey0 }} numberOfLines={1}>{session?.template?.description || '热门模板'}</Text>
+                                    <Text style={{ fontWeight: '700', fontSize: 15, color: colors.foreground }} numberOfLines={1}>{session?.template?.description || '热门模板'}</Text>
                                     <MaterialCommunityIcons name="check-circle" size={20} color={colors.primary} />
                                 </View>
-                                <Text style={{ fontSize: 12, color: colors.grey2, lineHeight: 18 }} numberOfLines={2}>{session?.template?.commodity?.name || '适合带货、种草视频，转化率高。'}</Text>
+                                <Text style={{ fontSize: 12, color: colors['muted-foreground'], lineHeight: 18 }} numberOfLines={2}>{session?.template?.commodity?.name || '适合带货、种草视频，转化率高。'}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                 {/* <View className="flex-row gap-2">
                                     {(session?.template?.tags || ['爆款', '高转化']).slice(0, 2).map((tag: string, idx: number) => (
                                         <View key={idx} style={{ backgroundColor: '#fff', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
-                                            <Text style={{ fontSize: 10, color: colors.grey2 }}>{tag}</Text>
+                                            <Text style={{ fontSize: 10, color: colors['muted-foreground'] }}>{tag}</Text>
                                         </View>
                                     ))}
                                 </View> */}
@@ -89,18 +89,18 @@ const TemplateSelect = ({ session, pendingTemplate, onSelect }: TemplateSelectPr
                 </>
                 :
                 <>
-                    <View style={{ backgroundColor: colors.background2, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                        <MaterialCommunityIcons name="magnify" size={20} color={colors.grey2} />
+                    <View style={{ backgroundColor: colors.muted, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                        <MaterialCommunityIcons name="magnify" size={20} color={colors['muted-foreground']} />
                         <TextInput
                             placeholder="搜索模板关键词..."
-                            placeholderTextColor={colors.grey2}
+                            placeholderTextColor={colors['muted-foreground']}
                             value={searchKeyword}
                             onChangeText={setSearchKeyword}
-                            style={{ flex: 1, fontSize: 14, color: colors.grey0, padding: 0 }}
+                            style={{ flex: 1, fontSize: 14, color: colors.foreground, padding: 0 }}
                         />
                         {searchKeyword.length > 0 && (
                             <TouchableOpacity onPress={() => setSearchKeyword("")}>
-                                <MaterialCommunityIcons name="close-circle" size={18} color={colors.grey2} />
+                                <MaterialCommunityIcons name="close-circle" size={18} color={colors['muted-foreground']} />
                             </TouchableOpacity>
                         )}
                     </View>
@@ -111,7 +111,7 @@ const TemplateSelect = ({ session, pendingTemplate, onSelect }: TemplateSelectPr
                                 key={i}
                                 activeOpacity={0.8}
                                 style={{
-                                    backgroundColor: colors.background0,
+                                    backgroundColor: colors.card,
                                     borderRadius: 16,
                                     padding: 12,
                                     flexDirection: 'row',
@@ -127,16 +127,16 @@ const TemplateSelect = ({ session, pendingTemplate, onSelect }: TemplateSelectPr
                                 <View style={{ flex: 1, paddingVertical: 4, justifyContent: 'space-between' }}>
                                     <View>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                                            <Text style={{ fontWeight: '700', fontSize: 15, color: colors.grey0 }} numberOfLines={1}>{item.description || '热门模板'}</Text>
+                                            <Text style={{ fontWeight: '700', fontSize: 15, color: colors.foreground }} numberOfLines={1}>{item.description || '热门模板'}</Text>
                                             {pendingTemplate?._id === item._id && <MaterialCommunityIcons name="check-circle" size={20} color={colors.primary} />}
                                         </View>
-                                        <Text style={{ fontSize: 12, color: colors.grey2, lineHeight: 18 }} numberOfLines={2}>{item.commodity?.name || '适合带货、种草视频，转化率高。'}</Text>
+                                        <Text style={{ fontSize: 12, color: colors['muted-foreground'], lineHeight: 18 }} numberOfLines={2}>{item.commodity?.name || '适合带货、种草视频，转化率高。'}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                         {/* <View className="flex-row gap-2">
                                             {(item.tags || ['爆款', '高转化']).slice(0, 2).map((tag: string, idx: number) => (
                                                 <View key={idx} style={{ backgroundColor: '#fff', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
-                                                    <Text style={{ fontSize: 10, color: colors.grey2 }}>{tag}</Text>
+                                                    <Text style={{ fontSize: 10, color: colors['muted-foreground'] }}>{tag}</Text>
                                                 </View>
                                             ))}
                                         </View> */}

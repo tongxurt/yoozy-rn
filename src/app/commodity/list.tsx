@@ -82,7 +82,7 @@ export default function CommodityListScreen() {
                 }}
             >
                 {/* Image */}
-                <View className="bg-background2 rounded-lg overflow-hidden mb-3">
+                <View className="bg-muted rounded-lg overflow-hidden mb-3">
                     <SkeletonLoader
                         width="100%"
                         height={cardWidth * 1.33} // 3:4 Aspect Ratio
@@ -114,7 +114,7 @@ export default function CommodityListScreen() {
                 }}
             >
                 {/* Image Container - Clean, no shadows, subtle rounding */}
-                <View className="bg-background2 rounded-lg overflow-hidden mb-3 relative">
+                <View className="bg-muted rounded-lg overflow-hidden mb-3 relative">
                     {firstImage ? (
                         <Image
                             source={{ uri: firstImage }}
@@ -133,7 +133,7 @@ export default function CommodityListScreen() {
                                 alignItems: "center",
                             }}
                         >
-                            <Feather name="image" size={24} color={colors.grey3} />
+                            <Feather name="image" size={24} color={colors['muted-foreground']} />
                         </View>
                     )}
 
@@ -152,7 +152,7 @@ export default function CommodityListScreen() {
                     {/* Brand */}
                     {!!item.brand && (
                         <Text
-                            className="text-grey1 text-[10px] font-bold tracking-widest uppercase"
+                            className="text-muted-foreground text-[10px] font-bold tracking-widest uppercase"
                             numberOfLines={1}
                         >
                             {item.brand}
@@ -177,12 +177,12 @@ export default function CommodityListScreen() {
             {/* Search Header */}
             <View style={{ paddingHorizontal: containerPadding, paddingBottom: 10 }}>
                 <View className="flex-row items-center gap-3">
-                    <View className="flex-1 flex-row items-center bg-background2 rounded-full px-4 py-2.5">
-                        <Feather name="search" size={16} color={colors.grey2} />
+                    <View className="flex-1 flex-row items-center bg-muted rounded-full px-4 py-2.5">
+                        <Feather name="search" size={16} color={colors['muted-foreground']} />
                         <TextInput
                             className="flex-1 ml-2 text-sm text-black font-medium leading-5"
                             placeholder="搜索..."
-                            placeholderTextColor={colors.grey3}
+                            placeholderTextColor={colors['muted-foreground']}
                             onChangeText={handleSearch}
                             returnKeyType="search"
                             autoCapitalize="none"
@@ -191,7 +191,7 @@ export default function CommodityListScreen() {
                     </View>
                     <TouchableOpacity
                         onPress={() => router.push("/commodity/create")}
-                        className="bg-background2 w-10 h-10 rounded-full items-center justify-center"
+                        className="bg-muted w-10 h-10 rounded-full items-center justify-center"
                         style={{ width: 44, height: 44 }} // Match height roughly
                         activeOpacity={0.8}
                     >
@@ -236,21 +236,21 @@ export default function CommodityListScreen() {
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={
                         <View className="items-center justify-center py-32">
-                            <View className="bg-background2 rounded-full p-6 mb-4">
-                                <Feather name="grid" size={40} color={colors.grey3} />
+                            <View className="bg-muted rounded-full p-6 mb-4">
+                                <Feather name="grid" size={40} color={colors['muted-foreground']} />
                             </View>
-                            <Text className="text-grey2 text-sm tracking-wide">暂无商品</Text>
+                            <Text className="text-muted-foreground text-sm tracking-wide">暂无商品</Text>
                         </View>
                     }
                     ListFooterComponent={
                         isFetchingNextPage ? (
                             <View className="py-6 items-center">
-                                <ActivityIndicator size="small" color={colors.grey3} />
+                                <ActivityIndicator size="small" color={colors['muted-foreground']} />
                             </View>
                         ) : !hasNextPage && flatData.length > 0 ? (
                             <View className="py-12 items-center">
                                 <View className="w-12 h-[1px] bg-divider mb-4" />
-                                <Text className="text-grey3 text-[10px] tracking-[0.2em] uppercase opacity-50">
+                                <Text className="text-muted-foreground text-[10px] tracking-[0.2em] uppercase opacity-50">
                                     — 到底了 —
                                 </Text>
                             </View>

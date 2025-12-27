@@ -1,10 +1,11 @@
 import React from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {FlatList, Image, Text, TouchableOpacity, View,} from "react-native";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {addSessionV3, listItems, quickSessions} from "@/api/api";
 import {useTranslation} from "@/i18n/translation";
 import {SkeletonLoader} from "@/components/ui/SkeletonLoader";
-import {useColors} from "@/hooks/uesColors";
+
 import useLinking from "@/hooks/useLinking";
 import {router} from "expo-router";
 import {generateObjectId} from "@/utils";
@@ -68,8 +69,8 @@ export default function SearchList({keyword}: { keyword: string }) {
                 // void Linking.openURL(`xhsdiscover://home/explore`);
                 // void Linking.openURL(`xhsdiscover://post`);
             }}
-            // className="rounded-lg bg-cardBg/70 overflow-hidden flex-1 transition active:opacity-90 active:scale-95 active:duration-100"
-            className="rounded-lg bg-background1 overflow-hidden flex-1"
+            // className="rounded-lg bg-card/70 overflow-hidden flex-1 transition active:opacity-90 active:scale-95 active:duration-100"
+            className="rounded-lg bg-muted overflow-hidden flex-1"
         >
             <View className="aspect-[3/3] relative">
                 <Image
@@ -95,17 +96,17 @@ export default function SearchList({keyword}: { keyword: string }) {
                     {item.title}
                 </Text>
                 <View className="flex-row items-center gap-0.5">
-                    <View className={'w-4 h-4 rounded-full bg-background2 justify-center items-center'}>
+                    <View className={'w-4 h-4 rounded-full bg-muted justify-center items-center'}>
                         <Text className={'text-xs'} style={{color: '#fff'}}>
                             {item.profile?.username?.[0] || 0}
                         </Text>
                     </View>
-                    <Text className="text-xs text-grey2 flex-1" numberOfLines={1}>
+                    <Text className="text-xs text-muted-foreground flex-1" numberOfLines={1}>
                         {item.profile?.username || ''}
                     </Text>
                     <View className="flex-row items-center gap-1">
-                        <MaterialIcons name="favorite" color={colors.grey1} size={12}/>
-                        <Text className="text-grey1 text-xs">
+                        <MaterialIcons name="favorite" color={colors['muted-foreground']} size={12}/>
+                        <Text className="text-muted-foreground text-xs">
                             {formatCount(item.interactInfo?.likedCount)}
                         </Text>
                     </View>
@@ -113,7 +114,7 @@ export default function SearchList({keyword}: { keyword: string }) {
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => createQuickSessions({itemId: item._id})}
-                    className="flex-row justify-center h-[30px] items-center gap-1 rounded-full bg-grey0"
+                    className="flex-row justify-center h-[30px] items-center gap-1 rounded-full bg-foreground"
                 >
                     <Text className="text-[#000] text-sm px-[8px] py-[3px] ">
                         {t(`item.viewReport`)}
@@ -132,7 +133,7 @@ export default function SearchList({keyword}: { keyword: string }) {
                     numColumns={2}
                     data={Array(6).fill(null)}
                     renderItem={() => (
-                        <View className="rounded-lg bg-cardBg/70 overflow-hidden flex-1">
+                        <View className="rounded-lg bg-card/70 overflow-hidden flex-1">
                             {/* 图片区域骨架 */}
                             <View className="aspect-[3/3] relative">
                                 <SkeletonLoader width="100%" height="100%"/>

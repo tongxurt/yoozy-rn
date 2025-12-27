@@ -19,8 +19,8 @@ const CommoditySelect = ({ session }: { session: any; }) => {
             <View className="gap-5">
                 <View className="flex-row items-start justify-between gap-4">
                     <View className="flex-1">
-                        <Text className="text-xs text-grey2 mb-1.5 font-medium">商品标题</Text>
-                        <Text className="text-base font-semibold text-grey0 leading-6">
+                        <Text className="text-xs text-muted-foreground mb-1.5 font-medium">商品标题</Text>
+                        <Text className="text-base font-semibold text-foreground leading-6">
                             {session?.commodity?.title || '正在读取商品信息...'}
                         </Text>
                     </View>
@@ -28,7 +28,7 @@ const CommoditySelect = ({ session }: { session: any; }) => {
 
                 {session?.commodity?.images?.length > 0 && (
                     <View>
-                        <Text className="text-xs text-grey2 mb-2 font-medium">商品素材</Text>
+                        <Text className="text-xs text-muted-foreground mb-2 font-medium">商品素材</Text>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             {session.commodity.images.map((img: string, i: number) => (
                                 <Image key={i} source={{ uri: img }} className="w-[72px] h-[72px] rounded-xl mr-2.5 bg-gray-100" resizeMode="cover" />
@@ -40,9 +40,9 @@ const CommoditySelect = ({ session }: { session: any; }) => {
                 {/* Target Chance - 目标受众 */}
                 {session?.targetChance?.targetAudience && (
                     <View>
-                        <Text className="text-xs text-grey2 mb-2 font-medium">目标受众</Text>
-                        <View className="bg-background0 rounded-xl p-3.5">
-                            <Text className="text-sm font-medium text-grey0 leading-5 mb-2.5">
+                        <Text className="text-xs text-muted-foreground mb-2 font-medium">目标受众</Text>
+                        <View className="bg-card rounded-xl p-3.5">
+                            <Text className="text-sm font-medium text-foreground leading-5 mb-2.5">
                                 {session.targetChance.targetAudience.description}
                             </Text>
                             <View className="flex-row flex-wrap gap-1.5">
@@ -59,11 +59,11 @@ const CommoditySelect = ({ session }: { session: any; }) => {
                 {/* Target Chance - 推广卖点 */}
                 {session?.targetChance?.sellingPoints?.length > 0 && (
                     <View>
-                        <Text className="text-xs text-grey2 mb-2 font-medium">推广卖点</Text>
+                        <Text className="text-xs text-muted-foreground mb-2 font-medium">推广卖点</Text>
                         <View className="gap-2.5">
                             {session.targetChance.sellingPoints.map((point: { description: string; tags: string[] }, i: number) => (
-                                <View key={i} className="bg-background0 rounded-xl p-3.5">
-                                    <Text className="text-sm font-medium text-grey0 leading-5 mb-2.5">
+                                <View key={i} className="bg-card rounded-xl p-3.5">
+                                    <Text className="text-sm font-medium text-foreground leading-5 mb-2.5">
                                         {point.description}
                                     </Text>
                                     <View className="flex-row flex-wrap gap-1.5">

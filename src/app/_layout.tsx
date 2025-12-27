@@ -1,10 +1,11 @@
 import { StripeProvider } from "@stripe/stripe-react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 
 import { addEvent } from "@/api/event";
 import ErrorFallback from "@/components/ErrorCallback";
-import { useColors } from "@/hooks/uesColors";
+
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
 import { useSettings } from "@/hooks/useSettings";
 import AppThemeProvider from "@/providers/theme";
@@ -123,7 +124,7 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { background } = useColors();
+  const { colors } = useTailwindVars();
 
   const { fetchAsync: fetchSettings } = useSettings();
 
@@ -166,7 +167,7 @@ function RootLayoutNav() {
           mode={"padding"}
           style={{
             flex: 1,
-            backgroundColor: background,
+            backgroundColor: colors.background,
           }}
         >
           {/* <StatusBar
@@ -224,7 +225,7 @@ function RootLayoutNav() {
               options={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor: background,
+                  backgroundColor: colors.background,
                 },
               }}
             />
@@ -234,7 +235,7 @@ function RootLayoutNav() {
                 // headerShown: false,
                 headerTitle: t("details"),
                 contentStyle: {
-                  backgroundColor: background,
+                  backgroundColor: colors.background,
                 },
               }}
             />
@@ -243,7 +244,7 @@ function RootLayoutNav() {
               options={{
                 headerShown: false,
                 contentStyle: {
-                  backgroundColor: background,
+                  backgroundColor: colors.background,
                 },
               }}
             />
@@ -335,7 +336,7 @@ function RootLayoutNav() {
       {/* <View
         style={{
           flex: 1,
-          backgroundColor: background,
+          backgroundColor: colors.background,
         }}
       > */}
       {/*<OngoingQuestion/>*/}
@@ -349,7 +350,7 @@ function RootLayoutNav() {
         screenOptions={{
           headerShown: false,
           // headerStyle: {
-          //   backgroundColor: background,
+          //   backgroundColor: colors.background,
           // },
           // headerTintColor: grey0,
           // headerLeft: ({ canGoBack }) =>
@@ -371,7 +372,7 @@ function RootLayoutNav() {
           //     </TouchableOpacity>
           //   ) : null,
           // contentStyle: {
-          //   backgroundColor: background,
+          //   backgroundColor: colors.background,
           // }
         }}
       >

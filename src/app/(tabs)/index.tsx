@@ -44,7 +44,7 @@ export default function HomeScreen() {
               activeOpacity={0.8}
             >
               <Text
-                className={`text-base tracking-wide ${isActive ? "text-primary font-bold" : "text-grey2 font-medium"}`}
+                className={`text-base tracking-wide ${isActive ? "text-primary font-bold" : "text-muted-foreground font-medium"}`}
                 style={{ fontSize: isActive ? 18 : 16 }}
               >
                 {item.name}

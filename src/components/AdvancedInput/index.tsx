@@ -1,7 +1,8 @@
 import {Alert, Text, TextInput, TextInputProps, TouchableOpacity, View} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import React, {useState} from "react";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import {useColors} from "@/hooks/uesColors";
+
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Clipboard from 'expo-clipboard';
 import {useTranslation} from "@/i18n/translation";
@@ -51,21 +52,21 @@ const AdvancedInput = ({value, placeholder, onChangeText, maxLength = 500, style
     };
 
     return (
-        <View style={style as any} className="bg-background0 p-5 rounded-xl border-grey5 border-[0.5px]">
+        <View style={style as any} className="bg-card p-5 rounded-xl border-grey5 border-[0.5px]">
             <View className="flex-row justify-between items-center mb-2">
                 <View className="flex-row gap-2">
                     {/* 粘贴按钮 */}
                     <TouchableOpacity
                         onPress={handlePaste}
                         disabled={isPasting}
-                        className={'items-center flex-row gap-1 h-[17px] px-[8px] rounded-full bg-background1'}
+                        className={'items-center flex-row gap-1 h-[17px] px-[8px] rounded-full bg-muted'}
                     >
                         <FontAwesome6
                             name="paste"
                             size={10}
-                            color={isPasting ? colors.grey3 : colors.grey1}
+                            color={isPasting ? colors['muted-foreground'] : colors['muted-foreground']}
                         />
-                        <Text className={`text-sm ${isPasting ? 'text-grey3' : 'text-grey0'}`}>
+                        <Text className={`text-sm ${isPasting ? 'text-muted-foreground' : 'text-foreground'}`}>
                             {isPasting ? t(`pasting`) + '...' : t('paste')}
                         </Text>
                     </TouchableOpacity>
@@ -74,28 +75,28 @@ const AdvancedInput = ({value, placeholder, onChangeText, maxLength = 500, style
                     {value?.length && (
                         <TouchableOpacity
                             onPress={handleClear}
-                            className={'items-center flex-row gap-0.5 h-[17px] px-[8px] rounded-full bg-background1'}
+                            className={'items-center flex-row gap-0.5 h-[17px] px-[8px] rounded-full bg-muted'}
                         >
-                            <Ionicons name="close" size={14} color={colors.grey1}/>
-                            <Text className="text-grey0 text-sm">
+                            <Ionicons name="close" size={14} color={colors['muted-foreground']}/>
+                            <Text className="text-foreground text-sm">
                                 {t('clear')}
                             </Text>
                         </TouchableOpacity>
                     )}
                 </View>
 
-                <Text className="text-grey0/70 text-sm">
+                <Text className="text-foreground/70 text-sm">
                     {value?.length || 0}/{maxLength || 0}
                 </Text>
             </View>
 
             <TextInput
-                className="text-grey0 rounded-md text-md"
+                className="text-foreground rounded-md text-md"
                 style={[
                     // {lineHeight: 25, minHeight: 200},
                     style]}
                 placeholder={placeholder}
-                placeholderTextColor={colors.grey4}
+                placeholderTextColor={colors.border}
                 onChangeText={onChangeText}
                 value={value}
                 maxLength={maxLength}

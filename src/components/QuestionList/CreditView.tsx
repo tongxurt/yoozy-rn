@@ -21,10 +21,10 @@ const CreditView = ({data, onRecharge}: { data: any, onRecharge?: () => void }) 
         <View className="items-center py-8">
 
             {/* 提示文字 */}
-            <Text className="text-lg font-semibold text-grey0 mb-2">
+            <Text className="text-lg font-semibold text-foreground mb-2">
                 积分不足
             </Text>
-            <Text className="text-sm text-grey2 text-center mb-6 leading-5">
+            <Text className="text-sm text-muted-foreground text-center mb-6 leading-5">
                 当前积分不够生成此内容{'\n'}请充值后继续使用
             </Text>
 
@@ -45,7 +45,7 @@ const CreditView = ({data, onRecharge}: { data: any, onRecharge?: () => void }) 
 
             {/*/!* 次要按钮 *!/*/}
             {/*<TouchableOpacity className="mt-3 py-2 px-4">*/}
-            {/*    <Text className="text-sm text-grey2">*/}
+            {/*    <Text className="text-sm text-muted-foreground">*/}
             {/*        查看积分说明*/}
             {/*    </Text>*/}
             {/*</TouchableOpacity>*/}

@@ -29,7 +29,7 @@ const AccountInfo = ({account}: { account: Account }) => {
 
                         {/* 平台标识 */}
                         <View
-                            className="absolute -top-2 -right-2 w-8 h-8 bg-background2 rounded-full items-center justify-center border-2 border-primary">
+                            className="absolute -top-2 -right-2 w-8 h-8 bg-muted rounded-full items-center justify-center border-2 border-primary">
                             <SocialIcon name={account.platform} size={16}/>
                         </View>
                     </View>
@@ -41,7 +41,7 @@ const AccountInfo = ({account}: { account: Account }) => {
                         {account.nickname || ''}
                     </Text>
 
-                    <Text className="text-grey2 text-sm mb-3">
+                    <Text className="text-muted-foreground text-sm mb-3">
                         {account.followers || 0} 粉丝 • {account.posts || 0} 作品
                     </Text>
                 </View>

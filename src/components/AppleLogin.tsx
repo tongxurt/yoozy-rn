@@ -45,7 +45,7 @@ export default function AppleLogin({onSuccess}: { onSuccess: () => void }) {
 
     return (
         <TouchableOpacity
-            className="w-12 h-12 rounded-full bg-grey5 items-center justify-center"
+            className="w-12 h-12 rounded-full bg-input items-center justify-center"
             onPress={handleAppleLogin}
         >
             <AntDesign name="apple1" color="#fff" size={24}/>

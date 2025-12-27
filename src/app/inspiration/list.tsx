@@ -82,7 +82,7 @@ export default function InspirationList() {
                     width: columnWidth,
                     marginBottom: 15,
                 }}
-                className="bg-background0 rounded-lg overflow-hidden"
+                className="bg-card rounded-lg overflow-hidden"
             >
                 <SkeletonLoader
                     width="100%"

@@ -1,7 +1,8 @@
 import React, {useCallback} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {Alert, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
-import {useColors} from "@/hooks/uesColors";
+
 import {router, useFocusEffect} from "expo-router";
 import {clearAuthToken} from "@/utils";
 import {Stack} from "react-native-flex-layout";
@@ -11,7 +12,7 @@ import {getUser} from "@/api/api";
 
 
 export default function Screen() {
-    const {primary, grey0, grey2} = useColors();
+    const { colors } = useTailwindVars();
 
     const {t} = useTranslation()
 
@@ -34,7 +35,7 @@ export default function Screen() {
             {
                 title: "user.avatar",
                 component: <View>
-                    <Image style={{width: 50, height: 50}} className={'rounded-full border-grey1 border-[1px]'}
+                    <Image style={{width: 50, height: 50}} className={'rounded-full border-muted-foreground border-[1px]'}
                            source={require("@/assets/images/app_icon.png")}/>
                 </View>,
             },
@@ -88,7 +89,7 @@ export default function Screen() {
                 {menuItems.map((section, index) => (
                     <View
                         key={index}
-                        className="bg-background0/70 rounded-xl"
+                        className="bg-card/70 rounded-xl"
                         // style={{overflow: "visible"}}
                     >
                         {section.map((item, itemIndex) => (
@@ -99,7 +100,7 @@ export default function Screen() {
                                 className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
                             >
                                 <View className="flex-row gap-[8px] items-center">
-                                    {item.icon?.(20, grey0)}
+                                    {item.icon?.(20, colors.foreground)}
                                     <Text
                                         className={`text-base  text-sm ${
                                             item.isDanger ? "text-red-500" : "text-white"

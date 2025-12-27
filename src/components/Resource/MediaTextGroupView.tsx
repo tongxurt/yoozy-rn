@@ -28,15 +28,15 @@ const MediaTextGroupView = ({resources}: { resources: Resource[] }) => {
             {title && <ExpandableText maxLength={40} content={title?.content}
                                       className={'text-sm text-white'}></ExpandableText>}
             {/*{desc &&*/}
-            {/*    <ExpandableText content={desc?.content} className={'text-sm text-grey1 mt-[8px]'}>*/}
+            {/*    <ExpandableText content={desc?.content} className={'text-sm text-muted-foreground mt-[8px]'}>*/}
             {/*    </ExpandableText>*/}
             {/*}*/}
             {topic &&
-                <ExpandableText content={topic?.content} className={'text-sm text-grey1'}>
+                <ExpandableText content={topic?.content} className={'text-sm text-muted-foreground'}>
                 </ExpandableText>
             }
             {script &&
-                <ExpandableText maxLength={100} content={script?.content} className={'text-sm text-grey1'}>
+                <ExpandableText maxLength={100} content={script?.content} className={'text-sm text-muted-foreground'}>
                 </ExpandableText>
             }
         </Stack>

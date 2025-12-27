@@ -55,8 +55,8 @@ export default function VeogoList() {
                 void openXhsVideo(item._id)
                 // void Linking.openURL(`xhsdiscover://item/${item._id}?type=video`);
             }}
-            // className="rounded-lg bg-cardBg/70 overflow-hidden flex-1 transition active:opacity-90 active:scale-95 active:duration-100"
-            className="rounded-lg overflow-hidden flex-1 bg-background1"
+            // className="rounded-lg bg-card/70 overflow-hidden flex-1 transition active:opacity-90 active:scale-95 active:duration-100"
+            className="rounded-lg overflow-hidden flex-1 bg-muted"
         >
             <View className="aspect-[3/4] relative">
                 <Image
@@ -92,7 +92,7 @@ export default function VeogoList() {
     return (
         <View className="flex-1 bg-background">
             {/* 顶部背书横幅 */}
-            <View className="flex-row items-center justify-center mb-2.5 bg-background1 mx-5 py-2 rounded-lg ">
+            <View className="flex-row items-center justify-center mb-2.5 bg-muted mx-5 py-2 rounded-lg ">
                 <MaterialIcons
                     name="verified"
                     color={colors.white}
@@ -112,7 +112,7 @@ export default function VeogoList() {
                         data={Array(6).fill(null)}
                         spacing={10}
                         renderItem={() => (
-                            <View className="rounded-lg bg-cardBg/70 overflow-hidden flex-1">
+                            <View className="rounded-lg bg-card/70 overflow-hidden flex-1">
                                 {/* 图片区域骨架 */}
                                 <View className="aspect-[4/4] relative">
                                     <SkeletonLoader width="100%" height="100%"/>

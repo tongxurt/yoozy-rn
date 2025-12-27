@@ -14,7 +14,7 @@ const SocialAvatar = ({avatar, platform}: { avatar: string, platform: string }) 
 
             {/* 平台标识 */}
             <View
-                className="absolute -top-2 -right-2 w-8 h-8 bg-background2 rounded-full items-center justify-center border-2 border-primary">
+                className="absolute -top-2 -right-2 w-8 h-8 bg-muted rounded-full items-center justify-center border-2 border-primary">
                 <SocialIcon name={platform} size={16}/>
             </View>
         </View>

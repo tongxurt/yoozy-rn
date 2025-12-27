@@ -1,8 +1,9 @@
 // CollapsibleSection.tsx
 import React, { useState } from 'react';
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { useColors } from '@/hooks/uesColors'; // Assuming this hook exists
+ // Assuming this hook exists
 
 interface CollapsibleSectionProps {
     title: string;

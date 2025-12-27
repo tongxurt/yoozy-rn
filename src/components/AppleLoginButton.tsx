@@ -70,7 +70,7 @@ export default function AppleLoginButton({
 
     return (
         <TouchableOpacity
-            className={`w-12 h-12 rounded-full bg-grey5 items-center justify-center ${className}`}
+            className={`w-12 h-12 rounded-full bg-input items-center justify-center ${className}`}
             onPress={handleAppleLogin}
         >
             <AntDesign name="apple1" color="#fff" size={24}/>

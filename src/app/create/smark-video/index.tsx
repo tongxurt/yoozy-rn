@@ -45,7 +45,7 @@ const Starter = () => {
         >
             {/* Header - Dynamic Colors */}
             <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-                <Text className="text-[22px] font-bold" style={{ color: colors.grey0 }}>智能成片</Text>
+                <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>智能成片</Text>
                 <View className={"flex-row items-center gap-2"}>
                     <CreditEntry />
                     <TouchableOpacity
@@ -61,7 +61,7 @@ const Starter = () => {
                         <MaterialCommunityIcons
                             name="arrow-collapse"
                             size={25}
-                            color={colors.grey0}
+                            color={colors.foreground}
                         />
                     </TouchableOpacity>
                 </View>
@@ -84,7 +84,7 @@ const Starter = () => {
             <Text
                 style={{
                     fontSize: 12,
-                    color: colors.grey2,
+                    color: colors['muted-foreground'],
                     textAlign: "center",
                 }}
             >
@@ -113,21 +113,21 @@ const Starter = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <Text className="text-lg font-bold mb-3" style={{ color: colors.grey0 }}>开启创作</Text>
+                        <Text className="text-lg font-bold mb-3" style={{ color: colors.foreground }}>开启创作</Text>
 
-                        <Text className="text-center text-sm leading-6 mb-6" style={{ color: colors.grey1 }}>
+                        <Text className="text-center text-sm leading-6 mb-6" style={{ color: colors['muted-foreground'] }}>
                             是否使用商品
-                            <Text className="font-bold" style={{ color: colors.grey0 }}>{`【${confirmItem?.title || "未命名商品"}】`}</Text>
+                            <Text className="font-bold" style={{ color: colors.foreground }}>{`【${confirmItem?.title || "未命名商品"}】`}</Text>
                             {"\n"}开启视频创作？
                         </Text>
 
                         <View className="flex-row gap-4 w-full">
                             <TouchableOpacity
                                 className="flex-1 py-3 rounded-xl items-center justify-center"
-                                style={{ backgroundColor: colors.background2 }}
+                                style={{ backgroundColor: colors.muted }}
                                 onPress={() => setConfirmItem(null)}
                             >
-                                <Text className="font-bold" style={{ color: colors.grey1 }}>取消</Text>
+                                <Text className="font-bold" style={{ color: colors['muted-foreground'] }}>取消</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity

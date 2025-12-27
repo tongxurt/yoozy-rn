@@ -1,9 +1,10 @@
 import {Animated, Dimensions, FlatList, Pressable, Text, TouchableOpacity, View} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {CATEGORIES} from "@/constants/leaderboard";
 import {LinearGradient} from "expo-linear-gradient";
 import {Feather} from "@expo/vector-icons";
 import React, {useEffect, useRef, useState} from "react";
-import {useColors} from "@/hooks/uesColors";
+
 import {useTranslation} from "@/i18n/translation";
 
 
@@ -30,7 +31,7 @@ const CategoryTabs = ({category = '', onChange}: { category?: string, onChange: 
                 className={`text-md ${
                     category === x.id
                         ? "text-black font-semibold"
-                        : "text-grey2 font-normal"
+                        : "text-muted-foreground font-normal"
                 }`}
             >
                 {t(`item.${x.label}`)}
@@ -93,14 +94,14 @@ const CategoryTabs = ({category = '', onChange}: { category?: string, onChange: 
                 className={`w-[30px] bg-background justify-center items-center`}
                 onPress={showModal}
             >
-                <Feather name="chevron-down" size={19} color={colors.grey2}/>
+                <Feather name="chevron-down" size={19} color={colors['muted-foreground']}/>
             </TouchableOpacity>
             {visible && (
                 <TouchableOpacity
                     style={{
                         flex: 1,
                         zIndex: 1000,
-                        backgroundColor: colors.background1,
+                        backgroundColor: colors.muted,
                         position: "absolute",
                         // height: "100%",
                         // width: "100%",
@@ -109,7 +110,7 @@ const CategoryTabs = ({category = '', onChange}: { category?: string, onChange: 
                     // 防止点击弹框内容时关闭
                 >
                     <Animated.View
-                        // className="bg-cardBg"
+                        // className="bg-card"
                         style={[
                             {
                                 transform: [{translateY}],
@@ -129,7 +130,7 @@ const CategoryTabs = ({category = '', onChange}: { category?: string, onChange: 
                                     className={`justify-center items-center`}
                                     onPress={hideModal}
                                 >
-                                    <Feather name="chevron-up" size={19} color={colors.grey2}/>
+                                    <Feather name="chevron-up" size={19} color={colors['muted-foreground']}/>
                                 </TouchableOpacity>
                             </View>
                             <View className=" flex-wrap flex-row">

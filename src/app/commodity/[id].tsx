@@ -71,7 +71,7 @@ export default function CommodityDetailScreen() {
                 showsVerticalScrollIndicator={false}
             >
                 {/* Immersive Horizontal Image List */}
-                <View style={{ height: carouselHeight, width: screenWidth }} className="relative bg-background2">
+                <View style={{ height: carouselHeight, width: screenWidth }} className="relative bg-muted">
                     <View className="absolute z-10 top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/40 to-transparent" pointerEvents="none" />
 
                     {images.length > 0 ? (
@@ -113,8 +113,8 @@ export default function CommodityDetailScreen() {
                             )}
                         </ScrollView>
                     ) : (
-                        <View className="flex-1 items-center justify-center bg-grey5">
-                            <Feather name="image" size={48} color={colors.grey3} />
+                        <View className="flex-1 items-center justify-center bg-input">
+                            <Feather name="image" size={48} color={colors['muted-foreground']} />
                         </View>
                     )}
                 </View>
@@ -125,7 +125,7 @@ export default function CommodityDetailScreen() {
                         {/* Header: Brand Only */}
                         {!!commodity.brand && (
                             <View className="flex-row items-center mb-3">
-                                <Text className="text-grey1 text-xs font-bold tracking-[0.2em] uppercase opacity-80">
+                                <Text className="text-muted-foreground text-xs font-bold tracking-[0.2em] uppercase opacity-80">
                                     {commodity.brand}
                                 </Text>
                             </View>
@@ -138,7 +138,7 @@ export default function CommodityDetailScreen() {
 
                         {/* Subtitle / Name */}
                         {!!commodity.name && (
-                            <Text className="text-grey1 text-xs font-normal leading-5 opacity-80 mb-4">
+                            <Text className="text-muted-foreground text-xs font-normal leading-5 opacity-80 mb-4">
                                 {commodity.name}
                             </Text>
                         )}
@@ -147,8 +147,8 @@ export default function CommodityDetailScreen() {
                         {commodity.tags && commodity.tags.length > 0 && (
                             <View className="flex-row flex-wrap gap-2 mb-6">
                                 {commodity.tags.map((tag: string, index: number) => (
-                                    <View key={index} className="bg-background2 px-3 py-1.5 rounded-lg">
-                                        <Text className="text-grey1 text-[11px] font-medium">#{tag}</Text>
+                                    <View key={index} className="bg-muted px-3 py-1.5 rounded-lg">
+                                        <Text className="text-muted-foreground text-[11px] font-medium">#{tag}</Text>
                                     </View>
                                 ))}
                             </View>
@@ -177,7 +177,7 @@ export default function CommodityDetailScreen() {
                                         <Feather
                                             name={isDescriptionExpanded ? "chevron-up" : "chevron-down"}
                                             size={12}
-                                            color={colors.grey1}
+                                            color={colors['muted-foreground']}
                                         />
                                     </TouchableOpacity>
                                 )}
@@ -196,7 +196,7 @@ export default function CommodityDetailScreen() {
                                     {commodity.chances.map((chance: any, cIdx: number) => (
                                         <View
                                             key={cIdx}
-                                            className="bg-background2/50 rounded-2xl p-5 w-[260px] border border-divider/50 shadow-sm"
+                                            className="bg-muted/50 rounded-2xl p-5 w-[260px] border border-divider/50 shadow-sm"
                                         >
                                             {/* Header: Target Audience */}
                                             {chance.targetAudience?.name && (
@@ -206,7 +206,7 @@ export default function CommodityDetailScreen() {
                                                             {chance.targetAudience.name}
                                                         </Text>
                                                     </View>
-                                                    <Feather name="target" size={14} color={colors.grey2} />
+                                                    <Feather name="target" size={14} color={colors['muted-foreground']} />
                                                 </View>
                                             )}
 
@@ -222,7 +222,7 @@ export default function CommodityDetailScreen() {
                                                         <View key={pIdx} className="flex-row items-start gap-2">
                                                             <View className="mt-1.5 w-1 h-1 rounded-full bg-primary" />
                                                             <Text
-                                                                className="flex-1 text-grey1/80 text-[11px] leading-4"
+                                                                className="flex-1 text-muted-foreground/80 text-[11px] leading-4"
                                                                 numberOfLines={3}
                                                             >
                                                                 {point?.description || point}

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {
   View,
   Text,
@@ -8,7 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useColors } from "@/hooks/uesColors";
+
 
 export interface SelectOption {
   label: string;
@@ -34,7 +35,7 @@ const Select: React.FC<SelectProps> = ({
   const [dropdownTop, setDropdownTop] = useState(0);
   const [dropdownLeft, setDropdownLeft] = useState(0);
   const [dropdownWidth, setDropdownWidth] = useState(100);
-  const { white, grey2, grey5, primary, background } = useColors();
+  const { colors } = useTailwindVars();
   const buttonRef = useRef<any>(null);
 
   const selectedOption = options.find((option) => option.value === value);
@@ -71,7 +72,7 @@ const Select: React.FC<SelectProps> = ({
             justifyContent: "space-between",
             paddingHorizontal: 12,
             paddingVertical: 8,
-            backgroundColor: grey5,
+            backgroundColor: colors.input,
             borderRadius: 8,
             minWidth: 100,
           },
@@ -80,7 +81,7 @@ const Select: React.FC<SelectProps> = ({
       >
         <Text
           style={{
-            color: selectedOption ? white : grey2,
+            color: selectedOption ? colors.colors.background : colors['muted-foreground'],
             fontSize: 14,
           }}
           numberOfLines={1}
@@ -90,7 +91,7 @@ const Select: React.FC<SelectProps> = ({
         <AntDesign
           name={isOpen ? "up" : "down"}
           size={12}
-          color={grey2}
+          color={colors['muted-foreground']}
           style={{ marginLeft: 8 }}
         />
       </TouchableOpacity>
@@ -103,7 +104,7 @@ const Select: React.FC<SelectProps> = ({
             top: dropdownTop,
             left: dropdownLeft,
             width: Math.max(dropdownWidth, 100),
-            backgroundColor: background,
+            backgroundColor: colors.background,
             borderRadius: 8,
             shadowColor: "#000",
             shadowOffset: {
@@ -126,13 +127,13 @@ const Select: React.FC<SelectProps> = ({
                   paddingHorizontal: 12,
                   paddingVertical: 12,
                   borderBottomWidth: index < options.length - 1 ? 1 : 0,
-                  borderBottomColor: grey5,
+                  borderBottomColor: colors.input,
                 }}
                 onPress={() => handleSelect(item.value)}
               >
                 <Text
                   style={{
-                    color: item.value === value ? primary : white,
+                    color: item.value === value ? colors.primary : colors.colors.background,
                     fontSize: 14,
                     fontWeight: item.value === value ? "600" : "400",
                   }}

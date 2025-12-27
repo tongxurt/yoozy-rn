@@ -376,7 +376,7 @@ const AssetEditorScreen = () => {
         const imageSrc = type === 'video' ? (data?.root?.coverUrl || data?.coverUrl) : data?.images?.[0];
 
         return (
-            <View className="bg-background0 border border-gray-100 rounded-xl p-3 shadow-sm flex-row gap-3 items-center mb-3">
+            <View className="bg-card border border-gray-100 rounded-xl p-3 shadow-sm flex-row gap-3 items-center mb-3">
                 <View className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden relative">
                     <Image source={{ uri: imageSrc }} className="w-full h-full" resizeMode="cover" />
                     {type === 'video' && (
@@ -449,7 +449,7 @@ const AssetEditorScreen = () => {
                     </View>
 
                     {/* Workflow Steps */}
-                    <View className="bg-background0 rounded-2xl shadow-sm border border-gray-100 p-4">
+                    <View className="bg-card rounded-2xl shadow-sm border border-gray-100 p-4">
                         <View className="border-b border-gray-50 pb-3 mb-2">
                             <Text className="text-sm font-bold text-gray-800">执行流程</Text>
                         </View>

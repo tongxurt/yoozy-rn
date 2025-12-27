@@ -30,7 +30,7 @@ const Dialog = ({visible, children}: { visible: boolean, children: ReactNode }) 
     return (
         <Modal visible={visible} transparent animationType="slide">
             <View className="bg-background/50 h-full justify-center items-center">
-                <View className="bg-background1 rounded-2xl p-8 items-center shadow-xl">
+                <View className="bg-muted rounded-2xl p-8 items-center shadow-xl">
                     {children}
                 </View>
             </View>

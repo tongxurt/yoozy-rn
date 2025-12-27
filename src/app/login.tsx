@@ -1,5 +1,6 @@
 import AppleLogin from "@/components/AppleLogin";
-import { useColors } from "@/hooks/uesColors";
+import useTailwindVars from "@/hooks/useTailwindVars";
+
 import { useTranslation } from "@/i18n/translation";
 import {
   useLoginWithEmail,
@@ -33,7 +34,7 @@ export default function LoginScreen() {
   const [loginType, setLoginType] = useState<LoginType>("phone");
   const [countdown, setCountdown] = useState(0);
   const [isAgreed, setIsAgreed] = useState(false);
-  const { white } = useColors();
+  const { colors } = useTailwindVars();
 
   const { t } = useTranslation();
 
@@ -207,18 +208,18 @@ export default function LoginScreen() {
             className="w-10 h-10 items-center justify-center"
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Feather name="x" size={24} color={white} />
+            <Feather name="x" size={24} color={colors.background} />
           </TouchableOpacity>
         </View>
 
         <View className="px-6 mt-20">
           <View>
-            <Text className="text-white text-2xl font-semibold mb-8">
+            <Text className="text-colors.background text-2xl font-semibold mb-8">
               {loginType === "phone" ? t("loginPhone") : t("loginEmail")}
             </Text>
 
             {/* 登录方式切换 */}
-            <View className="flex-row bg-grey5 rounded-lg p-1 mb-6">
+            <View className="flex-row bg-input rounded-lg p-1 mb-6">
               <Pressable
                 onPress={() => {
                   setLoginType("phone");
@@ -249,7 +250,7 @@ export default function LoginScreen() {
                 className={`flex-1 py-3 rounded-md items-center ${loginType === "email" ? "bg-primary" : ""
                   }`}
               >
-                <Text className="text-white">{t("email")}</Text>
+                <Text className="text-colors.background">{t("email")}</Text>
               </Pressable>
             </View>
 
@@ -259,10 +260,10 @@ export default function LoginScreen() {
                 name="phone"
                 control={loginForm.control}
                 render={({ field, fieldState }) => (
-                  <View className="flex-row bg-grey5 rounded-lg mb-6 items-center px-4">
-                    <Text className="text-white text-base">+86</Text>
+                  <View className="flex-row bg-input rounded-lg mb-6 items-center px-4">
+                    <Text className="text-colors.background text-base">+86</Text>
                     <TextInput
-                      className="flex-1 h-12 text-white text-base ml-3"
+                      className="flex-1 h-12 text-colors.background text-base ml-3"
                       placeholder={t("inputPhone")}
                       placeholderTextColor="#666"
                       value={field.value}
@@ -281,10 +282,10 @@ export default function LoginScreen() {
                 control={loginForm.control}
                 render={({ field, fieldState }) => (
                   <View className="mb-6">
-                    <View className="bg-grey5 rounded-lg">
+                    <View className="bg-input rounded-lg">
                       <View>
                         <TextInput
-                          className="h-12 text-white text-base px-4"
+                          className="h-12 text-colors.background text-base px-4"
                           placeholder={t("inputEmail")}
                           placeholderTextColor="#666"
                           keyboardType="email-address"
@@ -307,9 +308,9 @@ export default function LoginScreen() {
               render={({ field, fieldState }) => (
                 <View className="mb-6">
                   <View className="flex-row">
-                    <View className="flex-1 bg-grey5 rounded-lg mr-3">
+                    <View className="flex-1 bg-input rounded-lg mr-3">
                       <TextInput
-                        className="h-12 text-white text-base px-4"
+                        className="h-12 text-colors.background text-base px-4"
                         placeholder={t("inputCode")}
                         placeholderTextColor="#666"
                         value={field.value}
@@ -342,7 +343,7 @@ export default function LoginScreen() {
                       {isSendCodePending ? (
                         <ActivityIndicator color="#fff" size="small" />
                       ) : (
-                        <Text className="text-white text-sm">
+                        <Text className="text-colors.background text-sm">
                           {countdown > 0
                             ? `${countdown}${t("resendCode")}`
                             : t("getCode")}
@@ -386,7 +387,7 @@ export default function LoginScreen() {
               {isLoginPending && (
                 <ActivityIndicator color="#fff" size="small" />
               )}
-              <Text className="text-white text-base font-medium">
+              <Text className="text-colors.background text-base font-medium">
                 {t("login")}
               </Text>
             </TouchableOpacity>
@@ -399,7 +400,7 @@ export default function LoginScreen() {
       {/* 其他登录方式放到底部 */}
       {Platform.OS === "ios" && (
         <View className="pb-8">
-          <Text className="text-grey2 text-center mb-6">{t("otherLogin")}</Text>
+          <Text className="text-muted-foreground text-center mb-6">{t("otherLogin")}</Text>
           <View className="flex-row justify-center">
             <AppleLogin onSuccess={onLoginSuccess} />
           </View>

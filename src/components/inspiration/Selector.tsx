@@ -143,13 +143,13 @@ const Selector = ({ value, onChange }: SelectorProps) => {
         <View className="flex-1">
             {/* Search Header */}
             <View className="px-4 py-3">
-                <View className="flex-row items-center rounded-xl px-3 py-2.5" style={{ backgroundColor: colors.background1 }}>
-                    <Feather name="search" size={16} color={colors.grey2} />
+                <View className="flex-row items-center rounded-xl px-3 py-2.5" style={{ backgroundColor: colors.muted }}>
+                    <Feather name="search" size={16} color={colors['muted-foreground']} />
                     <TextInput
                         className="flex-1 ml-2 text-sm leading-tight"
-                        style={{ color: colors.grey0, paddingVertical: 0 }}
+                        style={{ color: colors.foreground, paddingVertical: 0 }}
                         placeholder="搜索灵感..."
-                        placeholderTextColor={colors.grey2}
+                        placeholderTextColor={colors['muted-foreground']}
                         onChangeText={handleSearch}
                         returnKeyType="search"
                         autoCapitalize="none"
@@ -193,14 +193,14 @@ const Selector = ({ value, onChange }: SelectorProps) => {
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={
                         <View className="items-center justify-center py-20">
-                            <Feather name="search" size={32} color={colors.grey3} />
-                            <Text className="text-sm mt-3" style={{ color: colors.grey2 }}>未找到相关灵感</Text>
+                            <Feather name="search" size={32} color={colors['muted-foreground']} />
+                            <Text className="text-sm mt-3" style={{ color: colors['muted-foreground'] }}>未找到相关灵感</Text>
                         </View>
                     }
                     ListFooterComponent={
                         isFetchingNextPage ? (
                             <View className="py-4 items-center">
-                                <ActivityIndicator size="small" color={colors.grey3} />
+                                <ActivityIndicator size="small" color={colors['muted-foreground']} />
                             </View>
                         ) : <View className="h-4" />
                     }

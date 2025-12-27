@@ -29,8 +29,8 @@ export default function PrivacyScreen() {
           {t("privacyTitle")}
         </Text>
         <View className="flex-col justify-between mb-6">
-          <Text className="text-grey2 text-sm">{t("privacyUpdateDate")}</Text>
-          <Text className="text-grey2 text-sm">
+          <Text className="text-muted-foreground text-sm">{t("privacyUpdateDate")}</Text>
+          <Text className="text-muted-foreground text-sm">
             {t("privacyEffectiveDate")}
           </Text>
         </View>
@@ -40,7 +40,7 @@ export default function PrivacyScreen() {
             <Text className="text-lg font-bold text-white mb-4">
               {t(section.titleKey)}
             </Text>
-            <Text className="text-grey2 text-sm leading-6">
+            <Text className="text-muted-foreground text-sm leading-6">
               {t(section.contentKey)}
             </Text>
           </View>

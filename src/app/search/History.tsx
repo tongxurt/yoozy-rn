@@ -24,14 +24,14 @@ const History = ({data, onItemClick, onChange}: {
         <View className="px-5 gap-2">
             <View className="flex-row justify-between items-center mb-2 mt-2">
                 <Text className="text-white text-sm">{t('search.history')}</Text>
-                <AntDesign onPress={() => onChange([])} name="delete" size={14} color={colors.grey3}/>
+                <AntDesign onPress={() => onChange([])} name="delete" size={14} color={colors['muted-foreground']}/>
             </View>
             <View className={'flex-row items-center flex-wrap gap-2'}>
                 {data?.map((item, index) => {
                     return <TouchableOpacity activeOpacity={0.9}
                                              key={index}
                                              onPress={() => onItemClick(item)}
-                                             className="bg-background2 rounded-full px-3 py-1"
+                                             className="bg-muted rounded-full px-3 py-1"
                     >
                         <Text className="text-white">{item}</Text>
                     </TouchableOpacity>

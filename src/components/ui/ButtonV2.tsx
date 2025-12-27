@@ -49,9 +49,9 @@ const ButtonV2 = ({
         if (disabled) {
             return {
                 ...baseStyle,
-                backgroundColor: variant === 'outline' || variant === 'ghost' ? 'transparent' : colors.grey2,
+                backgroundColor: variant === 'outline' || variant === 'ghost' ? 'transparent' : colors['muted-foreground'],
                 borderWidth: variant === 'outline' ? 1 : 0,
-                borderColor: variant === 'outline' ? colors.grey2 : undefined,
+                borderColor: variant === 'outline' ? colors['muted-foreground'] : undefined,
             };
         }
 
@@ -70,7 +70,7 @@ const ButtonV2 = ({
     };
 
     const getTextColor = () => {
-        if (disabled) return variant === 'outline' || variant === 'ghost' ? colors.grey2 : '#fff';
+        if (disabled) return variant === 'outline' || variant === 'ghost' ? colors['muted-foreground'] : '#fff';
 
         switch (variant) {
             case 'primary':

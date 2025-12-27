@@ -83,7 +83,7 @@ export const FloatingWindow: React.FC<FloatingWindowProps> = ({
         >
 
             <View
-                className="bg-background/90 rounded-[15px] p-[10px] border border-grey4"
+                className="bg-background/90 rounded-[15px] p-[10px] border border-border"
                 style={{height: height, width: width}}
             >
                 {children}

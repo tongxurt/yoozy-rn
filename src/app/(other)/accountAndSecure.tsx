@@ -1,7 +1,8 @@
 import React from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useColors } from "@/hooks/uesColors";
+
 import { router } from "expo-router";
 import { clearAuthToken } from "@/utils";
 import { Stack } from "react-native-flex-layout";
@@ -9,7 +10,7 @@ import { useTranslation } from "@/i18n/translation";
 import { useAuthUser } from "@/hooks/useAuthUser";
 
 export default function Screen() {
-  const { primary, grey0, grey2 } = useColors();
+  const { colors } = useTailwindVars();
 
   const { t } = useTranslation();
 
@@ -69,7 +70,7 @@ export default function Screen() {
                 className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
               >
                 <View className="flex-row gap-[8px] items-center">
-                  {item.icon?.(20, grey0)}
+                  {item.icon?.(20, colors.foreground)}
                   <Text
                     className={`text-base  text-sm ${
                       item.isDanger ? "text-red-500" : "text-white"

@@ -1,7 +1,8 @@
 import LetterAvatar from "@/components/LatterAvatar";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/components/ScreenContainer";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
-import { useColors } from "@/hooks/uesColors";
+
 import useAppUpdate from "@/hooks/useAppUpdate";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { useTranslation } from "@/i18n/translation";
@@ -90,7 +91,7 @@ export default function MyScreen() {
             color={color}
           />
         ),
-        right: <Text className={"text-sm text-grey2"}>{currentVersion}</Text>,
+        right: <Text className={"text-sm text-muted-foreground"}>{currentVersion}</Text>,
       },
     ],
     [
@@ -157,7 +158,7 @@ export default function MyScreen() {
         <Stack ph={15} spacing={10} mt={15}>
           {/* 主题与语言设置 */}
           <View
-            className="mb-6 bg-cardBg/70 rounded-xl"
+            className="mb-6 bg-card/70 rounded-xl"
             style={{ overflow: "visible" }}
           >
             {/*/!* 主题切换 *!/*/}
@@ -223,7 +224,7 @@ export default function MyScreen() {
                   className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
                 >
                   <View className="flex-row gap-[8px] items-center">
-                    {item.icon(20, colors.grey0)}
+                    {item.icon(20, colors.foreground)}
                     <Text
                       className={`text-white  text-sm ${item.isDanger ? "text-red-500" : "text-white"
                         }`}
@@ -235,7 +236,7 @@ export default function MyScreen() {
                   <View className={"flex-row gap-0.5"}>
                     {item.right}
                     {item.onPress && (
-                      <AntDesign name="right" size={14} color={colors.grey3} />
+                      <AntDesign name="right" size={14} color={colors['muted-foreground']} />
                     )}
                   </View>
                 </TouchableOpacity>

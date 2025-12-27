@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {
     View,
     Text,
@@ -9,7 +10,7 @@ import {
     Image,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {useColors} from "@/hooks/uesColors";
+
 
 const {width, height} = Dimensions.get('window');
 

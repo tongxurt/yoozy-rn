@@ -1,7 +1,8 @@
 import React, {useCallback} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign, Feather, Ionicons, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
-import {useColors} from "@/hooks/uesColors";
+
 import {router, useFocusEffect} from "expo-router";
 import {HStack, Stack} from "react-native-flex-layout";
 import LetterAvatar from "@/components/LatterAvatar";
@@ -78,7 +79,7 @@ export default function MyScreen() {
                 },
                 icon: (size: number, color: string) =>
                     <MaterialCommunityIcons name="information-outline" size={size} color={color}/>,
-                right: <Text className={'text-sm text-grey2'}>{currentVersion}</Text>
+                right: <Text className={'text-sm text-muted-foreground'}>{currentVersion}</Text>
             },
         ],
         [
@@ -110,7 +111,7 @@ export default function MyScreen() {
                             <LetterAvatar name={user._id!} size={70}/>
                         </TouchableOpacity>
 
-                        <Text className="text-sm text-grey2 leading-5 max-w-[120px]" numberOfLines={1}
+                        <Text className="text-sm text-muted-foreground leading-5 max-w-[120px]" numberOfLines={1}
                               ellipsizeMode="tail">
                             Yoozy ID: {user?._id}
                         </Text>
@@ -133,7 +134,7 @@ export default function MyScreen() {
             <Stack ph={15} spacing={10} mt={15}>
                 {/* 主题与语言设置 */}
                 <View
-                    className="mb-6 bg-cardBg/70 rounded-xl"
+                    className="mb-6 bg-card/70 rounded-xl"
                     style={{overflow: "visible"}}
                 >
                     {/*/!* 主题切换 *!/*/}
@@ -188,7 +189,7 @@ export default function MyScreen() {
                 {menuItems.map((section, index) => (
                     <View
                         key={index}
-                        className="mt-3 bg-cardBg/70 rounded-xl"
+                        className="mt-3 bg-card/70 rounded-xl"
                         // style={{overflow: "visible"}}
                     >
                         {section.map((item, itemIndex) => (
@@ -199,7 +200,7 @@ export default function MyScreen() {
                                 className={`px-4 py-5 flex-row items-center justify-between active:opacity-10`}
                             >
                                 <View className="flex-row gap-[8px] items-center">
-                                    {item.icon(20, colors.grey0)}
+                                    {item.icon(20, colors.foreground)}
                                     <Text
                                         className={`text-white  text-sm ${
                                             item.isDanger ? "text-red-500" : "text-white"
@@ -212,7 +213,7 @@ export default function MyScreen() {
                                 <View className={'flex-row gap-0.5'}>
                                     {item.right}
                                     {item.onPress && (
-                                        <AntDesign name="right" size={14} color={colors.grey3}/>
+                                        <AntDesign name="right" size={14} color={colors['muted-foreground']}/>
                                     )}
                                 </View>
 

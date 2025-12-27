@@ -1,6 +1,7 @@
 import CreditEntry from "@/components/CreditEntry";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/components/ScreenContainer";
-import { useColors } from "@/hooks/uesColors";
+
 import { useTranslation } from "@/i18n/translation";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -144,7 +145,7 @@ export default function Screen() {
           <TouchableOpacity
             onPress={handleCreate}
             className={
-              "bg-background0/80 rounded-xl p-4 flex-row items-center justify-between"
+              "bg-card/80 rounded-xl p-4 flex-row items-center justify-between"
             }
             activeOpacity={0.8}
             style={{

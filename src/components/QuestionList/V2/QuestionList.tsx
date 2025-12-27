@@ -131,7 +131,7 @@ const QuestionList = ({sessionId,}: { sessionId: string; }) => {
             <View className={'p-5'}>
                 <QuestionView data={questions?.[currentIndex]}/>
             </View>
-            {/*<View className={'h-3 bg-background1'}></View>*/}
+            {/*<View className={'h-3 bg-muted'}></View>*/}
             {/* 答案 */}
             <ScrollView className={'flex-1 px-5'}>
                 {renderAnswer(questions?.[currentIndex])}
@@ -142,7 +142,7 @@ const QuestionList = ({sessionId,}: { sessionId: string; }) => {
                     showQuestionModal &&
                     <TextInput
                         autoFocus
-                        className="bg-background2 p-4 rounded-t-lg text-white text-base border-primary"
+                        className="bg-muted p-4 rounded-t-lg text-white text-base border-primary"
                         placeholder="输入你的问题..."
                         placeholderTextColor="#9CA3AF"
                         value={customQuestion}

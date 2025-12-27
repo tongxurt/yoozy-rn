@@ -126,7 +126,7 @@ function SessionList() {
         >
           <View className="p-3">
             <View className="flex-row gap-5 mb-5">
-              <View className="w-32 aspect-[3/4] rounded-2xl overflow-hidden bg-background2">
+              <View className="w-32 aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
                 {primaryImage ? (
                   <Image
                     source={{ uri: primaryImage }}
@@ -135,7 +135,7 @@ function SessionList() {
                   />
                 ) : (
                   <View className="h-full w-full items-center justify-center">
-                    <Text className="text-3xl text-grey4">📦</Text>
+                    <Text className="text-3xl text-disabled">📦</Text>
                   </View>
                 )}
               </View>
@@ -147,7 +147,7 @@ function SessionList() {
                 >
                   {fallbackTitle}
                 </Text>
-                <Text className="text-grey2 text-sm mb-3" numberOfLines={1}>
+                <Text className="text-muted-foreground text-sm mb-3" numberOfLines={1}>
                   {fallbackBrand}
                 </Text>
 
@@ -185,7 +185,7 @@ function SessionList() {
             </View>
 
             <View className="flex-row justify-between items-center">
-              <Text className="text-grey3 text-base">
+              <Text className="text-muted-foreground text-base">
                 {createdAt ? formatToNow(createdAt * 1000) : "未知时间"}
               </Text>
               <TouchableOpacity
@@ -234,7 +234,7 @@ function SessionList() {
               <Text className="text-lg font-semibold text-foreground mb-1">
                 暂无会话
               </Text>
-              <Text className="text-sm text-grey3 mb-6 text-center">
+              <Text className="text-sm text-muted-foreground mb-6 text-center">
                 创建第一个会话开始使用
               </Text>
               <TouchableOpacity

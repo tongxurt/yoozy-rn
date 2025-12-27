@@ -1,4 +1,5 @@
 import {View, Text, TouchableOpacity, Animated, Platform} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 import {router} from "expo-router";
 import Modal from "@/components/ui/Modal";
@@ -6,7 +7,7 @@ import {useEffect, useRef} from "react";
 import {LinearGradient} from "expo-linear-gradient";
 import useGlobal from "@/hooks/useGlobal";
 import {useTranslation} from "@/i18n/translation";
-import {useColors} from "@/hooks/uesColors";
+
 import {Grid} from "@/components/ui/Grid";
 import {Scene} from "@/types";
 import {Toast} from "react-native-toast-notifications";
@@ -104,7 +105,7 @@ export default function SceneSelector(
                         >
                             <LinearGradient
                                 // colors={["rgba(80, 80, 80, 0.9)", "rgba(40, 40, 40, 0.9)"]}
-                                colors={[colors.background1, colors.background2]}
+                                colors={[colors.muted, colors.muted]}
                                 style={{
                                     width: 60,
                                     height: 60,

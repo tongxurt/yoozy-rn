@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {
     View,
     Text,
@@ -10,7 +11,7 @@ import {
     Platform
 } from "react-native";
 import {AntDesign} from "@expo/vector-icons";
-import {useColors} from "@/hooks/uesColors";
+
 
 export interface SelectOption {
     label: string;
@@ -43,7 +44,7 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                                                    }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropdownLayout, setDropdownLayout] = useState({x: 0, y: 0, width: 0, height: 0});
-    const {white, grey2, grey5, primary, background} = useColors();
+    const { colors } = useTailwindVars();
 
     const selectRef = useRef<any>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -133,11 +134,11 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                         justifyContent: "space-between",
                         paddingHorizontal: 16,
                         paddingVertical: 8,
-                        backgroundColor: disabled ? background + '80' : background,
+                        backgroundColor: disabled ? colors.background + '80' : colors.background,
                         borderRadius: 8,
                         minWidth: 120,
                         borderWidth: 1,
-                        borderColor: isOpen ? primary : 'transparent',
+                        borderColor: isOpen ? colors.primary : 'transparent',
                         shadowColor: "#000",
                         shadowOffset: {
                             width: 0,
@@ -153,10 +154,10 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                 <Text
                     style={{
                         color: disabled
-                            ? grey2 + '80'
+                            ? colors['muted-foreground'] + '80'
                             : selectedOption
-                                ? white
-                                : grey2,
+                                ? colors.colors.background
+                                : colors['muted-foreground'],
                         fontSize: 15,
                         fontWeight: selectedOption ? '500' : '400',
                         flex: 1,
@@ -178,7 +179,7 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                     <AntDesign
                         name="down"
                         size={14}
-                        color={disabled ? grey2 + '80' : grey2}
+                        color={disabled ? colors['muted-foreground'] + '80' : colors['muted-foreground']}
                     />
                 </Animated.View>
             </TouchableOpacity>
@@ -196,7 +197,7 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                                 style={[
                                     {
                                         position: 'absolute',
-                                        backgroundColor: background,
+                                        backgroundColor: colors.background,
                                         borderRadius: 12,
                                         marginHorizontal: 4,
                                         shadowColor: "#000",
@@ -208,7 +209,7 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                                         shadowRadius: 12,
                                         elevation: 16,
                                         borderWidth: Platform.OS === 'ios' ? 0.5 : 0,
-                                        borderColor: grey5,
+                                        borderColor: colors.input,
                                         overflow: 'hidden',
                                     },
                                     getDropdownPosition(),
@@ -231,9 +232,9 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                                                     paddingHorizontal: 16,
                                                     paddingVertical: 14,
                                                     borderBottomWidth: index < options.length - 1 ? 0.5 : 0,
-                                                    borderBottomColor: grey5 + '60',
+                                                    borderBottomColor: colors.input + '60',
                                                     backgroundColor: isSelected
-                                                        ? background + '15'
+                                                        ? colors.background + '15'
                                                         : 'transparent',
                                                     opacity: isDisabled ? 0.5 : 1,
                                                 },
@@ -251,10 +252,10 @@ const SimpleSelect: React.FC<SimpleSelectProps> = ({
                                                 <Text
                                                     style={{
                                                         color: isDisabled
-                                                            ? grey2 + '60'
+                                                            ? colors['muted-foreground'] + '60'
                                                             : isSelected
-                                                                ? primary
-                                                                : white,
+                                                                ? colors.primary
+                                                                : colors.colors.background,
                                                         fontSize: 15,
                                                         fontWeight: isSelected ? "600" : "400",
                                                         flex: 1,

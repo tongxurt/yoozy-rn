@@ -73,7 +73,7 @@ const QuestionList = ({
             <View className={'p-5'}>
                 <QuestionView data={data?.[currentIndex]}/>
             </View>
-            {/*<View className={'h-3 bg-background1'}></View>*/}
+            {/*<View className={'h-3 bg-muted'}></View>*/}
             {/* 答案 */}
             <ScrollView className={'flex-1 px-5'}>
                 {renderAnswer(data?.[currentIndex])}

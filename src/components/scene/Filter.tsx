@@ -1,10 +1,11 @@
 import {useSettings} from "@/hooks/useSettings";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {useTranslation} from "@/i18n/translation";
 import {Text, View, TouchableOpacity, ScrollView, Pressable, FlatList} from "react-native";
 import {Scene} from "@/types";
 import {HStack} from "react-native-flex-layout";
 import React, {useMemo, useState} from "react";
-import {useColors} from "@/hooks/uesColors";
+
 import {Feather} from "@expo/vector-icons";
 import {LinearGradient} from "expo-linear-gradient";
 import {Grid} from "@/components/ui/Grid";
@@ -44,7 +45,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                         {/*    <View>*/}
                         {/*        {scene?.getSceneIcon({*/}
                         {/*            size: 12,*/}
-                        {/*            color: selected ? colors.white : colors.grey3,*/}
+                        {/*            color: selected ? colors.white : colors['muted-foreground'],*/}
                         {/*        })}*/}
                         {/*    </View>*/}
                         {/*}*/}
@@ -52,7 +53,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                         {/* 文字 */}
                         <Text className={`
                                 text-md
-                                ${selected ? 'text-white' : 'text-grey2'}
+                                ${selected ? 'text-white' : 'text-muted-foreground'}
                             `}>
                             {t(`scene.${scene.value}`)}
                         </Text>
@@ -80,7 +81,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                                 key={scene.value}
                                 onPress={() => onChange(scene)}
                                 activeOpacity={0.9}
-                                className={`rounded-md py-2 justify-center items-center ${selected ? ' bg-primary ' : 'bg-background1 '}`}
+                                className={`rounded-md py-2 justify-center items-center ${selected ? ' bg-primary ' : 'bg-muted '}`}
                             >
                                 {/*/!* 小图标 *!/*/}
                                 {/*{*/}
@@ -88,14 +89,14 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                                 {/*    <View>*/}
                                 {/*        {scene?.getSceneIcon({*/}
                                 {/*            size: 12,*/}
-                                {/*            color: selected ? colors.white : colors.grey3,*/}
+                                {/*            color: selected ? colors.white : colors['muted-foreground'],*/}
                                 {/*        })}*/}
                                 {/*    </View>*/}
                                 {/*}*/}
 
                                 {/* 文字 */}
                                 <Text className={`
-                                text-md ${selected ? 'text-white font-bold' : 'text-grey2'}
+                                text-md ${selected ? 'text-white font-bold' : 'text-muted-foreground'}
                             `}>
                                     {t(`scene.${scene.value}`)}
                                 </Text>
@@ -106,7 +107,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
 
                 <TouchableOpacity activeOpacity={1} className={`w-[30px] bg-background justify-start items-center`}
                                   onPress={() => setExpanded(!expanded)}>
-                    <Feather name="chevron-up" size={20} color={colors.grey2}/>
+                    <Feather name="chevron-up" size={20} color={colors['muted-foreground']}/>
                 </TouchableOpacity>
             </View> :
             <View className={'flex-row bg-warning'}>
@@ -125,7 +126,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                 </View>
                 <TouchableOpacity activeOpacity={1} className={`w-[30px] bg-background justify-center items-center`}
                                   onPress={() => setExpanded(!expanded)}>
-                    <Feather name="chevron-down" size={19} color={colors.grey2}/>
+                    <Feather name="chevron-down" size={19} color={colors['muted-foreground']}/>
                 </TouchableOpacity>
             </View>
     );

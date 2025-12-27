@@ -1,6 +1,7 @@
 import React from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { LinearGradient } from "expo-linear-gradient";
-import { useColors } from "@/hooks/uesColors";
+
 import { DimensionValue, StyleProp, ViewStyle, View, Animated } from "react-native";
 import { useEffect, useRef } from "react";
 
@@ -17,7 +18,7 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
                                                                   style,
                                                                   circle = false,
                                                               }) => {
-    const { white } = useColors();
+    const { colors } = useTailwindVars();
     const animatedValue = useRef(new Animated.Value(0)).current;
 
     const getColorWithOpacity = (color: string, opacity: number) => {
@@ -56,7 +57,7 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
                     width: width as DimensionValue,
                     height: height as DimensionValue,
                     borderRadius: circle ? 999 : 8,
-                    backgroundColor: getColorWithOpacity(white, 0.06),
+                    backgroundColor: getColorWithOpacity(colors.background, 0.06),
                     opacity,
                 },
                 style,
@@ -64,9 +65,9 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
         >
             <LinearGradient
                 colors={[
-                    getColorWithOpacity(white, 0),
-                    getColorWithOpacity(white, 0.1),
-                    getColorWithOpacity(white, 0),
+                    getColorWithOpacity(colors.background, 0),
+                    getColorWithOpacity(colors.background, 0.1),
+                    getColorWithOpacity(colors.background, 0),
                 ]}
                 style={{
                     width: "100%",

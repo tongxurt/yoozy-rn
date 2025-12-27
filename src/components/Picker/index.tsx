@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {
     ActivityIndicator,
     Alert,
@@ -19,7 +20,7 @@ import MediaView from "@/components/Resource/MediaView";
 import {useTranslation} from "@/i18n/translation";
 import {getUrl} from "@/utils";
 import VideoPlayer from "../VideoPlayer";
-import {useColors} from "@/hooks/uesColors";
+
 
 interface PickerProps {
     files?: Resource[];
@@ -41,7 +42,7 @@ const Picker = ({
                     showPreview = true,
                 }: PickerProps) => {
     const {t} = useTranslation();
-    const {white, primary} = useColors();
+    const { colors } = useTailwindVars();
     const [visible, setIsVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -247,7 +248,7 @@ const Picker = ({
     const galleryButtonStyle = {
         ...Platform.select({
             ios: {
-                shadowColor: primary,
+                shadowColor: colors.primary,
                 shadowOffset: {width: 0, height: 2},
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
@@ -274,7 +275,7 @@ const Picker = ({
                         return (
                             <TouchableOpacity onPress={pickFromGallery}>
                                 <View
-                                    className="w-[120px] h-[150px] rounded-[10px] flex-row items-center p-[10px] gap-2 justify-center border-dashed border border-grey4 overflow-hidden"
+                                    className="w-[120px] h-[150px] rounded-[10px] flex-row items-center p-[10px] gap-2 justify-center border-dashed border border-border overflow-hidden"
                                     style={galleryButtonStyle}
                                 >
                                     {isProcessing ? (
@@ -291,7 +292,7 @@ const Picker = ({
                                             {/*    size={18}*/}
                                             {/*    color="#666"*/}
                                             {/*/>*/}
-                                            <Text className="text-grey2 text-xs" numberOfLines={1}>
+                                            <Text className="text-muted-foreground text-xs" numberOfLines={1}>
                                                 {selectFilesTitle || ` ${t("selectFiles")}(${files?.length || 0}/${maxFiles})`}
                                             </Text>
                                         </>
@@ -335,7 +336,7 @@ const Picker = ({
                             onPress={() => setIsVisible(false)}
                             className="bg-black/20 px-[5px] py-[5px] rounded-full"
                         >
-                            <MaterialIcons name="close" size={20} color="white"/>
+                            <MaterialIcons name="close" size={20} color="colors.background"/>
                         </TouchableOpacity>
                     </View>
 
@@ -418,8 +419,8 @@ const Picker = ({
                         }}
                     >
                         <View className="flex-row justify-between items-center">
-                            <View className="bg-white/20 px-[15px] py-[7px] rounded-full">
-                                <Text className="text-white text-sm">
+                            <View className="bg-colors.background/20 px-[15px] py-[7px] rounded-full">
+                                <Text className="text-colors.background text-sm">
                                     {currentIndex + 1} / {previewUrls?.length || 0}
                                 </Text>
                             </View>
@@ -428,8 +429,8 @@ const Picker = ({
                                 onPress={() => removeItem(files[currentIndex])}
                                 className="bg-black/20 px-[15px] py-[7px] rounded-full flex-row items-center gap-[5px]"
                             >
-                                <MaterialIcons name="delete" size={16} color={white}/>
-                                <Text className="text-white">{t("delete")}</Text>
+                                <MaterialIcons name="delete" size={16} color={colors.background}/>
+                                <Text className="text-colors.background">{t("delete")}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

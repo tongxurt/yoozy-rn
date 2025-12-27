@@ -1,33 +1,25 @@
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
-import {useQuery} from "@tanstack/react-query";
-import {listQuestions, retryQuestion} from "@/api/api";
-import React, {useCallback} from "react";
-import {router, useFocusEffect, usePathname} from "expo-router";
+import { listQuestions, retryQuestion } from "@/api/api";
 import useDateFormatter from "@/hooks/useDateFormatter";
-import {useSettings} from "@/hooks/useSettings";
-import {useTranslation} from "@/i18n/translation";
-import {useColors} from "@/hooks/uesColors";
+import { useSettings } from "@/hooks/useSettings";
+import useTailwindVars from "@/hooks/useTailwindVars";
+import { useTranslation } from "@/i18n/translation";
+import { useQuery } from "@tanstack/react-query";
+import { router, useFocusEffect, usePathname } from "expo-router";
+import React, { useCallback } from "react";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+
 import MediaView from "@/components/Resource/MediaView";
-import {isMedia} from "@/utils/resource";
+import { isMedia } from "@/utils/resource";
 
 function LatestQuestionList() {
     // const {theme} = useTheme();
 
+    const { colors } = useTailwindVars();
+    const { formatToNow } = useDateFormatter();
+    const { t } = useTranslation();
     const {
-        primary,
-        error: errorColor,
-        warning,
-        grey0,
-        grey5,
-        background,
-    } = useColors();
-    const {formatToNow} = useDateFormatter();
-    const {t} = useTranslation();
-    const {
-        settings: {scenes},
+        settings: { scenes },
     } = useSettings();
-
-    const colors = useColors();
 
     const pathname = usePathname();
 
@@ -43,7 +35,7 @@ function LatestQuestionList() {
         queryKey: ["questions", true],
         refetchInterval: 10000,
         enabled: pathname === "/session",
-        queryFn: ({pageParam}) =>
+        queryFn: ({ pageParam }) =>
             listQuestions({
                 startTs: Math.floor((Date.now() - 60 * 60 * 1000) / 1000),
                 sort: "createdAt_-1",
@@ -75,7 +67,7 @@ function LatestQuestionList() {
     // })
 
     const retry = (id: string) => {
-        retryQuestion({questionId: id}).then((result) => {
+        retryQuestion({ questionId: id }).then((result) => {
             if (result?.data?.code === "exceeded") {
                 router.navigate(`/pricing`);
             } else {
@@ -86,16 +78,16 @@ function LatestQuestionList() {
 
     return (
         <View className={"gap-4"}>
-            <Text className={"text-md text-grey2 px-[15px]"}>
+            <Text className={"text-md text-muted-foreground px-[15px]"}>
                 {t("lastOneHour")} ({questions?.length || 0})
             </Text>
             <FlatList
                 className={"px-5"}
                 data={questions}
                 horizontal
-                ItemSeparatorComponent={() => <View className={"p-[8px]"}/>}
+                ItemSeparatorComponent={() => <View className={"p-[8px]"} />}
                 showsHorizontalScrollIndicator={false}
-                renderItem={({item: question, index}) => {
+                renderItem={({ item: question, index }) => {
 
                     const media = question.session?.resources?.filter((x: any) =>
                         isMedia(x)
@@ -111,27 +103,27 @@ function LatestQuestionList() {
                                 onPress={() => routeToSession(question?.session?._id)}
                                 key={index}
                                 className={
-                                    "relative h-[100px] w-[100px] bg-background1 rounded-md"
+                                    "relative h-[100px] w-[100px] bg-muted rounded-md"
                                 }
                             >
-                                <MediaView item={media} width={100} height={100}/>
+                                <MediaView item={media} width={100} height={100} />
                                 {/*<Text className={'text-white'}>{question.status}</Text>*/}
 
                                 <View
                                     className="absolute top-1 left-1 flex-row gap-1 items-center bg-background/90 px-2 py-1 rounded-full">
-                                    <View className="w-2 h-2 bg-green-500 rounded-full"/>
+                                    <View className="w-2 h-2 bg-green-500 rounded-full" />
                                     <Text className="text-white text-xs">
                                         {t(`status.clickToView`)}
                                     </Text>
                                     {/*{itemScene?.getSceneIcon({*/}
                                     {/*    size: 9,*/}
-                                    {/*    color: colors.grey3,*/}
+                                    {/*    color: colors['muted-foreground'],*/}
                                     {/*})}*/}
                                 </View>
 
                                 <View
-                                    className={'rounded-lg absolute top-0 left-0 right-0 bottom-0 bg-plain/50 items-center justify-center'}>
-                                    {itemScene?.getSceneIcon({size: 30, color: colors.primary})}
+                                    className={'rounded-lg absolute top-0 left-0 right-0 bottom-0 bg-background/50 items-center justify-center'}>
+                                    {itemScene?.getSceneIcon({ size: 30, color: colors.primary })}
                                 </View>
                             </TouchableOpacity>
                         );
@@ -144,21 +136,21 @@ function LatestQuestionList() {
                                 onPress={() => retry(question?._id)}
                                 key={index}
                                 className={
-                                    "relative h-[100px] w-[100px] bg-background1 rounded-md"
+                                    "relative h-[100px] w-[100px] bg-muted rounded-md"
                                 }
                             >
-                                <MediaView item={media} width={100} height={100}/>
+                                <MediaView item={media} width={100} height={100} />
                                 {/*<Text className={'text-white'}>{question.status}</Text>*/}
 
                                 <View
                                     className="absolute top-1 left-1 flex-row gap-1 items-center bg-background/90 px-2 py-1 rounded-full">
-                                    <View className="w-2 h-2 bg-red-500 rounded-full"/>
-                                    <Text className="text-grey2 text-xs">
+                                    <View className="w-2 h-2 bg-red-500 rounded-full" />
+                                    <Text className="text-muted-foreground text-xs">
                                         {t(`status.clickToRetry`)}{" "}
                                     </Text>
                                     {/*{itemScene?.getSceneIcon({*/}
                                     {/*    size: 9,*/}
-                                    {/*    color: colors.grey3,*/}
+                                    {/*    color: colors['muted-foreground'],*/}
                                     {/*})}*/}
                                 </View>
                             </TouchableOpacity>
@@ -172,21 +164,21 @@ function LatestQuestionList() {
                                 onPress={() => retry(question?._id)}
                                 key={index}
                                 className={
-                                    "relative h-[100px] w-[100px] bg-background1 rounded-md"
+                                    "relative h-[100px] w-[100px] bg-muted rounded-md"
                                 }
                             >
-                                <MediaView item={media} width={100} height={100}/>
+                                <MediaView item={media} width={100} height={100} />
                                 {/*<Text className={'text-white'}>{question.status}</Text>*/}
 
                                 <View
                                     className="absolute top-1 left-1 flex-row gap-1 items-center bg-background/90 px-2 py-1 rounded-full">
-                                    <View className="w-2 h-2 bg-yellow-500 rounded-full"/>
-                                    <Text className="text-grey2 text-xs">
+                                    <View className="w-2 h-2 bg-yellow-500 rounded-full" />
+                                    <Text className="text-muted-foreground text-xs">
                                         {t(`status.noCredit`)}{" "}
                                     </Text>
                                     {/*{itemScene?.getSceneIcon({*/}
                                     {/*    size: 9,*/}
-                                    {/*    color: colors.grey3,*/}
+                                    {/*    color: colors['muted-foreground'],*/}
                                     {/*})}*/}
                                 </View>
                             </TouchableOpacity>
@@ -197,30 +189,30 @@ function LatestQuestionList() {
                         <View
                             key={index}
                             className={
-                                "relative h-[100px] w-[100px] bg-background1 rounded-md"
+                                "relative h-[100px] w-[100px] bg-muted rounded-md"
                             }
                         >
                             {/*<View className="absolute top-0 left-0 right-0 bottom-0">*/}
                             {/*  <ProgressBar />*/}
                             {/*</View>*/}
-                            <MediaView item={media} width={100} height={100}/>
+                            <MediaView item={media} width={100} height={100} />
                             {/*<Text className={'text-white'}>{question.status}</Text>*/}
                             <View
                                 className="absolute top-1 left-1 flex-row gap-1 items-center bg-background/90 px-2 py-1 rounded-full">
-                                <View className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"/>
-                                <Text className="text-grey2 text-xs">
+                                <View className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
+                                <Text className="text-muted-foreground text-xs">
                                     {t(`status.clickToProcessing`)}{" "}
                                 </Text>
                                 {/*{itemScene?.getSceneIcon({*/}
                                 {/*    size: 9,*/}
-                                {/*    color: colors.grey3,*/}
+                                {/*    color: colors['muted-foreground'],*/}
                                 {/*})}*/}
                             </View>
                         </View>
                     );
                 }}
             />
-            <View className={"bg-background1 h-[0.5px]"}/>
+            <View className={"bg-muted h-[0.5px]"} />
         </View>
     );
 }

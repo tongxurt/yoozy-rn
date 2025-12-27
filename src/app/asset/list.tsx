@@ -57,7 +57,7 @@ const AssetList = () => {
                     className="flex-col gap-3"
                 >
                     <View className="flex-row items-center gap-2">
-                        <Text className="text-sm font-medium" style={{ color: colors.grey0 }}>{item.commodity?.brand}</Text>
+                        <Text className="text-sm font-medium" style={{ color: colors.foreground }}>{item.commodity?.brand}</Text>
                     </View>
                     {/* Left: Image / Thumbnail */}
                     <View className="w-[130px] aspect-[3/4] rounded-xl overflow-hidden bg-gray-200 relative">
@@ -119,10 +119,10 @@ const AssetList = () => {
                 !isLoading ? (
                     <View className="items-center justify-center py-32 opacity-60">
                         <View className="bg-gray-100 p-6 rounded-full mb-4">
-                            <Feather name="image" size={32} color={colors.grey3} />
+                            <Feather name="image" size={32} color={colors['muted-foreground']} />
                         </View>
-                        <Text className="text-sm font-medium" style={{ color: colors.grey2 }}>No Assets Found</Text>
-                        <Text className="text-xs mt-2" style={{ color: colors.grey3 }}>Create your first asset to get started</Text>
+                        <Text className="text-sm font-medium" style={{ color: colors['muted-foreground'] }}>No Assets Found</Text>
+                        <Text className="text-xs mt-2" style={{ color: colors['muted-foreground'] }}>Create your first asset to get started</Text>
                     </View>
                 ) : null
             }

@@ -1,9 +1,10 @@
-import { useColors } from "@/hooks/uesColors";
+
+import useTailwindVars from "@/hooks/useTailwindVars";
 import React, { useEffect, useRef } from "react";
 import { View, Animated, StyleSheet, Text } from "react-native";
 
 export default function SquareProgressBar() {
-  const { primary } = useColors();
+  const { colors } = useTailwindVars();
   const size = 104;
   const strokeWidth = 5;
 
@@ -108,7 +109,7 @@ export default function SquareProgressBar() {
             styles.border,
             styles.topBorder,
             {
-              backgroundColor: primary,
+              backgroundColor: colors.primary,
               width: topWidth,
               height: strokeWidth,
             },
@@ -121,7 +122,7 @@ export default function SquareProgressBar() {
             styles.border,
             styles.rightBorder,
             {
-              backgroundColor: primary,
+              backgroundColor: colors.primary,
               width: strokeWidth,
               height: rightHeight,
             },
@@ -134,7 +135,7 @@ export default function SquareProgressBar() {
             styles.border,
             styles.bottomBorder,
             {
-              backgroundColor: primary,
+              backgroundColor: colors.primary,
               width: bottomWidth,
               height: strokeWidth,
             },
@@ -147,7 +148,7 @@ export default function SquareProgressBar() {
             styles.border,
             styles.leftBorder,
             {
-              backgroundColor: primary,
+              backgroundColor: colors.primary,
               width: strokeWidth,
               height: leftHeight,
             },

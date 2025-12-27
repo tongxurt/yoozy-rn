@@ -12,7 +12,7 @@ const AccountInfo = ({account, simple}: { account: Account, simple?: boolean }) 
     }
 
     return (
-        <View className="bg-background2/70 rounded-2xl overflow-hidden">
+        <View className="bg-muted/70 rounded-2xl overflow-hidden">
             {/* 头部区域 */}
             <View className="p-4">
                 <View className="flex-row items-start">
@@ -31,7 +31,7 @@ const AccountInfo = ({account, simple}: { account: Account, simple?: boolean }) 
 
                             {/* 平台标识 */}
                             <View
-                                className="absolute -top-2 -right-2 w-8 h-8 bg-background2 rounded-full items-center justify-center border-2 border-primary">
+                                className="absolute -top-2 -right-2 w-8 h-8 bg-muted rounded-full items-center justify-center border-2 border-primary">
                                 <SocialIcon name={account.platform} size={16}/>
                             </View>
                         </View>
@@ -43,7 +43,7 @@ const AccountInfo = ({account, simple}: { account: Account, simple?: boolean }) 
                             {account.nickname || ''}
                         </Text>
 
-                        <Text className="text-grey2 text-sm mb-3">
+                        <Text className="text-muted-foreground text-sm mb-3">
                             {/*{account.followers || 0} 粉丝 • {account.posts || 0} 作品*/}
                             {account.followers || 0} 粉丝
                         </Text>

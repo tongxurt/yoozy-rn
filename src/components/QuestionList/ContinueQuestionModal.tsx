@@ -1,8 +1,9 @@
 import React, {useState} from "react";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {Text, TextInput, View, KeyboardAvoidingView, Platform} from "react-native";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
-import {useColors} from "@/hooks/uesColors";
+
 
 interface ContinueQuestionModalProps {
     visible: boolean;
@@ -79,15 +80,15 @@ const ContinueQuestionModal: React.FC<ContinueQuestionModalProps> =
                     {/* 自定义输入 */}
                     <View className="gap-2">
                         <View className={'flex-row justify-between'}>
-                            <Text className="text-grey2 text-base">自定义问题</Text>
+                            <Text className="text-muted-foreground text-base">自定义问题</Text>
 
-                            <Text className="text-grey0/70 text-sm">
+                            <Text className="text-foreground/70 text-sm">
                                 {customQuestion?.length || 0}/{maxLength}
                             </Text>
                         </View>
 
                         <TextInput
-                            className="bg-background2 p-4 rounded-lg text-white text-base border-primary"
+                            className="bg-muted p-4 rounded-lg text-white text-base border-primary"
                             placeholder="输入你的问题..."
                             placeholderTextColor="#9CA3AF"
                             value={customQuestion}

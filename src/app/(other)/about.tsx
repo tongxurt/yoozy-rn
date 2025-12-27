@@ -36,7 +36,7 @@ export default function AboutScreen() {
         <Text className="text-2xl font-bold text-white mb-3">
           {t("aboutAppTitle")}
         </Text>
-        <Text className="text-base text-grey2">{t("aboutSubtitle")}</Text>
+        <Text className="text-base text-muted-foreground">{t("aboutSubtitle")}</Text>
       </View>
 
       {/* 关于我们 */}
@@ -44,7 +44,7 @@ export default function AboutScreen() {
         <Text className="text-lg font-bold text-white mb-4">
           {t("aboutUsSection")}
         </Text>
-        <Text className="text-grey2 text-sm leading-6">
+        <Text className="text-muted-foreground text-sm leading-6">
           {t("aboutUsContent")}
         </Text>
       </View>
@@ -57,7 +57,7 @@ export default function AboutScreen() {
           </Text>
           <View className="space-y-3">
             {feature.itemKeys.map((itemKey, itemIndex) => (
-              <Text key={itemIndex} className="text-grey2 text-sm leading-6">
+              <Text key={itemIndex} className="text-muted-foreground text-sm leading-6">
                 {t(itemKey)}
               </Text>
             ))}
@@ -70,10 +70,10 @@ export default function AboutScreen() {
         <Text className="text-lg font-bold text-white mb-4 text-center">
           {t("ourMission")}
         </Text>
-        <Text className="text-base text-grey2 text-center mb-3">
+        <Text className="text-base text-muted-foreground text-center mb-3">
           {t("missionTitle")}
         </Text>
-        <Text className="text-sm text-grey2 leading-6">
+        <Text className="text-sm text-muted-foreground leading-6">
           {t("missionContent")}
         </Text>
       </View>

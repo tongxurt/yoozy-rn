@@ -10,7 +10,8 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 import {ReactNode, useEffect, useRef} from 'react';
-import {useColors} from '@/hooks/uesColors';
+import useTailwindVars from "@/hooks/useTailwindVars";
+
 
 // 定义可能的出现位置
 type Position = 'top' | 'bottom';
@@ -137,7 +138,7 @@ const Modal = ({
     };
 
     const modalContentStyle = {
-        backgroundColor: colors.background0,
+        backgroundColor: colors.card,
         position: 'relative' as const,
         zIndex: 1002,
         overflow: 'hidden' as const,
@@ -196,7 +197,7 @@ const Modal = ({
                     <View className="items-center">
                         <View
                             className="w-10 h-1 rounded-full"
-                            style={{backgroundColor: colors.grey2}}
+                            style={{backgroundColor: colors['muted-foreground']}}
                         />
                     </View>
                 )}

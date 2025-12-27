@@ -1,4 +1,5 @@
 import {Alert, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import React, {useState} from "react";
 import {Stack} from "react-native-flex-layout";
 import Button from "@/components/ui/Button";
@@ -9,7 +10,7 @@ import {useTranslation} from "@/i18n/translation";
 import * as Clipboard from 'expo-clipboard';
 import AdvancedInput from "@/components/AdvancedInput";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import {useColors} from "@/hooks/uesColors";
+
 
 export default function ShareLinkInput({
                                            onComplete,
@@ -97,7 +98,7 @@ export default function ShareLinkInput({
                 <AdvancedInput
                     // className="rounded-[8px] p-[12px] text-[14px] text-white mb-[20px] bg-grey4 h-[200px]"
                     placeholder={t("inputShareLink")}
-                    placeholderTextColor={colors.grey2}
+                    placeholderTextColor={colors['muted-foreground']}
                     showSoftInputOnFocus={false}
                     value={link}
                     editable={!loading}
@@ -112,10 +113,10 @@ export default function ShareLinkInput({
                     () => Alert.alert(t("linkRuleTitle"), t("linkRuleDetail"))
                 }>
                     <View className={'flex-row gap-0.5 items-center'}>
-                        <Text className={'text-grey4 text-sm'}>
+                        <Text className={'text-disabled text-sm'}>
                             {t("linkRuleTitle")}
                         </Text>
-                        <AntDesign name="questioncircle" size={12} color={colors.grey4}/>
+                        <AntDesign name="questioncircle" size={12} color={colors.border}/>
                     </View>
                 </TouchableOpacity>
             </View>

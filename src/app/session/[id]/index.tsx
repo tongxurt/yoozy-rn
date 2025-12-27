@@ -54,11 +54,11 @@ const Session = () => {
         <View className="flex-1 bg-background">
             {/* Header */}
             <View className="px-5 pt-4 flex-row justify-between items-center">
-                <Text className="text-[22px] font-bold" style={{ color: colors.grey0 }}>智能成片</Text>
+                <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>智能成片</Text>
                 <View className="flex-row items-center gap-2">
                     <CreditEntry />
                     <TouchableOpacity onPress={() => router.back()} style={{ width: 32, height: 32, justifyContent: "center", alignItems: "center" }} activeOpacity={0.7}>
-                        <MaterialCommunityIcons name="arrow-collapse" size={24} color={colors.grey0} />
+                        <MaterialCommunityIcons name="arrow-collapse" size={24} color={colors.foreground} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -92,8 +92,8 @@ const Session = () => {
                                     </LinearGradient>
                                 ) : (
                                     <View className="h-[38px] flex-row items-center justify-center gap-1.5">
-                                        {step.icon(colors.grey2)}
-                                        <Text className="text-xs font-medium" style={{ color: colors.grey2 }}>{step.title}</Text>
+                                        {step.icon(colors['muted-foreground'])}
+                                        <Text className="text-xs font-medium" style={{ color: colors['muted-foreground'] }}>{step.title}</Text>
                                     </View>
                                 )}
                             </TouchableOpacity>

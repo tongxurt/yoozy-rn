@@ -1,27 +1,34 @@
 export const light = {
-  "--plain": "255 255 255",
   "--background": "255 255 255",
-  "--background0": "238 238 245",
-  "--background1": "226 226 238",
-  "--background2": "220 220 220",
-  "--black": "17 24 39",
-  "--disabled": "229 231 235",
-  "--divider": "0 0 0 0.08",
-  "--error": "239 68 68",
-  "--grey0": "55 65 81",
-  "--grey1": "75 85 99",
-  "--grey2": "107 114 128",
-  "--grey3": "156 163 175",
-  "--grey4": "209 213 219",
-  "--grey5": "243 244 246",
-  "--greyoutline": "156 163 175",
+  "--foreground": "28 28 30", // Darker for better contrast
+
+  "--card": "255 255 255", // Clean card look
+  "--card-foreground": "28 28 30",
+
+  "--popover": "255 255 255",
+  "--popover-foreground": "28 28 30",
+
   "--primary": "113 80 255",
-  "--search-bg": "55 65 81",
-  "--secondary": "168 85 247",
+  "--primary-foreground": "255 255 255",
+
+  "--secondary": "244 244 245", // Light gray for secondary actions
+  "--secondary-foreground": "24 24 27",
+
+  "--muted": "244 244 245",
+  "--muted-foreground": "113 113 122", // Muted text
+
+  "--accent": "244 244 245",
+  "--accent-foreground": "24 24 27",
+
+  "--destructive": "239 68 68",
+  "--destructive-foreground": "255 255 255",
+
+  "--border": "228 228 231",
+  "--input": "238 238 245",
+  "--ring": "113 80 255",
+
   "--success": "34 197 94",
   "--warning": "245 158 11",
-  "--white": "0 0 0",
-  "--card-bg": "255 255 255",
 
   "--fontSizeXXS": "9px",
   "--fontSizeXS": "12px",
@@ -32,29 +39,36 @@ export const light = {
 };
 
 export const dark = {
-  "--plain": "0 0 0",
-  "--background": "15 15 15",
-  "--background0": "20 20 20",
-  "--background1": "25 25 25",
-  "--background2": "30 30 30",
-  "--black": "243 244 246",
-  "--disabled": "75 85 99",
-  "--divider": "255 255 255 0.08",
-  "--error": "248 113 113",
-  "--grey0": "243 244 246",
-  "--grey1": "209 213 219",
-  "--grey2": "156 163 175",
-  "--grey3": "107 114 128",
-  "--grey4": "75 85 99",
-  "--grey5": "31 31 31",
-  "--greyoutline": "75 85 99",
+  "--background": "9 9 11", // Very dark (zinc-950)
+  "--foreground": "250 250 250",
+
+  "--card": "9 9 11",
+  "--card-foreground": "250 250 250",
+
+  "--popover": "9 9 11",
+  "--popover-foreground": "250 250 250",
+
   "--primary": "113 80 255",
-  "--search-bg": "31 41 55",
-  "--secondary": "196 181 253",
-  "--success": "94 222 128",
-  "--warning": "251 191 36",
-  "--white": "255 255 255",
-  "--card-bg": "20 20 20",
+  "--primary-foreground": "255 255 255",
+
+  "--secondary": "39 39 42", // Zinc-800
+  "--secondary-foreground": "250 250 250",
+
+  "--muted": "39 39 42",
+  "--muted-foreground": "161 161 170",
+
+  "--accent": "39 39 42",
+  "--accent-foreground": "250 250 250",
+
+  "--destructive": "127 29 29",
+  "--destructive-foreground": "250 250 250",
+
+  "--border": "39 39 42",
+  "--input": "39 39 42",
+  "--ring": "113 80 255",
+
+  "--success": "34 197 94",
+  "--warning": "245 158 11",
 
   "--fontSizeXXS": "9px",
   "--fontSizeXS": "12px",
@@ -64,7 +78,6 @@ export const dark = {
   "--fontSizeXL": "20px",
 };
 
-// 添加新的类型定义
 type RemoveDashPrefix<T> = {
   [K in keyof T as K extends `--${infer R}` ? R : K]: T[K];
 };

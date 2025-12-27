@@ -1,4 +1,5 @@
-import { useColors } from '@/hooks/uesColors';
+
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -29,7 +30,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
     stackScreenProps,
 }) => {
 
-    const { background } = useColors();
+    const { colors } = useTailwindVars();
     const { colorScheme } = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
@@ -39,7 +40,7 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
             style={[
                 {
                     flex: 1,
-                    backgroundColor: background,
+                    backgroundColor: colors.background,
                 },
                 style,
             ]}

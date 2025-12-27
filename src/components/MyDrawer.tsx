@@ -1,8 +1,9 @@
 import React from 'react';
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {View, Text, Image, TouchableOpacity, ScrollView, Modal, Animated, Dimensions, Platform} from 'react-native';
 import {AntDesign} from '@expo/vector-icons';
 import {router} from 'expo-router';
-import {useColors} from '@/hooks/uesColors';
+
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 interface MenuItem {
     title: string;
@@ -83,7 +84,7 @@ interface Props {
 }
 
 export default function MyDrawer({visible, onClose}: Props) {
-    const {background} = useColors();
+    const { colors } = useTailwindVars();
     const [slideAnim] = React.useState(new Animated.Value(-300));
     const screenWidth = Dimensions.get('window').width;
     const drawerWidth = screenWidth * 0.8;
@@ -136,7 +137,7 @@ export default function MyDrawer({visible, onClose}: Props) {
                             {
                                 width: drawerWidth,
                                 transform: [{translateX: slideAnim}],
-                                backgroundColor: background,
+                                backgroundColor: colors.background,
                                 height: '100%',
                                 paddingTop: insets.top,
                             },

@@ -1,8 +1,9 @@
 import {Pressable, Text, TouchableOpacity, View} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import Modal from "@/components/ui/Modal";
 import {HStack} from "react-native-flex-layout";
 import {Fragment, useState} from "react";
-import {useColors} from "@/hooks/uesColors";
+
 import useGlobal from "@/hooks/useGlobal";
 import {useTranslation} from "@/i18n/translation";
 import {Grid} from "@/components/ui/Grid";
@@ -27,8 +28,8 @@ export default function SceneSelectorV2({
         <Fragment>
             <Pressable onPress={() => setOpen(true)}>
                 <HStack justify={"between"} items={"center"}>
-                    <Text className={`text-grey0 text-md`}>{t(`scene.${current.value}`)}</Text>
-                    <MaterialIcons name={"keyboard-arrow-down"} size={20} color={colors.grey0}/>
+                    <Text className={`text-foreground text-md`}>{t(`scene.${current.value}`)}</Text>
+                    <MaterialIcons name={"keyboard-arrow-down"} size={20} color={colors.foreground}/>
                 </HStack>
             </Pressable>
             <Modal
@@ -47,7 +48,7 @@ export default function SceneSelectorV2({
                                   rounded-lg
                                   items-center
                                   justify-center
-                                  bg-background1
+                                  bg-muted
                                   py-[10px]
                                   gap-[8px]
                                   `}

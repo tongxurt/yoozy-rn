@@ -1,7 +1,8 @@
 import {Modal, Text, View, ActivityIndicator, Platform, TouchableOpacity} from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import React, {useEffect, useRef, useState} from "react";
 import {useTranslation} from "@/i18n/translation";
-import {useColors} from "@/hooks/uesColors";
+
 
 const ProcessingModal = ({loading,}: { loading?: boolean, }) => {
 
@@ -15,7 +16,7 @@ const ProcessingModal = ({loading,}: { loading?: boolean, }) => {
             <View className="flex-1 bg-[#000000bf] justify-center items-center px-8">
                 {/* 内容卡片 */}
                 <View
-                    className="bg-cardBg rounded-2xl p-8 items-center"
+                    className="bg-card rounded-2xl p-8 items-center"
                     style={{
                         ...Platform.select({
                             ios: {
@@ -34,12 +35,12 @@ const ProcessingModal = ({loading,}: { loading?: boolean, }) => {
                     <ActivityIndicator size="large" color={colors.primary}/>
 
                     {/* 主标题 */}
-                    <Text className="text-xl font-bold text-grey0 mt-6">
+                    <Text className="text-xl font-bold text-foreground mt-6">
                         {t("payment.paying")}
                     </Text>
 
                     {/* 辅助提示文案 */}
-                    <Text className="text-base text-grey2 mt-2 text-center">
+                    <Text className="text-base text-muted-foreground mt-2 text-center">
                         {t("payment.payingTip")}
                     </Text>
                 </View>

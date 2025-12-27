@@ -52,7 +52,7 @@ const MediaView = ({
     if (!url) {
         return (
             <View
-                className={`rounded-[10px] bg-background1 border-b border-l border-r border-t border-grey5`}
+                className={`rounded-[10px] bg-muted border-b border-l border-r border-t border-grey5`}
                 style={{width, height}}
             />
         );
@@ -66,7 +66,7 @@ const MediaView = ({
         >
             <Image
                 source={{uri: url}}
-                className={`rounded-[10px] bg-background1 border-b border-l border-r border-t border-background1`}
+                className={`rounded-[10px] bg-muted border-b border-l border-r border-t border-background1`}
                 style={{width, height}}
                 resizeMode="cover"
                 fadeDuration={0}

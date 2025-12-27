@@ -11,7 +11,7 @@ interface ExpandableTextProps {
 const ExpandableText = ({
                             content,
                             maxLength = 100,
-                            className = 'text-sm text-grey0'
+                            className = 'text-sm text-foreground'
                         }: ExpandableTextProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [fadeAnim] = useState(new Animated.Value(1));

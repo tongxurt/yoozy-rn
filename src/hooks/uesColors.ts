@@ -1,4 +1,5 @@
 import {Theme, dark, light} from '@/tailwind.vars';
+import useTailwindVars from "@/hooks/useTailwindVars";
 import {useColorScheme} from "react-native";
 
 export const useColors = () => {

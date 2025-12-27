@@ -23,10 +23,10 @@ export default function ContactScreen() {
         </View>
 
         <View className="w-full">
-          <Text className="text-grey2 text-base mb-4 text-center">
+          <Text className="text-muted-foreground text-base mb-4 text-center">
             {t("contactQRText")}
           </Text>
-          <Text className="text-grey2 text-sm text-center">
+          <Text className="text-muted-foreground text-sm text-center">
             {t("contactEmail")}
           </Text>
         </View>

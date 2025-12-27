@@ -27,18 +27,18 @@ export default function TermsScreen() {
           {t("termsTitle")}
         </Text>
         <View className="flex-col justify-between mb-6">
-          <Text className="text-grey2 text-sm">{t("termsUpdateDate")}</Text>
-          <Text className="text-grey2 text-sm">{t("termsEffectiveDate")}</Text>
+          <Text className="text-muted-foreground text-sm">{t("termsUpdateDate")}</Text>
+          <Text className="text-muted-foreground text-sm">{t("termsEffectiveDate")}</Text>
         </View>
 
-        <Text className="text-grey2 text-sm mb-6">{t("termsIntro")}</Text>
+        <Text className="text-muted-foreground text-sm mb-6">{t("termsIntro")}</Text>
 
         {termsData.map((section, index) => (
           <View key={index} className="mb-8">
             <Text className="text-lg font-bold text-white mb-4">
               {t(section.titleKey)}
             </Text>
-            <Text className="text-grey2 text-sm leading-6">
+            <Text className="text-muted-foreground text-sm leading-6">
               {t(section.contentKey)}
             </Text>
           </View>
