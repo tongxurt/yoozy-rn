@@ -100,13 +100,13 @@ const AssetList = () => {
             contentContainerStyle={{
                 padding: containerPadding,
             }}
+            ItemSeparatorComponent={() => <View className="h-4" />}
             refreshControl={
                 <CustomRefreshControl
                     refreshing={isRefetching}
                     onRefresh={() => void refetch()}
                 />
             }
-
             onEndReached={() => {
                 if (hasNextPage && !isFetchingNextPage) {
                     void fetchNextPage();

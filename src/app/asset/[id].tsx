@@ -17,6 +17,7 @@ import {
     Image,
     ScrollView,
     Text,
+    TextInput,
     TouchableOpacity,
     View
 } from "react-native";
@@ -24,6 +25,9 @@ import {
 const AssetEditorScreen = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { colors } = useTailwindVars();
+    const [editingScript, setEditingScript] = React.useState(false);
+    const [scriptValue, setScriptValue] = React.useState('');
+    const [updatingScript, setUpdatingScript] = React.useState(false);
     const [videoPreview, setVideoPreview] = React.useState<string | null>(null);
 
     const { data: asset, isLoading, refetch } = useQuery({
@@ -66,17 +70,89 @@ const AssetEditorScreen = () => {
         );
     };
 
-    const renderJobData = (dataKey: string, data: any) => {
-        if (!data) return null;
+    const handleRetry = (index: number, dataKey: string) => {
+        Alert.alert(
+            "确认重试",
+            "确认重新执行当前任务？数据将被清空。",
+            [
+                { text: "取消", style: "cancel" },
+                {
+                    text: "确认",
+                    onPress: async () => {
+                        try {
+                            const currentWorkflow = asset?.data?.data?.workflow;
+                            if (!currentWorkflow) return;
+
+                            const newWorkflow = {
+                                ...currentWorkflow,
+                                jobs: currentWorkflow?.jobs.map((job: any) => {
+                                    if (job.index === index) {
+                                        return { ...job, status: "running" };
+                                    }
+                                    return job;
+                                }),
+                                dataBus: {
+                                    ...currentWorkflow.dataBus,
+                                    [dataKey]: null,
+                                },
+                            };
+                            await replaceWorkflow(newWorkflow);
+                            refetch();
+                        } catch (e) {
+                            Alert.alert("Error", "重试提交失败");
+                        }
+                    },
+                },
+            ]
+        );
+    };
+
+    const handleSaveScript = async (index: number) => {
+        const currentWorkflow = asset?.data?.data?.workflow;
+        if (!currentWorkflow) return;
+
+        setUpdatingScript(true);
+        try {
+            const newWorkflow = {
+                ...currentWorkflow,
+                jobs: currentWorkflow.jobs.map((job: any) => {
+                    if (job.index === index) {
+                        return {
+                            ...job,
+                            dataBus: {
+                                ...job.dataBus,
+                                segmentScript: {
+                                    script: scriptValue,
+                                },
+                            },
+                        };
+                    }
+                    return job;
+                }),
+            };
+
+            await replaceWorkflow(newWorkflow);
+            setEditingScript(false);
+            refetch();
+        } catch (e) {
+            console.error(e);
+            Alert.alert("Error", "脚本更新失败");
+        } finally {
+            setUpdatingScript(false);
+        }
+    };
+
+    const renderJobData = (index: number, dataKey: string, data: any) => {
+        if (!data && dataKey !== 'segmentScript') return null; // segmentScript can be empty if editing
 
         if (dataKey === "keyFrames") {
-
+            if (!data?.frames) return null;
             const images = data.frames.map((frame: any) => frame.url)
             return (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
-                    {data.frames?.map((frame: any, index: number) => (
-                        <View key={index} className={`w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden ${index !== 0 ? 'ml-2' : ''}`}>
-                            <XImageViewer defaultIndex={index} images={images}>
+                    {data.frames?.map((frame: any, idx: number) => (
+                        <View key={idx} className={`w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden ${idx !== 0 ? 'ml-2' : ''}`}>
+                            <XImageViewer defaultIndex={idx} images={images}>
                                 <Image source={{ uri: frame.url }} className="w-full h-full" resizeMode="cover" />
                             </XImageViewer>
                         </View>
@@ -85,7 +161,71 @@ const AssetEditorScreen = () => {
             );
         }
 
-        if (dataKey === "segmentsRemix" || dataKey === 'segmentScript') {
+        if (dataKey === 'segmentScript') {
+            const script = data?.script;
+
+            if (!script && !editingScript) {
+                return <Text className="text-gray-400 text-xs mt-2 italic">暂无脚本数据</Text>;
+            }
+
+            return (
+                <View className="mt-4">
+                    {!editingScript && (
+                        <View className="mb-2 flex-row justify-end">
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setScriptValue(script || '');
+                                    setEditingScript(true);
+                                }}
+                                className="flex-row items-center gap-1 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm"
+                            >
+                                <Feather name="edit-2" size={12} color="#6b7280" />
+                                <Text className="text-xs text-gray-500 font-medium">编辑脚本</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+
+                    {editingScript ? (
+                        <View className="bg-white rounded-xl border border-primary/20 p-1">
+                            <View className="bg-gray-50 p-2 flex-row justify-between items-center rounded-t-lg border-b border-gray-100">
+                                <Text className="text-xs font-bold text-primary">Markdown 编辑</Text>
+                                <View className="flex-row gap-2">
+                                    <TouchableOpacity
+                                        onPress={() => setEditingScript(false)}
+                                        disabled={updatingScript}
+                                        className="px-3 py-1 bg-gray-200 rounded-lg"
+                                    >
+                                        <Text className="text-xs text-gray-600">取消</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => handleSaveScript(index)}
+                                        disabled={updatingScript}
+                                        className="px-3 py-1 bg-primary rounded-lg flex-row items-center gap-1"
+                                    >
+                                        {updatingScript && <ActivityIndicator size="small" color="white" />}
+                                        <Text className="text-xs text-white font-bold">保存</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <TextInput
+                                value={scriptValue}
+                                onChangeText={setScriptValue}
+                                multiline
+                                className="p-3 text-sm text-gray-800 leading-6 min-h-[200px]"
+                                style={{ textAlignVertical: 'top' }}
+                                placeholder="输入脚本内容..."
+                            />
+                        </View>
+                    ) : (
+                        <View className="bg-white p-4 rounded-xl border border-gray-100">
+                            <Text className="text-sm text-gray-700 leading-6">{script}</Text>
+                        </View>
+                    )}
+                </View>
+            );
+        }
+
+        if (dataKey === "segmentsRemix") {
             if (data.url) {
                 return (
                     <View className="mt-4 w-40 aspect-[9/16] bg-black rounded-lg overflow-hidden">
@@ -105,12 +245,13 @@ const AssetEditorScreen = () => {
         }
 
         if (dataKey === "videoGenerations") {
+            // ... existing implementation
             const images = data.map((item: any) => item.lastFrame).filter((url: string) => !!url);
 
             return (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
                     {data.map((item: any, index: number) => (
-                        <View key={index} className={`w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 ${index !== 0 ? 'ml-2' : ''}`}>
+                        <View key={index} className={`w-36 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 ${index !== 0 ? 'ml-2' : ''}`}>
                             {item.status === 'running' ? (
                                 <View className="flex-1 items-center justify-center gap-2">
                                     <ActivityIndicator size="small" color={colors.primary} />
@@ -124,7 +265,7 @@ const AssetEditorScreen = () => {
                                 >
                                     <Image source={{ uri: item.lastFrame }} className="w-full h-full" resizeMode="cover" />
                                     <View className="absolute inset-0 items-center justify-center bg-black/10">
-                                        <Feather name="play-circle" size={20} color="white" />
+                                        <Feather name="play-circle" size={24} color="white" />
                                     </View>
                                 </TouchableOpacity>
                             ) : (
@@ -206,18 +347,26 @@ const AssetEditorScreen = () => {
                     <View className="flex-row items-center gap-2">
                         <Text className={`font-bold text-xs ${textColor}`}>{displayName}</Text>
                         {isConfirming && (
-                            <TouchableOpacity
-                                onPress={() => handleConfirm(job.index)}
-                                className="bg-yellow-500 px-2.5 py-1 rounded shadow-sm"
-                            >
-                                <Text className="text-white text-[10px] font-bold">确认</Text>
-                            </TouchableOpacity>
+                            <View className="flex-row gap-2">
+                                <TouchableOpacity
+                                    onPress={() => handleRetry(job.index, dataKey)}
+                                    className="bg-white border border-yellow-500 px-2.5 py-1 rounded shadow-sm"
+                                >
+                                    <Text className="text-yellow-600 text-[10px] font-bold">重试</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => handleConfirm(job.index)}
+                                    className="bg-yellow-500 px-2.5 py-1 rounded shadow-sm"
+                                >
+                                    <Text className="text-white text-[10px] font-bold">确认</Text>
+                                </TouchableOpacity>
+                            </View>
                         )}
                     </View>
                 </View>
 
                 {job.startedAt && <Text className="text-[10px] text-gray-400">Start: {new Date(job.startedAt * 1000).toLocaleTimeString()}</Text>}
-                {asset?.data?.data?.workflow?.dataBus && renderJobData(dataKey, asset.data.data.workflow.dataBus[dataKey])}
+                {asset?.data?.data?.workflow?.dataBus && renderJobData(job.index, dataKey, asset.data.data.workflow.dataBus[dataKey])}
             </View>
         );
     };

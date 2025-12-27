@@ -1,5 +1,31 @@
 
 export const assetWorkflowJobConfig = {
+    videoGenerationJob: {
+        label: '视频生成',
+        status: {
+            waiting: {
+                name: '视频生成等待中',
+                color: 'text-gray-500',
+                bg: 'bg-gray-50'
+            },
+            running: {
+                name: '视频生成运行中',
+                color: 'text-blue-500',
+                bg: 'bg-blue-50'
+            },
+            confirming: {
+                name: '视频生成确认中',
+                color: 'text-yellow-500',
+                bg: 'bg-yellow-50'
+            },
+            completed: {
+                name: '视频生成完成',
+                color: 'text-green-500',
+                bg: 'bg-green-50'
+            },
+        },
+        dataKey: 'videoGenerations'
+    },
     keyFramesGenerationJob: {
         label: '关键帧生成',
         status: {
@@ -131,4 +157,3 @@ export const assetWorkflowJobConfig = {
         dataKey: 'segmentsRemix'
     }
 }
-
