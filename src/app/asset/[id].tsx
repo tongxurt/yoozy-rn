@@ -217,7 +217,7 @@ const AssetEditorScreen = () => {
                             />
                         </View>
                     ) : (
-                        <View className="bg-white p-4 rounded-xl border border-gray-100">
+                        <View className="p-4 rounded-xl ">
                             <Text className="text-sm text-gray-700 leading-6">{script}</Text>
                         </View>
                     )}
