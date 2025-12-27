@@ -38,8 +38,6 @@ const Starter = () => {
 
     return (
         <ScreenContainer
-            className="flex-1" style={{ backgroundColor: colors.background }}
-            headerShown={false}
             stackScreenProps={{
                 animation: "fade",
                 animationDuration: 1,

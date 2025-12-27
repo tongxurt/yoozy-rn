@@ -2,17 +2,19 @@ import { createAssetV2 } from "@/api/asset";
 import { getCommodity } from "@/api/commodity";
 import { getTemplateSegment } from "@/api/resource";
 import CommoditySelectorModal from "@/components/commodity/selector_modal";
-import CreditEntry from "@/components/CreditEntry";
 import InspirationSelectorModal from "@/components/inspiration/selector_modal";
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useQuery } from "@tanstack/react-query";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
+
+
 
 const SelectorCard = ({
     title,
@@ -182,23 +184,12 @@ const SegmentReplication = () => {
 
     return (
         <ScreenContainer
-            className="flex-1"
-            style={{ backgroundColor: colors.background }}
-            headerShown={false}
-        >
+            stackScreenProps={{
+                animation: "fade",
+                animationDuration: 1,
+            }} >
             {/* Header */}
-            <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-                <Text className="text-[22px] font-bold" style={{ color: colors.grey0 }}>高光视频复刻</Text>
-                <View className={"flex-row items-center gap-2"}>
-                    <CreditEntry />
-                    <TouchableOpacity
-                        onPress={() => router.back()}
-                        style={{ width: 32, height: 32, justifyContent: "center", alignItems: "center" }}
-                    >
-                        <MaterialCommunityIcons name="arrow-collapse" size={25} color={colors.grey0} />
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <ScreenHeader title="复刻灵感" />
 
             {/* Content */}
             <View className="flex-1 px-5 pt-4">

@@ -1,6 +1,9 @@
 import { getAsset } from "@/api/asset";
 import { replaceWorkflow } from "@/api/workflow";
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import ModalVideoPlayer from "@/components/VideoPlayer";
+import XImageViewer from "@/components/XImageViewer";
 import { assetWorkflowJobConfig } from "@/consts";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
@@ -21,6 +24,7 @@ import {
 const AssetEditorScreen = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { colors } = useTailwindVars();
+    const [videoPreview, setVideoPreview] = React.useState<string | null>(null);
 
     const { data: asset, isLoading, refetch } = useQuery({
         queryKey: ["asset", id],
@@ -66,11 +70,15 @@ const AssetEditorScreen = () => {
         if (!data) return null;
 
         if (dataKey === "keyFrames") {
+
+            const images = data.frames.map((frame: any) => frame.url)
             return (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
                     {data.frames?.map((frame: any, index: number) => (
-                        <View key={index} className="w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 ml-3 first:ml-0">
-                            <Image source={{ uri: frame.url }} className="w-full h-full" resizeMode="cover" />
+                        <View key={index} className={`w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden ${index !== 0 ? 'ml-2' : ''}`}>
+                            <XImageViewer defaultIndex={index} images={images}>
+                                <Image source={{ uri: frame.url }} className="w-full h-full" resizeMode="cover" />
+                            </XImageViewer>
                         </View>
                     ))}
                 </ScrollView>
@@ -83,7 +91,7 @@ const AssetEditorScreen = () => {
                     <View className="mt-4 w-40 aspect-[9/16] bg-black rounded-lg overflow-hidden">
                         <Video
                             source={{ uri: data.url }}
-                            className="w-full h-full"
+                            style={{ width: "100%", height: "100%" }}
                             resizeMode={ResizeMode.COVER}
                             useNativeControls
                         />
@@ -97,34 +105,33 @@ const AssetEditorScreen = () => {
         }
 
         if (dataKey === "videoGenerations") {
+            const images = data.map((item: any) => item.lastFrame).filter((url: string) => !!url);
+
             return (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
                     {data.map((item: any, index: number) => (
-                        <View key={index} className="w-40 flex-col gap-2 ml-3 first:ml-0">
-                            {item.prompt && (
-                                <Text className="text-xs text-gray-500" numberOfLines={2}>
-                                    {item.prompt}
-                                </Text>
-                            )}
-                            <View className="w-full aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 justify-center items-center">
-                                {item.status === 'running' ? (
-                                    <View className="items-center gap-2">
-                                        <ActivityIndicator size="small" color={colors.primary} />
-                                        <Text className="text-xs text-gray-400">生成中...</Text>
+                        <View key={index} className={`w-28 aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 ${index !== 0 ? 'ml-2' : ''}`}>
+                            {item.status === 'running' ? (
+                                <View className="flex-1 items-center justify-center gap-2">
+                                    <ActivityIndicator size="small" color={colors.primary} />
+                                    <Text className="text-[10px] text-gray-400">生成中...</Text>
+                                </View>
+                            ) : item.status === 'completed' && item.lastFrame ? (
+                                <TouchableOpacity
+                                    activeOpacity={0.9}
+                                    className="w-full h-full relative"
+                                    onPress={() => setVideoPreview(item.url)}
+                                >
+                                    <Image source={{ uri: item.lastFrame }} className="w-full h-full" resizeMode="cover" />
+                                    <View className="absolute inset-0 items-center justify-center bg-black/10">
+                                        <Feather name="play-circle" size={20} color="white" />
                                     </View>
-                                ) : item.status === 'completed' && item.url ? (
-                                    <Video
-                                        source={{ uri: item.url }}
-                                        className="w-full h-full"
-                                        posterSource={{ uri: item.lastFrame }}
-                                        resizeMode={ResizeMode.COVER}
-                                        useNativeControls
-                                        isLooping
-                                    />
-                                ) : (
-                                    <Text className="text-xs text-gray-300">Queuing</Text>
-                                )}
-                            </View>
+                                </TouchableOpacity>
+                            ) : (
+                                <View className="flex-1 items-center justify-center">
+                                    <Text className="text-[10px] text-gray-300">Queuing</Text>
+                                </View>
+                            )}
                         </View>
                     ))}
                 </ScrollView>
@@ -135,7 +142,7 @@ const AssetEditorScreen = () => {
             return (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-4 py-2">
                     {data.map((item: any, index: number) => (
-                        <View key={index} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-3 w-[300px] ml-3 first:ml-0">
+                        <View key={index} className={`bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-3 w-[300px] ${index !== 0 ? 'ml-3' : ''}`}>
                             <View className="flex-row items-center gap-2 mb-3 pb-2 border-b border-gray-50">
                                 <View className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                                 <Text className="text-xs font-bold text-gray-700">片段 #{index + 1}</Text>
@@ -266,8 +273,9 @@ const AssetEditorScreen = () => {
     }
 
     return (
-        <ScreenContainer stackScreenProps={{ title: "任务详情", headerTitle: "任务详情", headerTransparent: false, headerStyle: { backgroundColor: 'white' } }}>
-            <ScrollView className="flex-1 bg-gray-50" contentContainerStyle={{ paddingBottom: 40 }}>
+        <ScreenContainer>
+            <ScreenHeader title="复刻灵感" />
+            <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 40 }}>
                 <View className="px-5 py-6">
                     {/* Header */}
                     <View className="mb-6">
@@ -335,6 +343,11 @@ const AssetEditorScreen = () => {
                     </View>
                 </View>
             </ScrollView>
+            <ModalVideoPlayer
+                visible={!!videoPreview}
+                videoUrl={videoPreview || undefined}
+                onClose={() => setVideoPreview(null)}
+            />
         </ScreenContainer>
     );
 };

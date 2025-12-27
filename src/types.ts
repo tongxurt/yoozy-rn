@@ -1,4 +1,9 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+
+export interface VideoMeta {
+    url: string;
+    coverUrl: string;
+}
 
 export interface Settings {
     scenes: Scene[];
@@ -20,7 +25,7 @@ export interface Scene {
     isPopular?: boolean;
     isNew?: boolean;
     description?: string;
-    getSceneIcon: ({size, color,}: { size: number, color: string }) => ReactNode;
+    getSceneIcon: ({ size, color, }: { size: number, color: string }) => ReactNode;
 
     [key: string]: any;
 }
