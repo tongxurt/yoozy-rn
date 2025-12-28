@@ -2,7 +2,7 @@ import { getCommodity } from "@/api/commodity";
 import ScreenContainer from "@/components/ScreenContainer";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState, } from "react";
@@ -66,6 +66,13 @@ export default function CommodityDetailScreen() {
 
     return (
         <ScreenContainer className="flex-1 bg-background" edges={[]}>
+            <TouchableOpacity
+                onPress={() => router.back()}
+                className="absolute left-4 z-10 w-10 h-10 items-center justify-center rounded-full bg-black/20"
+                style={{ top: insets.top + 10 }}
+            >
+                <Ionicons name="chevron-back" size={28} color="white" />
+            </TouchableOpacity>
             <ScrollView
                 className="flex-1"
                 showsVerticalScrollIndicator={false}
@@ -120,120 +127,120 @@ export default function CommodityDetailScreen() {
                 </View>
 
                 {/* Content Container */}
-                <View className="flex-1 -mt-8 bg-background rounded-t-[32px] overflow-hidden">
-                    <View className="px-6 pt-8 pb-4">
-                        {/* Header: Brand Only */}
-                        {!!commodity.brand && (
-                            <View className="flex-row items-center mb-3">
-                                <Text className="text-muted-foreground text-xs font-bold tracking-[0.2em] uppercase opacity-80">
-                                    {commodity.brand}
-                                </Text>
-                            </View>
-                        )}
+                <View className="flex-1 -mt-8 bg-background rounded-t-[32px] overflow-hidden shadow-2xl shadow-black/5">
+                    <View className="px-6 pt-8 pb-10 gap-6">
 
-                        {/* Title */}
-                        <Text className="text-black text-xl font-light leading-8 tracking-tight mb-2">
-                            {commodity.title}
-                        </Text>
-
-                        {/* Subtitle / Name */}
-                        {!!commodity.name && (
-                            <Text className="text-muted-foreground text-xs font-normal leading-5 opacity-80 mb-4">
-                                {commodity.name}
-                            </Text>
-                        )}
-
-                        {/* Tags */}
-                        {commodity.tags && commodity.tags.length > 0 && (
-                            <View className="flex-row flex-wrap gap-2 mb-6">
-                                {commodity.tags.map((tag: string, index: number) => (
-                                    <View key={index} className="bg-muted px-3 py-1.5 rounded-lg">
-                                        <Text className="text-muted-foreground text-[11px] font-medium">#{tag}</Text>
+                        {/* Header Section */}
+                        <View className="gap-3">
+                            {/* Brand & Tags Row */}
+                            <View className="flex-row items-center justify-between">
+                                {!!commodity.brand && (
+                                    <View className="bg-primary/10 px-3 py-1 rounded-full">
+                                        <Text className="text-primary text-[10px] font-bold tracking-wider uppercase">
+                                            {commodity.brand}
+                                        </Text>
                                     </View>
-                                ))}
+                                )}
+                                {commodity.tags && commodity.tags.length > 0 && (
+                                    <View className="flex-row gap-2">
+                                        {commodity.tags.slice(0, 2).map((tag: string, index: number) => (
+                                            <Text key={index} className="text-muted-foreground text-xs opacity-60">#{tag}</Text>
+                                        ))}
+                                    </View>
+                                )}
                             </View>
-                        )}
 
-                        <View className="h-[1px] bg-divider w-full my-6 opacity-50" />
+                            {/* Title */}
+                            <Text className="text-foreground text-2xl font-bold leading-9 tracking-tight">
+                                {commodity.title}
+                            </Text>
 
-                        {/* Description - Collapsible */}
+                            {/* Subtitle */}
+                            {!!commodity.name && (
+                                <Text className="text-muted-foreground text-sm font-medium leading-relaxed">
+                                    {commodity.name}
+                                </Text>
+                            )}
+                        </View>
+
+                        {/* Description */}
                         {!!commodity.description && (
-                            <View className="mb-8">
+                            <View className="py-2">
                                 <Text
-                                    className="text-black/90 text-[14px] leading-6 font-light tracking-wide text-justify"
+                                    className="text-foreground/90 text-[15px] leading-7 font-normal text-justify"
                                     numberOfLines={isDescriptionExpanded ? undefined : 3}
                                 >
                                     {commodity.description}
                                 </Text>
-                                {/* Toggle Button */}
-                                {(commodity.description.length > 100) && (
+                                {(commodity.description.length > 80) && (
                                     <TouchableOpacity
                                         onPress={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                                        className="mt-2 flex-row items-center"
+                                        className="mt-2 flex-row items-center self-start p-1 -ml-1"
                                     >
-                                        <Text className="text-black/60 text-xs font-medium mr-1">
-                                            {isDescriptionExpanded ? '收起' : '展开阅读'}
+                                        <Text className="text-primary text-xs font-bold mr-0.5">
+                                            {isDescriptionExpanded ? '收起' : '展开全部'}
                                         </Text>
                                         <Feather
                                             name={isDescriptionExpanded ? "chevron-up" : "chevron-down"}
                                             size={12}
-                                            color={colors['muted-foreground']}
+                                            color={colors.primary}
                                         />
                                     </TouchableOpacity>
                                 )}
                             </View>
                         )}
 
-                        {/* Insights / Marketing Combinations / Chances - Horizontal Layout */}
+                        {/* Marketing Angles / Chances */}
                         {(commodity.chances && commodity.chances.length > 0) && (
-                            <View className="-mx-6">
-                                <ScrollView
-                                    horizontal
-                                    showsHorizontalScrollIndicator={false}
-                                    contentContainerStyle={{ paddingHorizontal: 24, gap: 12 }}
-                                    className="pb-8"
-                                >
-                                    {commodity.chances.map((chance: any, cIdx: number) => (
-                                        <View
-                                            key={cIdx}
-                                            className="bg-muted/50 rounded-2xl p-5 w-[260px] border border-divider/50 shadow-sm"
-                                        >
-                                            {/* Header: Target Audience */}
-                                            {chance.targetAudience?.name && (
-                                                <View className="mb-4 flex-row items-center justify-between">
-                                                    <View className="bg-white px-2.5 py-1.5 rounded-lg border border-divider shadow-sm">
-                                                        <Text className="text-black text-[10px] font-bold tracking-wide">
-                                                            {chance.targetAudience.name}
-                                                        </Text>
-                                                    </View>
-                                                    <Feather name="target" size={14} color={colors['muted-foreground']} />
-                                                </View>
-                                            )}
+                            <View className="gap-4 pt-2">
+                                <View className="flex-row items-center gap-2">
+                                    <View className="w-1 h-4 bg-primary rounded-full" />
+                                    <Text className="text-base font-bold text-foreground">营销切入点</Text>
+                                    <Text className="text-xs text-muted-foreground ml-auto opacity-60">滑动查看更多</Text>
+                                </View>
 
-                                            {/* Divider */}
-                                            {chance.targetAudience?.name && chance.sellingPoints?.length > 0 && (
-                                                <View className="h-[1px] bg-divider/10 mb-4 w-full" />
-                                            )}
-
-                                            {/* Selling Points List */}
-                                            {chance.sellingPoints?.length > 0 && (
-                                                <View className="gap-2">
-                                                    {chance.sellingPoints.map((point: any, pIdx: number) => (
-                                                        <View key={pIdx} className="flex-row items-start gap-2">
-                                                            <View className="mt-1.5 w-1 h-1 rounded-full bg-primary" />
-                                                            <Text
-                                                                className="flex-1 text-muted-foreground/80 text-[11px] leading-4"
-                                                                numberOfLines={3}
-                                                            >
-                                                                {point?.description || point}
-                                                            </Text>
+                                <View className="-mx-6">
+                                    <ScrollView
+                                        horizontal
+                                        showsHorizontalScrollIndicator={false}
+                                        contentContainerStyle={{ paddingHorizontal: 24, gap: 16 }}
+                                        className="pb-4"
+                                    >
+                                        {commodity.chances.map((chance: any, cIdx: number) => (
+                                            <View
+                                                key={cIdx}
+                                                className="bg-card rounded-[24px] p-5 w-[280px] border border-border/60 shadow-sm shadow-black/5"
+                                            >
+                                                {/* Audience Header */}
+                                                <View className="flex-row items-center justify-between mb-4">
+                                                    <View className="flex-row items-center gap-3">
+                                                        <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center">
+                                                            <Feather name="users" size={18} color={colors.primary} />
                                                         </View>
-                                                    ))}
+                                                        <View>
+                                                            <Text className="text-[10px] text-muted-foreground font-medium mb-0.5">目标受众</Text>
+                                                            <Text className="text-foreground text-sm font-bold w-[180px]" numberOfLines={1}>{chance.targetAudience?.name || '通用受众'}</Text>
+                                                        </View>
+                                                    </View>
                                                 </View>
-                                            )}
-                                        </View>
-                                    ))}
-                                </ScrollView>
+
+                                                {/* Selling Points */}
+                                                {chance.sellingPoints?.length > 0 && (
+                                                    <View className="gap-3 bg-muted/30 p-3 rounded-xl">
+                                                        {chance.sellingPoints.map((point: any, pIdx: number) => (
+                                                            <View key={pIdx} className="flex-row items-start gap-2.5">
+                                                                <View className="bg-primary/40 w-1.5 h-1.5 rounded-full mt-1.5" />
+                                                                <Text className="flex-1 text-foreground/80 text-xs leading-5">
+                                                                    {point?.description || point}
+                                                                </Text>
+                                                            </View>
+                                                        ))}
+                                                    </View>
+                                                )}
+                                            </View>
+                                        ))}
+                                    </ScrollView>
+                                </View>
                             </View>
                         )}
                     </View>

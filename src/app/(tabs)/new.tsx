@@ -110,7 +110,7 @@ export default function Screen() {
   };
 
   return (
-    <ScreenContainer edges={['top']}>
+    <ScreenContainer>
       {/* 顶部标题栏 */}
 
       <ScreenHeader title="创作" closeable={false} />

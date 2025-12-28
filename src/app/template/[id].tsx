@@ -176,83 +176,84 @@ const Template = () => {
         visible={detailsVisible}
         onClose={() => setDetailsVisible(false)}
         position="bottom"
-        contentStyle={{ maxHeight: height * 0.7, borderTopLeftRadius: 24, borderTopRightRadius: 24, }}
+        contentStyle={{ maxHeight: height * 0.8, borderTopLeftRadius: 32, borderTopRightRadius: 32, backgroundColor: colors.background }}
       >
-        <ScrollView className="px-5 py-2 mb-6" showsVerticalScrollIndicator={false}>
-          {/* Header */}
-          <View className="flex-row justify-between items-center mb-6">
-            <Text className="text-white text-xl font-bold">模板详情</Text>
-          </View>
+        <View className="flex-1 bg-background overflow-hidden rounded-t-[32px]">
+          <ScrollView
+            className="flex-1"
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40, paddingTop: 24 }}
+            showsVerticalScrollIndicator={false}
+          >
+            {/* Header */}
+            <View className="flex-row justify-between items-center mb-6">
+              <Text className="text-xl font-bold text-foreground">模板详情</Text>
+              <TouchableOpacity onPress={() => setDetailsVisible(false)} className="w-8 h-8 items-center justify-center rounded-full bg-muted/50">
+                <Ionicons name="close" size={20} color={colors['muted-foreground']} />
+              </TouchableOpacity>
+            </View>
 
-          <View className="gap-6 pb-10">
-            {/* Description */}
-            {current?.description && (
-              <View className="gap-3">
-                <Text className="text-white/60 text-sm font-medium">模板描述</Text>
-                <Text className="text-white/90 text-base leading-6">
-                  {current.description}
-                </Text>
-              </View>
-            )}
+            <View className="gap-8">
+              {/* Description */}
+              {current?.description && (
+                <View className="gap-3">
+                  <Text className="text-sm font-semibold text-foreground">模板描述</Text>
+                  <Text className="text-base leading-7 text-muted-foreground">
+                    {current.description}
+                  </Text>
+                </View>
+              )}
 
-            {/* Script Segments */}
-            {segments.length > 0 && (
-              <View className="gap-4">
-                <Text className="text-white/60 text-sm font-medium">分镜详情 ({segments.length})</Text>
-                <View className="gap-6">
-                  {segments.map((seg: any, i: number) => (
-                    <View key={i} className="bg-white/5 p-4 rounded-xl gap-3">
-                      {/* Header: Time & Index */}
-                      <View className="flex-row justify-between items-center border-b border-white/5 pb-3">
-                        <View className="flex-row items-center gap-2">
-                          <View className="bg-primary/20 px-2 py-0.5 rounded">
+              {/* Script Segments */}
+              {segments.length > 0 && (
+                <View className="gap-4">
+                  <View className="flex-row items-baseline gap-2">
+                    <Text className="text-base font-bold text-foreground">分镜脚本</Text>
+                    <Text className="text-xs text-muted-foreground">共 {segments.length} 个镜头</Text>
+                  </View>
+
+                  <View className="gap-4">
+                    {segments.map((seg: any, i: number) => (
+                      <View key={i} className="bg-muted/30 border border-border/50 p-4 rounded-2xl gap-4">
+                        {/* Header: Time & Index */}
+                        <View className="flex-row justify-between items-center">
+                          <View className="bg-primary/10 px-2.5 py-1 rounded-lg">
                             <Text className="text-primary font-bold text-xs">镜头 {i + 1}</Text>
                           </View>
-                          <Text className="text-white/40 text-xs font-mono">{seg.timeStart ? seg.timeStart.toFixed(1) : '0.0'}s - {seg.timeEnd.toFixed(1)}s</Text>
+                          <View className="flex-row items-center gap-1 opacity-60">
+                            <Ionicons name="time-outline" size={12} color={colors.foreground} />
+                            <Text className="text-foreground text-xs font-medium tabular-nums">{seg.timeStart ? seg.timeStart.toFixed(1) : '0.0'}s - {seg.timeEnd.toFixed(1)}s</Text>
+                          </View>
                         </View>
-                      </View>
 
-                      {/* Main Description */}
-                      <View className="gap-1">
-                        <Text className="text-white/40 text-xs">画面描述</Text>
-                        <Text className="text-white/90 text-sm leading-6">{seg.description}</Text>
-                      </View>
-
-                      {/* Subtitle/Voiceover */}
-                      {(seg.voiceover || seg.subtitle) && (
-                        <View className="bg-white/5 p-3 rounded-lg border border-white/5">
-                          <Text className="text-white/40 text-xs mb-1">口播/字幕</Text>
-                          <Text className="text-white/80 text-sm italic">"{seg.voiceover || seg.subtitle}"</Text>
+                        {/* Main Description */}
+                        <View className="gap-1.5">
+                          <Text className="text-sm leading-6 text-foreground font-medium">{seg.description}</Text>
+                          {(seg.voiceover || seg.subtitle) && (
+                            <View className="mt-2 bg-background/50 p-3 rounded-xl border border-border/30">
+                              <Text className="text-muted-foreground text-xs mb-1 font-medium">口播/字幕</Text>
+                              <Text className="text-foreground/90 text-sm font-medium italic">"{seg.voiceover || seg.subtitle}"</Text>
+                            </View>
+                          )}
                         </View>
-                      )}
 
-                      {/* Styles Grid */}
-                      <View className="flex-row flex-wrap gap-3 pt-2">
-                        {seg.sceneStyle && (
-                          <View className="w-full gap-1 mb-2">
-                            <Text className="text-white/40 text-xs">场景风格</Text>
-                            <Text className="text-white/70 text-xs bg-white/5 p-2 rounded">{seg.sceneStyle}</Text>
-                          </View>
-                        )}
-                        {seg.shootingStyle && (
-                          <View className="w-full gap-1 mb-2">
-                            <Text className="text-white/40 text-xs">拍摄指导</Text>
-                            <Text className="text-white/70 text-xs bg-white/5 p-2 rounded leading-5">{seg.shootingStyle}</Text>
-                          </View>
-                        )}
-                        {seg.contentStyle && (
-                          <View className="w-full gap-1">
-                            <Text className="text-white/40 text-xs">内容逻辑</Text>
-                            <Text className="text-white/70 text-xs bg-white/5 p-2 rounded">{seg.contentStyle}</Text>
-                          </View>
-                        )}
-                      </View>
+                        {/* Styles Tags */}
+                        <View className="flex-row flex-wrap gap-2">
+                          {[
+                            { label: '场景', value: seg.sceneStyle },
+                            { label: '拍摄', value: seg.shootingStyle },
+                            { label: '内容', value: seg.contentStyle }
+                          ].filter(t => t.value).map((t, idx) => (
+                            <View key={idx} className="flex-row items-center bg-background border border-border/40 px-2 py-1 rounded-md gap-1.5">
+                              <Text className="text-muted-foreground text-[10px]">{t.label}</Text>
+                              <View className="w-[1px] h-2 bg-border" />
+                              <Text className="text-foreground text-xs">{t.value}</Text>
+                            </View>
+                          ))}
+                        </View>
 
-                      {/* Highlight Frames */}
-                      {seg.highlightFrames?.length > 0 && (
-                        <View className="mt-2 pt-3 border-t border-white/5">
-                          <Text className="text-white/40 text-xs mb-3">关键帧演示</Text>
-                          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="gap-3">
+                        {/* Highlight Frames */}
+                        {seg.highlightFrames?.length > 0 && (
+                          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-1 -mx-1 px-1" contentContainerStyle={{ gap: 8 }}>
                             {seg.highlightFrames.map((frame: any, idx: number) => (
                               <TouchableOpacity
                                 key={idx}
@@ -260,44 +261,44 @@ const Template = () => {
                                   setPreviewImages(seg.highlightFrames);
                                   setPreviewIndex(idx);
                                 }}
-                                className="w-32 gap-1"
+                                activeOpacity={0.9}
                               >
                                 <Image
                                   source={{ uri: frame.url }}
-                                  className="w-32 h-20 rounded-lg bg-white/10"
+                                  className="w-28 h-[74px] rounded-lg bg-muted border border-border/20"
                                   resizeMode="cover"
                                 />
-                                {frame.desc && (
-                                  <Text numberOfLines={2} className="text-white/30 text-[10px] m-1">{frame.desc}</Text>
-                                )}
                               </TouchableOpacity>
                             ))}
                           </ScrollView>
-                        </View>
-                      )}
-                    </View>
-                  ))}
-                </View>
-              </View>
-            )}
-
-            {/* Commodity Info */}
-            {!!current?.commodity?.name && (
-              <View className="gap-3">
-                <Text className="text-white/60 text-sm font-medium">关联商品/品牌</Text>
-                <View className="bg-white/5 rounded-xl p-4 flex-row items-center gap-3">
-                  <View className="flex-1">
-                    <Text className="text-white/90 text-base font-medium leading-relaxed">{current.commodity.name}</Text>
-                    {current.commodity.brand && (
-                      <Text className="text-white/50 text-xs mt-1">品牌: {current.commodity.brand}</Text>
-                    )}
+                        )}
+                      </View>
+                    ))}
                   </View>
                 </View>
-              </View>
-            )}
+              )}
 
-          </View>
-        </ScrollView>
+              {/* Commodity Info */}
+              {!!current?.commodity?.name && (
+                <View className="gap-3 pb-8">
+                  <Text className="text-base font-bold text-foreground">关联商品</Text>
+                  <View className="bg-card border border-border/50 rounded-2xl p-4 flex-row items-center gap-4 shadow-sm shadow-black/5">
+                    {current.commodity.coverUrl && (
+                      <Image source={{ uri: current.commodity.coverUrl }} className="w-12 h-12 rounded-lg bg-muted" />
+                    )}
+                    <View className="flex-1 gap-1">
+                      <Text className="text-foreground text-base font-bold leading-tight" numberOfLines={1}>{current.commodity.name}</Text>
+                      {current.commodity.brand && (
+                        <Text className="text-muted-foreground text-xs">品牌: {current.commodity.brand}</Text>
+                      )}
+                    </View>
+                    <Ionicons name="chevron-forward" size={16} color={colors['muted-foreground']} />
+                  </View>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </View>
       </Modal>
 
       {/* Image Preview Helper */}

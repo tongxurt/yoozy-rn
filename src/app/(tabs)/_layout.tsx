@@ -59,7 +59,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
                 color: isFocused ? colors.primary : colors['muted-foreground'],
               })}
               <Text
-                className={`text-[10px] font-medium ${isFocused ? "text-primary" : "text-muted-foreground"}`}
+                className={`text-[12px] font-medium ${isFocused ? "text-primary" : "text-muted-foreground"}`}
               >
                 {t(`tab.${route.name}`)}
               </Text>

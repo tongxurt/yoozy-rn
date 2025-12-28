@@ -15,7 +15,7 @@ export const light = {
   "--secondary-foreground": "24 24 27",
 
   "--muted": "244 244 245",
-  "--muted-foreground": "113 113 122", // Muted text
+  "--muted-foreground": "161 161 170", // Zinc-400 for premium subtle gray
 
   "--accent": "244 244 245",
   "--accent-foreground": "24 24 27",

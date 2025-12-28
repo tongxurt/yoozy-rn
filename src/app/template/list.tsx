@@ -2,10 +2,10 @@ import { listItems } from "@/api/resource";
 import { CustomRefreshControl } from "@/components/CustomRefreshControl";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
     ActivityIndicator,
     Dimensions,
@@ -14,33 +14,26 @@ import {
     NativeSyntheticEvent,
     ScrollView,
     Text,
-    TextInput,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 const numColumns = 2;
-const itemMargin = 8;
-const containerPadding = 10;
+const itemMargin = 12;
+const containerPadding = 16;
 const columnWidth =
     (screenWidth - containerPadding * 2 - itemMargin * (numColumns - 1)) /
     numColumns;
 
-export default function TemplateList() {
+interface TemplateListProps {
+    query?: string;
+}
+
+export default function TemplateList({ query = "" }: TemplateListProps) {
 
     const { colors } = useTailwindVars();
-    const [searchQuery, setSearchQuery] = useState("");
-    const [finalSearchQuery, setFinalSearchQuery] = useState("");
-
-    const handleSearchSubmit = () => {
-        setFinalSearchQuery(searchQuery);
-    };
-
-    const handleClearSearch = () => {
-        setSearchQuery("");
-        setFinalSearchQuery("");
-    };
+    // Removed internal search state and handlers
 
     const {
         data,
@@ -51,12 +44,12 @@ export default function TemplateList() {
         refetch,
         fetchNextPage,
     } = useInfiniteQuery({
-        queryKey: ["items", "video", finalSearchQuery],
+        queryKey: ["items", "video", query], // Use passed query
         queryFn: ({ pageParam }) => {
             const params = {
                 page: pageParam || 1,
                 size: 20,
-                keyword: finalSearchQuery,
+                keyword: query, // Use passed query
                 returnFields: 'coverUrl,status,commodity.name'
             };
             return listItems(params);
@@ -153,30 +146,6 @@ export default function TemplateList() {
 
     return (
         <View className="flex-1">
-            {/* Search Header */}
-
-            <View className="px-3 py-4 backdrop-blur-sm">
-                <View className="gap-2 flex-row items-center bg-background rounded-xl px-4 py-3">
-                    <Feather name="search" size={14} color={"#ffffff"} />
-                    <TextInput
-                        value={searchQuery}
-                        onChangeText={setSearchQuery}
-                        placeholder="发现精彩内容..."
-                        placeholderTextColor="#666"
-                        className="flex-1 text-white"
-                        style={{ fontSize: 16, fontWeight: "400" }}
-                        returnKeyType="search"
-                        onSubmitEditing={handleSearchSubmit}
-                    />
-                    {searchQuery.length > 0 && (
-                        <TouchableOpacity onPress={handleClearSearch} className="ml-3">
-                            <View className="w-6 h-6 rounded-full bg-white/10 items-center justify-center">
-                                <Text className="text-white/60 text-xs">✕</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                </View>
-            </View>
 
             {/* Content */}
             {isLoading && !data ? (

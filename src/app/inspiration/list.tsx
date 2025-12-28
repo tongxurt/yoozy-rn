@@ -2,39 +2,31 @@ import { listResourceSegments } from "@/api/resource";
 import { CustomRefreshControl } from "@/components/CustomRefreshControl";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
     Dimensions,
     FlatList,
     Image,
-    Text,
-    TextInput,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 const numColumns = 2;
-const itemMargin = 8;
+const itemMargin = 12;
+const containerPadding = 16;
 const columnWidth =
-    (screenWidth - 20 - itemMargin * (numColumns - 1)) / numColumns;
+    (screenWidth - containerPadding * 2 - itemMargin * (numColumns - 1)) / numColumns;
 
-export default function InspirationList() {
+interface InspirationListProps {
+    query?: string;
+}
+
+export default function InspirationList({ query = "" }: InspirationListProps) {
     const { colors } = useTailwindVars();
-    const [searchQuery, setSearchQuery] = useState("");
-    const [finalSearchQuery, setFinalSearchQuery] = useState("");
-
-    const handleSearchSubmit = () => {
-        setFinalSearchQuery(searchQuery);
-    };
-
-    const handleClearSearch = () => {
-        setSearchQuery("");
-        setFinalSearchQuery("");
-    };
 
     const {
         data,
@@ -45,12 +37,12 @@ export default function InspirationList() {
         refetch,
         fetchNextPage,
     } = useInfiniteQuery({
-        queryKey: ["items", "inspiration", finalSearchQuery],
+        queryKey: ["items", "inspiration", query],
         queryFn: ({ pageParam }) => {
             const params = {
                 page: pageParam || 1,
                 size: 20,
-                keyword: finalSearchQuery,
+                keyword: query,
                 returnFields: [
                     "segments",
                     "highlightFrames",
@@ -120,37 +112,10 @@ export default function InspirationList() {
         );
     };
 
-    // Search Header Component to pass to ListHeaderComponent (optional) or just render above
-    const renderHeader = () => (
-        <View className="px-3 py-4 backdrop-blur-sm">
-            <View className="gap-2 flex-row items-center bg-background rounded-xl px-4 py-3">
-                <Feather name="search" size={14} color={"#ffffff"} />
-                <TextInput
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                    placeholder="发现精彩内容..."
-                    placeholderTextColor="#666"
-                    className="flex-1 text-white"
-                    style={{ fontSize: 16, fontWeight: "400" }}
-                    returnKeyType="search"
-                    onSubmitEditing={handleSearchSubmit}
-                />
-                {searchQuery.length > 0 && (
-                    <TouchableOpacity onPress={handleClearSearch} className="ml-3">
-                        <View className="w-6 h-6 rounded-full bg-white/10 items-center justify-center">
-                            <Text className="text-white/60 text-xs">✕</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            </View>
-        </View>
-    );
-
     if (isLoading && !data) {
         return (
             <View className="flex-1">
-                {renderHeader()}
-                <View style={{ padding: 10 }}>
+                <View style={{ padding: containerPadding }}>
                     <View className="flex-row flex-wrap justify-between">
                         {Array.from({ length: 8 }).map((_, index) =>
                             renderSkeletonItem(index)
@@ -163,12 +128,12 @@ export default function InspirationList() {
 
     return (
         <View className="flex-1">
-            {renderHeader()}
             <FlatList
                 data={flatData}
                 numColumns={numColumns}
                 contentContainerStyle={{
-                    padding: 10,
+                    paddingHorizontal: containerPadding,
+                    paddingTop: 10,
                 }}
                 ItemSeparatorComponent={() => <View className={"h-[15px]"} />}
                 columnWrapperStyle={
