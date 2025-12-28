@@ -1,3 +1,5 @@
+import Entypo from '@expo/vector-icons/Entypo';
+
 
 export const workflowConfig: Record<string, any> = {
     VideoReplication: {
@@ -11,9 +13,10 @@ export const workflowConfig: Record<string, any> = {
     }
 }
 
-export const assetWorkflowJobConfig = {
+export const assetWorkflowJobConfig: Record<string, any> = {
     videoGenerationJob: {
         label: '视频生成',
+        icon: (color: string) => <Entypo name="video" size={20} color={color} />,
         status: {
             waiting: {
                 name: '视频生成等待中',
@@ -40,7 +43,7 @@ export const assetWorkflowJobConfig = {
     },
     keyFramesGenerationJob: {
         label: '关键帧生成',
-        status: {
+        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
             waiting: {
                 name: '关键帧生成等待中',
                 color: 'text-gray-500',
@@ -66,7 +69,7 @@ export const assetWorkflowJobConfig = {
     },
     segmentScriptJob: {
         label: '片段脚本生成',
-        status: {
+        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
             waiting: {
                 name: '片段脚本生成等待中',
                 color: 'text-gray-500',
@@ -92,7 +95,7 @@ export const assetWorkflowJobConfig = {
     },
     commodityReplacementJob: {
         label: '商品替换',
-        status: {
+        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
             waiting: {
                 name: '商品替换等待中',
                 color: 'text-gray-500',
@@ -118,7 +121,7 @@ export const assetWorkflowJobConfig = {
     },
     videoSegmentsGenerationJob: {
         label: '片段复刻',
-        status: {
+        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
             waiting: {
                 name: '片段复刻等待中',
                 color: 'text-gray-500',
@@ -144,7 +147,7 @@ export const assetWorkflowJobConfig = {
     },
     videoSegmentsRemixJob: {
         label: '片段混剪',
-        status: {
+        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
             waiting: {
                 name: '片段混剪等待中',
                 color: 'text-gray-500',
