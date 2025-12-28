@@ -1,9 +1,9 @@
 import { listAssets } from "@/api/asset";
 import { CustomRefreshControl } from "@/components/CustomRefreshControl";
+import { workflowConfig } from "@/consts";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { BlurView } from 'expo-blur';
 import { router } from "expo-router";
 import React, { useMemo } from "react";
 import {
@@ -46,6 +46,11 @@ const AssetList = () => {
         // Logic: If workflow exists and status is NOT completed, it is creating.
         const isCreating = item?.workflow?.status !== 'completed';
 
+        const workflowType = item.workflow?.type || 'videoGeneration';
+        const workflowLabel = workflowConfig[workflowType as keyof typeof workflowConfig]?.label || '智能生视频';
+
+        const iconUrl = item.commodity?.images?.[0] || item.workflow?.dataBus?.segmentScript?.images?.[0];
+
         return (
             <Animated.View
                 entering={FadeInDown.delay(index % 10 * 100).springify()}
@@ -54,38 +59,46 @@ const AssetList = () => {
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => router.push(`/asset/${item._id}`)}
-                    className="flex-col gap-3"
+                    className="flex-col gap-2"
                 >
-                    <View className="flex-row items-center gap-2">
-                        <Text className="text-sm font-medium" style={{ color: colors.foreground }}>{item.commodity?.brand}</Text>
+                    {/* Header: Workflow Label */}
+                    <Text className="text-sm text-muted-foreground font-medium">{workflowLabel}</Text>
+
+                    {/* Title Row */}
+                    <View className="flex-row items-center gap-2 mb-1">
+                        <View className="w-6 h-6 rounded-md bg-muted items-center justify-center overflow-hidden">
+                            {iconUrl ? (
+                                <Image source={{ uri: iconUrl }} className="w-full h-full" resizeMode="cover" />
+                            ) : (
+                                <Feather name="box" size={10} color={colors['muted-foreground']} />
+                            )}
+                        </View>
+                        <Text className="text-md text-foreground max-w-[220px]" numberOfLines={1}>
+                            {item.title || item.commodity?.title}
+                        </Text>
                     </View>
-                    {/* Left: Image / Thumbnail */}
-                    <View className="w-[130px] aspect-[3/4] rounded-xl overflow-hidden bg-gray-200 relative">
-                        {coverUrl ? (
+
+                    {/* Main Content Card */}
+                    <View className={`w-[130px] aspect-[9/16] rounded-[24px] overflow-hidden relative ${isCreating ? 'bg-[#F5F3FF]' : 'bg-muted'}`}>
+                        {coverUrl && !isCreating ? (
                             <Image
                                 source={{ uri: coverUrl }}
-                                className={`absolute inset-0 w-full h-full`}
+                                className="absolute inset-0 w-full h-full"
                                 resizeMode="cover"
                             />
+                        ) : isCreating ? (
+                            <View className="flex-1 items-center justify-center gap-3">
+                                {/* Custom Spinner Placeholder or ActivityIndicator */}
+                                <View className="w-12 h-12 rounded-full bg-[#8B5CF6]/20 items-center justify-center">
+                                    <ActivityIndicator size="small" color="#8B5CF6" />
+                                </View>
+                                <Text className="text-[#8B5CF6] text-sm font-bold tracking-wide">创作进行中</Text>
+                            </View>
                         ) : (
                             <View className="flex-1 items-center justify-center">
-                                <Feather name="image" size={24} color="#6B7280" />
+                                <Feather name="image" size={32} color={colors['muted-foreground']} />
                             </View>
                         )}
-
-                        {/* Status Overlay: Video Generating */}
-                        {isCreating && (
-                            <View className="absolute inset-0 items-center justify-center z-10">
-                                <BlurView intensity={50} tint="dark" className="absolute inset-0" />
-                                <View className="items-center gap-1.5 px-3">
-                                    <ActivityIndicator size="small" color="orange" style={{ transform: [{ scale: 0.8 }] }} />
-                                    <Text className="text-[orange] text-[10px] font-medium text-center">
-                                        视频生成中
-                                    </Text>
-                                </View>
-                            </View>
-                        )}
-
                     </View>
                 </TouchableOpacity>
             </Animated.View>
@@ -100,7 +113,7 @@ const AssetList = () => {
             contentContainerStyle={{
                 padding: containerPadding,
             }}
-            ItemSeparatorComponent={() => <View className="h-4" />}
+            ItemSeparatorComponent={() => <View className="h-5" />}
             refreshControl={
                 <CustomRefreshControl
                     refreshing={isRefetching}

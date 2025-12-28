@@ -1,7 +1,7 @@
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import React from "react";
-import { Text, View } from "react-native";
 import AssetList from "../asset/list";
 
 export default function MyScreen() {
@@ -10,9 +10,7 @@ export default function MyScreen() {
 
   return (
     <ScreenContainer edges={['top']} stackScreenProps={{}}>
-      <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-        <Text className={"text-[22px] font-bold"}>记录</Text>
-      </View>
+      <ScreenHeader title="记录" closeable={false} />
       <AssetList />
     </ScreenContainer>
   );

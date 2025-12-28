@@ -1,4 +1,16 @@
 
+export const workflowConfig = {
+    videoReplication: {
+        label: '视频复刻',
+    },
+    videoReplication2: {
+        label: '视频复刻',
+    },
+    videoGeneration: {
+        label: '创意视频生成',
+    }
+}
+
 export const assetWorkflowJobConfig = {
     videoGenerationJob: {
         label: '视频生成',
