@@ -251,7 +251,7 @@ export default {
     index: "首页",
     commodity: "商品",
     new: "创作",
-    record: "历史记录",
+    record: "记录",
     my: "我的",
   },
 

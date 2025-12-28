@@ -1,6 +1,6 @@
-import CreditEntry from "@/components/CreditEntry";
-import useTailwindVars from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
+import useTailwindVars from "@/hooks/useTailwindVars";
 
 import { useTranslation } from "@/i18n/translation";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,11 +18,11 @@ const FEATURE_ITEMS = [
     route: "/create/segment-replication",
   },
   {
-    id: "smark-video",
+    id: "video-generation",
     icon: "play",
     sparkle: true,
     title: "输入灵感, 智能生视频",
-    route: "/create/smark-video",
+    route: "/create/video-generation",
   },
   // {
   //   id: "ai-design",
@@ -76,7 +76,7 @@ function FeatureItem({
       >
         <View
           className={
-            "flex-row items-center bg-background rounded-full px-4 py-3 self-start"
+            "flex-row items-center bg-card rounded-full px-4 py-3 self-start"
           }
         >
           <View className={"bg-primary/20 rounded-full p-2 mr-3"}>
@@ -90,7 +90,7 @@ function FeatureItem({
               style={{ marginRight: 6 }}
             />
           )}
-          <Text className={"text-white text-base"}>{item.title}</Text>
+          <Text className={"text-base"}>{item.title}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -99,7 +99,7 @@ function FeatureItem({
 
 export default function Screen() {
   const { t } = useTranslation();
-  const colors = useColors();
+  const { colors } = useTailwindVars();
 
   const handleFeaturePress = (route: string) => {
     router.navigate(route as any);
@@ -112,16 +112,8 @@ export default function Screen() {
   return (
     <ScreenContainer edges={['top']}>
       {/* 顶部标题栏 */}
-      <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-        <Text className={"text-[22px] text-white font-bold"}>创作</Text>
-        <View className={"flex-row items-center gap-2"}>
-          <CreditEntry />
-          {/* <AuthInfo /> */}
-        </View>
-      </View>
 
-      {/*<AIBanner/>*/}
-      {/*<HotFeatureCard onPress={handleCreate}/>*/}
+      <ScreenHeader title="创作" closeable={false} />
 
       <View className={"flex-1 justify-end"}>
         <View className={"mb-4"}>
@@ -161,8 +153,8 @@ export default function Screen() {
                 <Ionicons name="sparkles" size={18} color="#A855F7" />
               </View>
               <View className={"flex-1"}>
-                <Text className={"text-white text-sm mb-0.5"}>开始创作</Text>
-                <Text className={"text-white/50 text-xs"}>
+                <Text className={"text-sm mb-0.5"}>开始创作</Text>
+                <Text className={"text-xs"}>
                   输入灵感, 智能生视频
                 </Text>
               </View>

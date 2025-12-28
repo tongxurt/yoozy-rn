@@ -11,7 +11,7 @@ interface ConnectionAnimationViewProps {
 const ConnectionAnimationView: React.FC<ConnectionAnimationViewProps> = ({
                                                                              platform,
                                                                          }) => {
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     // 将动画值移到组件内部
     const connectionProgress = useRef(new Animated.Value(0)).current;

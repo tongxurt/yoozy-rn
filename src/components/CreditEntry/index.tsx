@@ -1,16 +1,20 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import useTailwindVars from "@/hooks/useTailwindVars";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 const CreditEntry = () => {
+  const { colors } = useTailwindVars();
   return (
-    <View className={"bg-card flex-row rounded-full px-2 py-1"}>
-      <View className={"flex-row items-center mr-3"}>
-        <Ionicons name="diamond" size={18} color="#A855F7" />
-        <Text className={"text-white text-base font-medium ml-1"}>95</Text>
+    <View
+      className="bg-card flex-row rounded-full px-4 py-1.5 items-center shadow-sm"
+    >
+      <View className="flex-row items-center mr-4">
+        <Ionicons name="diamond" size={16} color={colors.primary} />
+        <Text className="text-sm ml-1.5">95</Text>
       </View>
-      <TouchableOpacity activeOpacity={1}>
-        <Text className={"text-white text-base mr-3"}>开会员</Text>
+      <TouchableOpacity activeOpacity={0.6}>
+        <Text className="text-sm" >开会员</Text>
       </TouchableOpacity>
     </View>
   );

@@ -20,7 +20,7 @@ export default function ShareLinkInput({
     style?: StyleProp<ViewStyle>;
 }) {
     const {t} = useTranslation();
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const [link, setLink] = useState("");
     const [loading, setLoading] = useState(false);

@@ -1,6 +1,7 @@
 import { createCommodities } from "@/api/commodity";
 import SpinningIcon from "@/components/loading";
 import Picker from "@/components/PickerV2";
+import ScreenContainer from "@/components/ScreenContainer";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { upload } from "@/utils/upload/tos";
 import { extractLinks, getImageName } from "@/utils/upload/utils";
@@ -79,7 +80,7 @@ export default function CreateCommodityScreen() {
     };
 
     return (
-        <View className="flex-1 bg-background">
+        <ScreenContainer edges={['bottom', 'top']}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAwareScrollView
                     className="flex-1"
@@ -136,6 +137,6 @@ export default function CreateCommodityScreen() {
                     )}
                 </TouchableOpacity>
             </View>
-        </View>
+        </ScreenContainer>
     );
 }

@@ -1,10 +1,8 @@
 import { createSession } from "@/api/session";
 import CommoditySelector from "@/components/commodity/Selector";
-import CreditEntry from "@/components/CreditEntry";
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import useTailwindVars from "@/hooks/useTailwindVars";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { router } from "expo-router";
 import React, { useState } from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
@@ -44,34 +42,12 @@ const Starter = () => {
             }}
         >
             {/* Header - Dynamic Colors */}
-            <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-                <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>智能成片</Text>
-                <View className={"flex-row items-center gap-2"}>
-                    <CreditEntry />
-                    <TouchableOpacity
-                        onPress={() => router.back()}
-                        style={{
-                            width: 32,
-                            height: 32,
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                        activeOpacity={1}
-                    >
-                        <MaterialCommunityIcons
-                            name="arrow-collapse"
-                            size={25}
-                            color={colors.foreground}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
+            <ScreenHeader title="复刻灵感" />
             {/* Main Content Area - White Rounded Panel */}
             <View
                 className="flex-1 rounded-2xl overflow-hidden"
                 style={{
-                    backgroundColor: colors.plain
+                    backgroundColor: colors.background
                 }}
             >
                 <CommoditySelector
@@ -107,7 +83,7 @@ const Starter = () => {
                         activeOpacity={1}
                         style={{
                             width: '80%',
-                            backgroundColor: colors.plain,
+                            backgroundColor: colors.background,
                             borderRadius: 20,
                             padding: 24,
                             alignItems: 'center',

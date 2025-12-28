@@ -19,7 +19,7 @@ const ContinueQuestionModal: React.FC<ContinueQuestionModalProps> =
      }) => {
         const maxLength = 50
 
-        const colors = useColors();
+        const { colors } = useTailwindVars();
 
         const [customQuestion, setCustomQuestion] = useState("");
 

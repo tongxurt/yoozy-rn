@@ -1,7 +1,7 @@
 import LetterAvatar from "@/components/LatterAvatar";
-import useTailwindVars from "@/hooks/useTailwindVars";
 import ScreenContainer from "@/components/ScreenContainer";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
+import useTailwindVars from "@/hooks/useTailwindVars";
 
 import useAppUpdate from "@/hooks/useAppUpdate";
 import { useAuthUser } from "@/hooks/useAuthUser";
@@ -17,7 +17,7 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Stack } from "react-native-flex-layout";
 
 export default function MyScreen() {
-  const colors = useColors();
+  const { colors } = useTailwindVars();
 
   const { user, isLoading } = useAuthUser({ fetchImmediately: true });
 
@@ -112,9 +112,9 @@ export default function MyScreen() {
   ];
 
   return (
-    <ScreenContainer edges={['top']}>
+    <ScreenContainer >
       <ScrollView
-        className="flex-1 bg-plain"
+        className="flex-1"
         showsVerticalScrollIndicator={false}
       // style={{overflow: "hidden"}}
       // contentContainerStyle={{overflow: "visible"}}
@@ -213,7 +213,7 @@ export default function MyScreen() {
           {menuItems.map((section, index) => (
             <View
               key={index}
-              className="mt-3 bg-background/70 rounded-xl"
+              className="mt-3 bg-card/50 rounded-xl"
             // style={{overflow: "visible"}}
             >
               {section.map((item, itemIndex) => (
@@ -226,7 +226,7 @@ export default function MyScreen() {
                   <View className="flex-row gap-[8px] items-center">
                     {item.icon(20, colors.foreground)}
                     <Text
-                      className={`text-white  text-sm ${item.isDanger ? "text-red-500" : "text-white"
+                      className={`text-sm ${item.isDanger ? "text-red-500" : ""
                         }`}
                     >
                       {t(item.title)}

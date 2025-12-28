@@ -1,6 +1,7 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import ScreenContainer from "@/components/ScreenContainer";
 import { useTranslation } from "@/i18n/translation";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 
 interface Section {
   titleKey: string;
@@ -21,29 +22,33 @@ export default function TermsScreen() {
   const { t } = useTranslation();
 
   return (
-    <ScrollView className="flex-1 bg-plain">
-      <View className="p-5">
-        <Text className="text-2xl font-bold text-white mb-4">
-          {t("termsTitle")}
-        </Text>
-        <View className="flex-col justify-between mb-6">
-          <Text className="text-muted-foreground text-sm">{t("termsUpdateDate")}</Text>
-          <Text className="text-muted-foreground text-sm">{t("termsEffectiveDate")}</Text>
-        </View>
-
-        <Text className="text-muted-foreground text-sm mb-6">{t("termsIntro")}</Text>
-
-        {termsData.map((section, index) => (
-          <View key={index} className="mb-8">
-            <Text className="text-lg font-bold text-white mb-4">
-              {t(section.titleKey)}
-            </Text>
-            <Text className="text-muted-foreground text-sm leading-6">
-              {t(section.contentKey)}
-            </Text>
+    <ScreenContainer stackScreenProps={{ headerShown: true, title: t("termsTitle") }}>
+      <ScrollView className="flex-1">
+        <View className="p-5">
+          {/*
+          <Text className="text-2xl font-bold  mb-4">
+            {t("termsTitle")}
+          </Text>
+          */}
+          <View className="flex-col justify-between mb-6">
+            <Text className="text-muted-foreground text-sm">{t("termsUpdateDate")}</Text>
+            <Text className="text-muted-foreground text-sm">{t("termsEffectiveDate")}</Text>
           </View>
-        ))}
-      </View>
-    </ScrollView>
+
+          <Text className="text-muted-foreground text-sm mb-6">{t("termsIntro")}</Text>
+
+          {termsData.map((section, index) => (
+            <View key={index} className="mb-8">
+              <Text className="text-lg font-bold  mb-4">
+                {t(section.titleKey)}
+              </Text>
+              <Text className="text-muted-foreground text-sm leading-6">
+                {t(section.contentKey)}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </ScreenContainer>
   );
 }

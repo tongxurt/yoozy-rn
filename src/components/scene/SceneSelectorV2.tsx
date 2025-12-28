@@ -20,7 +20,7 @@ export default function SceneSelectorV2({
         settings: {scenes},
     } = useGlobal();
 
-    const colors = useColors();
+    const { colors } = useTailwindVars();
     const [open, setOpen] = useState(false);
     const {t} = useTranslation();
     const current = scenes.filter((x) => x.value === scene)?.[0];
@@ -68,7 +68,7 @@ export default function SceneSelectorV2({
                                 color:
                                     x.value === current.value
                                         ? colors.primary
-                                        : colors.white,
+                                        : colors.background,
                             })}
 
                             <Text

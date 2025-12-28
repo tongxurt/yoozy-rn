@@ -8,7 +8,7 @@ const ProcessingModal = ({loading,}: { loading?: boolean, }) => {
 
     const {t} = useTranslation();
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     return (
         <Modal visible={loading} transparent animationType="fade">

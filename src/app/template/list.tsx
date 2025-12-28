@@ -135,6 +135,7 @@ export default function TemplateList() {
                 <Image
                     source={{ uri: item.highlightFrames?.[0]?.url || item.coverUrl }}
                     style={{ width: '100%', aspectRatio: 9 / 12 }}
+                    className="bg-card"
                     resizeMode="cover"
                 />
                 {/* <Text
@@ -156,7 +157,7 @@ export default function TemplateList() {
 
             <View className="px-3 py-4 backdrop-blur-sm">
                 <View className="gap-2 flex-row items-center bg-background rounded-xl px-4 py-3">
-                    <Feather name="search" size={14} color={colors.white} />
+                    <Feather name="search" size={14} color={"#ffffff"} />
                     <TextInput
                         value={searchQuery}
                         onChangeText={setSearchQuery}

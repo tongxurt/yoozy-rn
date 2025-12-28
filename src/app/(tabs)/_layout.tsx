@@ -8,32 +8,29 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { router, Tabs } from "expo-router";
-import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import React from "react";
+import { Pressable, Text, useColorScheme, View } from "react-native";
 import "../../global.css";
 
-const barHeight = 50;
+const TAB_BAR_HEIGHT = 60;
 
 function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const [modalVisible, setModalVisible] = useState(false);
-
   const { t } = useTranslation();
-
   const { colors } = useTailwindVars();
   const { user } = useAuthUser();
+  const colorScheme = useColorScheme();
+
+  const isDark = colorScheme === 'dark';
 
   return (
-    <>
-      <View
-        className={`flex-row justify-around items-center h-[${barHeight}px] bg-background absolute bottom-0 left-0 right-0`}
-      >
+    <View className="bg-background absolute bottom-0 left-0 right-0 z-50 shadow-sm">
+
+      <View className="flex-row justify-between items-center h-[60px] px-2">
         {state?.routes.map((route, index) => {
           const { options } = descriptors[route.key];
-
           const isFocused = state.index === index;
 
           const onPress = async () => {
-            console.log("onPress", route);
             if (route.name === "record" && !user) {
               router.navigate("/login");
               return;
@@ -53,18 +50,16 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           return (
             <Pressable
               key={route.key}
-              className="flex-1 items-center gap-2 justify-center h-full"
+              className="flex-1 items-center justify-center h-full gap-2"
               onPress={onPress}
             >
               {options.tabBarIcon?.({
                 focused: isFocused,
                 size: 20,
-                color: isFocused ? colors.white : colors.border,
+                color: isFocused ? colors.primary : colors['muted-foreground'],
               })}
               <Text
-                style={{ fontWeight: 600 }}
-                className={`text-xs mt-[2px] ${isFocused ? "text-white" : "text-muted-foreground"
-                  }`}
+                className={`text-[10px] font-medium ${isFocused ? "text-primary" : "text-muted-foreground"}`}
               >
                 {t(`tab.${route.name}`)}
               </Text>
@@ -72,7 +67,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           );
         })}
       </View>
-    </>
+    </View>
   );
 }
 
@@ -87,17 +82,15 @@ export default function TabLayout() {
       <Tabs
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={{
-          // tabBarStyle: {
-          //   display: "none", // Hide default tab bar
-          // },
-          // headerShown: useClientOnlyValue(false, false),
+          headerShown: false,
+          sceneStyle: { marginBottom: TAB_BAR_HEIGHT, backgroundColor: colors.background },
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
             // title: t("tab.index"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
+
             tabBarIcon: ({ size, color }) => (
               <FontAwesome6 name="house-fire" size={size} color={color} />
             ),
@@ -106,8 +99,6 @@ export default function TabLayout() {
         <Tabs.Screen
           name="commodity"
           options={{
-            // title: t("tab.session"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="briefcase" size={size} color={color} />
             ),
@@ -116,8 +107,6 @@ export default function TabLayout() {
         <Tabs.Screen
           name="new"
           options={{
-            // title: t("tab.session"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5
                 name="star-and-crescent"
@@ -131,8 +120,6 @@ export default function TabLayout() {
           name="record"
           options={{
             headerShown: true,
-            // title: t("tab.my"),
-            sceneStyle: { marginBottom: barHeight, backgroundColor: colors.background },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="history" size={size} color={color} />
             ),
@@ -141,8 +128,6 @@ export default function TabLayout() {
         <Tabs.Screen
           name="my"
           options={{
-            // title: t("tab.my"),
-            sceneStyle: { marginBottom: barHeight },
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="user-alt" size={size} color={color} />
             ),

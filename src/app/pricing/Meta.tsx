@@ -22,7 +22,7 @@ const Meta = ({onSubmit, disabled}: {
     const {t} = useTranslation();
     const {formatFromNow} = useDateFormatter()
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const {data: pr, isLoading, refetch} = useQuery({
         queryKey: ["creditState"],

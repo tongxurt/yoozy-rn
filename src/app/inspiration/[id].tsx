@@ -154,22 +154,6 @@ const Inspiration = () => {
 
           {/* Horizontal Action Bar */}
           <View className="flex-row items-stretch gap-3 mt-2">
-            {/* Like Button (Left) */}
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: 12,
-                paddingHorizontal: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 8,
-                height: 48,
-              }}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="heart-outline" size={24} color="white" />
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>1376</Text>
-            </TouchableOpacity>
 
             {/* Test It Button (Right - Expands) */}
             <TouchableOpacity
@@ -183,10 +167,10 @@ const Inspiration = () => {
               }}
               activeOpacity={0.9}
               onPress={() => {
-                // Navigate to edit or use template
+                router.replace(`/create/segment-replication?inspirationId=${id}`);
               }}
             >
-              <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>测一测</Text>
+              <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>复刻同款</Text>
             </TouchableOpacity>
           </View>
 

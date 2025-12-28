@@ -11,7 +11,7 @@ export default function MyScreen() {
   return (
     <ScreenContainer edges={['top']} stackScreenProps={{}}>
       <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-        <Text className={"text-[22px] text-white font-bold"}>记录</Text>
+        <Text className={"text-[22px] font-bold"}>记录</Text>
       </View>
       <AssetList />
     </ScreenContainer>

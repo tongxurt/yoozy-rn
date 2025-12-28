@@ -42,7 +42,7 @@ const Modal = ({
     const animation = useRef(new Animated.Value(0)).current;
     const scaleAnimation = useRef(new Animated.Value(0.95)).current; // 添加缩放动画
     const {height} = Dimensions.get('window');
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     useEffect(() => {
         if (visible) {

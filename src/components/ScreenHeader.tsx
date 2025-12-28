@@ -7,9 +7,10 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 interface ScreenHeaderProps {
     title?: string;
+    closeable?: boolean;
 }
 
-export const ScreenHeader: React.FC<ScreenHeaderProps> = ({ title = "" }) => {
+export const ScreenHeader: React.FC<ScreenHeaderProps> = ({ title = "", closeable = true }) => {
     const { colors } = useTailwindVars();
 
     return (
@@ -17,12 +18,16 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({ title = "" }) => {
             <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>{title}</Text>
             <View className={"flex-row items-center gap-2"}>
                 <CreditEntry />
-                <TouchableOpacity
-                    onPress={() => router.back()}
-                    style={{ width: 32, height: 32, justifyContent: "center", alignItems: "center" }}
-                >
-                    <MaterialCommunityIcons name="arrow-collapse" size={25} color={colors.foreground} />
-                </TouchableOpacity>
+                {
+                    closeable && (
+                        <TouchableOpacity
+                            onPress={() => router.back()}
+                            style={{ width: 32, height: 32, justifyContent: "center", alignItems: "center" }}
+                        >
+                            <MaterialCommunityIcons name="arrow-collapse" size={25} color={colors.foreground} />
+                        </TouchableOpacity>
+                    )
+                }
             </View>
         </View>
     );

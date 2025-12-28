@@ -19,7 +19,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
     const {settings: {scenes}} = useSettings();
     const {t} = useTranslation();
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const [expanded, setExpanded] = useState(false);
 
@@ -45,7 +45,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                         {/*    <View>*/}
                         {/*        {scene?.getSceneIcon({*/}
                         {/*            size: 12,*/}
-                        {/*            color: selected ? colors.white : colors['muted-foreground'],*/}
+                        {/*            color: selected ? colors.background : colors['muted-foreground'],*/}
                         {/*        })}*/}
                         {/*    </View>*/}
                         {/*}*/}
@@ -89,7 +89,7 @@ const SceneFilter = ({current, onChange}: SceneFilterProps) => {
                                 {/*    <View>*/}
                                 {/*        {scene?.getSceneIcon({*/}
                                 {/*            size: 12,*/}
-                                {/*            color: selected ? colors.white : colors['muted-foreground'],*/}
+                                {/*            color: selected ? colors.background : colors['muted-foreground'],*/}
                                 {/*        })}*/}
                                 {/*    </View>*/}
                                 {/*}*/}

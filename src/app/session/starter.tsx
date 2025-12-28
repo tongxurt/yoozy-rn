@@ -65,7 +65,7 @@ const Starter = () => {
       <View
         className="flex-1 rounded-2xl overflow-hidden"
         style={{
-          backgroundColor: colors.plain
+          backgroundColor: colors.background
         }}
       >
         <CommoditySelector
@@ -101,7 +101,7 @@ const Starter = () => {
             activeOpacity={1}
             style={{
               width: '80%',
-              backgroundColor: colors.plain,
+              backgroundColor: colors.background,
               borderRadius: 20,
               padding: 24,
               alignItems: 'center',

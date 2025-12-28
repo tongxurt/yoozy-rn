@@ -163,6 +163,7 @@ const AssetEditorScreen = () => {
 
         if (dataKey === 'segmentScript') {
             const script = data?.script;
+            const images = data?.images;
 
             if (!script && !editingScript) {
                 return <Text className="text-gray-400 text-xs mt-2 italic">暂无脚本数据</Text>;
@@ -170,6 +171,19 @@ const AssetEditorScreen = () => {
 
             return (
                 <View className="mt-4">
+                    {
+                        images && (
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
+                                {images?.map((image: any, idx: number) => (
+                                    <View key={idx} className={`w-28 aspect-[9/16] object-contain bg-card rounded-lg overflow-hidden ${idx !== 0 ? 'ml-2' : ''}`}>
+                                        <XImageViewer defaultIndex={idx} images={images}>
+                                            <Image source={{ uri: image }} className="w-full h-full" resizeMode="cover" />
+                                        </XImageViewer>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        )
+                    }
                     {!editingScript && (
                         <View className="mb-2 flex-row justify-end">
                             <TouchableOpacity
@@ -257,13 +271,13 @@ const AssetEditorScreen = () => {
                                     <ActivityIndicator size="small" color={colors.primary} />
                                     <Text className="text-[10px] text-gray-400">生成中...</Text>
                                 </View>
-                            ) : item.status === 'completed' && item.lastFrame ? (
+                            ) : (item.url) ? (
                                 <TouchableOpacity
                                     activeOpacity={0.9}
                                     className="w-full h-full relative"
                                     onPress={() => setVideoPreview(item.url)}
                                 >
-                                    <Image source={{ uri: item.lastFrame }} className="w-full h-full" resizeMode="cover" />
+                                    <Image source={{ uri: item.coverUrl || item.lastFrame }} className="w-full h-full" resizeMode="cover" />
                                     <View className="absolute inset-0 items-center justify-center bg-black/10">
                                         <Feather name="play-circle" size={24} color="white" />
                                     </View>

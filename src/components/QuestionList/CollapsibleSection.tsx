@@ -19,7 +19,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
                                                                    markdownStyles,
                                                                }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     const headingStyle = markdownStyles[`heading${level}`] || markdownStyles.heading1;
     const indicator = isCollapsed ? '▼' : '▲';

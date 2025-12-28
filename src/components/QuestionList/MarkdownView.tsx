@@ -47,7 +47,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                             <Text style={{
                                 fontSize: this.fontSizes.fontSizeLG || 20,
                                 fontWeight: '700',
-                                color: this.colors.white,
+                                color: this."#ffffff",
                                 letterSpacing: 0.3,
                             }}>
                                 {text}
@@ -78,7 +78,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                     <Text key={this.getKey()} style={{
                         fontSize: this.fontSizes.fontSizeMD || 16,
                         fontWeight: '500',
-                        color: this.colors.white,
+                        color: this."#ffffff",
                         marginVertical: 8,
                     }}>
                         {text}
@@ -107,7 +107,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
         return (
             <View key={this.getKey()} className={'my-4'}>
                 <Text style={{
-                    color: this.colors['muted-foreground'] || this.colors.white,
+                    color: this.colors['muted-foreground'] || this."#ffffff",
                     fontSize: this.fontSizes.fontSizeMD,
                     lineHeight: this.fontSizes.fontSizeMD * 1.6, // 增加行高提升阅读性
                     textAlign: 'justify',
@@ -136,7 +136,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
                 >
                     <Text style={{
                         fontFamily: 'monospace',
-                        color: this.colors.foreground || this.colors.white,
+                        color: this.colors.foreground || this."#ffffff",
                         fontSize: this.fontSizes.fontSizeSM,
                         lineHeight: this.fontSizes.fontSizeSM * 1.4,
                         ...textStyle,
@@ -153,7 +153,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
         return (
             <Text key={this.getKey()} style={{
                 fontStyle: 'italic',
-                color: this.colors.foreground || this.colors.white,
+                color: this.colors.foreground || this."#ffffff",
                 ...styles,
             }}>
                 {children}
@@ -209,7 +209,7 @@ class CustomMarkdownRenderer extends Renderer implements RendererInterface {
     text(text: string | React.ReactNode[], styles?: TextStyle): React.ReactNode {
         return (
             <Text key={this.getKey()} style={{
-                color: this.colors.white,
+                color: this."#ffffff",
                 ...styles,
             }}>
                 {text}

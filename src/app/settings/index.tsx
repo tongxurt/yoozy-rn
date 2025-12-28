@@ -17,7 +17,7 @@ import {useAuthUser} from "@/hooks/useAuthUser";
 
 
 export default function MyScreen() {
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     const {user, isLoading} = useAuthUser({fetchImmediately: true});
 

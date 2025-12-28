@@ -13,7 +13,7 @@ const CategoryTabs = ({category = '', onChange}: { category?: string, onChange: 
     const [visible, setVisible] = useState(false);
     const translateY = useRef(new Animated.Value(100)).current;
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const {t} = useTranslation()
 

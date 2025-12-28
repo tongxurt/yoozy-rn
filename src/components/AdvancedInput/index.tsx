@@ -10,7 +10,7 @@ import {useTranslation} from "@/i18n/translation";
 const AdvancedInput = ({value, placeholder, onChangeText, maxLength = 500, style, ...rest}: TextInputProps) => {
     const [isPasting, setIsPasting] = useState(false);
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
     const {t} = useTranslation()
 
     // 清除所有内容

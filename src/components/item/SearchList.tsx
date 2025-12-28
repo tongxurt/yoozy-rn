@@ -15,7 +15,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 
 export default function SearchList({keyword}: { keyword: string }) {
     const {t} = useTranslation();
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     const {
         data: d,

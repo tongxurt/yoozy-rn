@@ -22,7 +22,7 @@ export default function SceneSelector(
     }) {
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
     const {
         settings: {scenes},
     } = useGlobal();
@@ -120,7 +120,7 @@ export default function SceneSelector(
                             >
                                 {scene.getSceneIcon?.({
                                     size: 30,
-                                    color: colors.white,
+                                    color: colors.background,
                                 })}
                             </LinearGradient>
 

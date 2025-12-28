@@ -98,7 +98,7 @@ const CustomSplashScreen: React.FC<CustomSplashScreenProps> = ({
         });
     };
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     return (
         <Animated.View

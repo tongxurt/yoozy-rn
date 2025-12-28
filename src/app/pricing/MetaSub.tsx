@@ -27,7 +27,7 @@ const MetaSub = ({onSubmit, disabled}: {
     const {formatFromNow} = useDateFormatter()
     const [isAgreed, setIsAgreed] = useState(false);
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const {data: pr, isLoading: creditStateLoading, refetch: refetchCreditState} = useQuery({
         queryKey: ["creditState"],

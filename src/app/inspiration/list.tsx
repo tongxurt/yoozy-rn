@@ -52,6 +52,7 @@ export default function InspirationList() {
                 size: 20,
                 keyword: finalSearchQuery,
                 returnFields: [
+                    "segments",
                     "highlightFrames",
                     "status",
                     "typedTags.text",
@@ -108,8 +109,8 @@ export default function InspirationList() {
                 className="bg-background rounded-lg overflow-hidden self-start relative"
             >
                 <Image
-                    source={{ uri: item.highlightFrames?.[0]?.url || item.coverUrl }}
-                    className="aspect-[9/12]"
+                    source={{ uri: item.segments?.[0]?.startFrame || item.highlightFrames?.[0]?.url || item.coverUrl }}
+                    className="aspect-[9/12] bg-card"
                     resizeMode="cover"
                 />
                 <View className="absolute top-2 right-2 bg-black/40 rounded-full p-1.5 backdrop-blur-sm">
@@ -123,7 +124,7 @@ export default function InspirationList() {
     const renderHeader = () => (
         <View className="px-3 py-4 backdrop-blur-sm">
             <View className="gap-2 flex-row items-center bg-background rounded-xl px-4 py-3">
-                <Feather name="search" size={14} color={colors.white} />
+                <Feather name="search" size={14} color={"#ffffff"} />
                 <TextInput
                     value={searchQuery}
                     onChangeText={setSearchQuery}

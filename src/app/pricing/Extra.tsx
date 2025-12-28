@@ -19,7 +19,7 @@ const Extra = ({onSubmit, disabled, style}: {
     const [current, setCurrent] = useState<any>(packages[1]);
     const {t} = useTranslation();
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const submit = () => {
         onSubmit(current,)

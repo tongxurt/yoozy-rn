@@ -1,6 +1,7 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import ScreenContainer from "@/components/ScreenContainer";
 import { useTranslation } from "@/i18n/translation";
+import React from "react";
+import { ScrollView, Text, View } from "react-native";
 
 interface Section {
   titleKey: string;
@@ -23,29 +24,33 @@ export default function PrivacyScreen() {
   const { t } = useTranslation();
 
   return (
-    <ScrollView className="flex-1 bg-plain">
-      <View className="p-5">
-        <Text className="text-2xl font-bold text-white mb-4">
-          {t("privacyTitle")}
-        </Text>
-        <View className="flex-col justify-between mb-6">
-          <Text className="text-muted-foreground text-sm">{t("privacyUpdateDate")}</Text>
-          <Text className="text-muted-foreground text-sm">
-            {t("privacyEffectiveDate")}
-          </Text>
-        </View>
-
-        {privacyData.map((section, index) => (
-          <View key={index} className="mb-8">
-            <Text className="text-lg font-bold text-white mb-4">
-              {t(section.titleKey)}
-            </Text>
-            <Text className="text-muted-foreground text-sm leading-6">
-              {t(section.contentKey)}
+    <ScreenContainer stackScreenProps={{ headerShown: true, title: t("privacyTitle") }}>
+      <ScrollView className="flex-1">
+        <View className="p-5">
+          {/* 
+          <Text className="text-2xl font-bold  mb-4">
+            {t("privacyTitle")}
+          </Text> 
+          */}
+          <View className="flex-col justify-between mb-6">
+            <Text className="text-muted-foreground text-sm">{t("privacyUpdateDate")}</Text>
+            <Text className="text-muted-foreground text-sm">
+              {t("privacyEffectiveDate")}
             </Text>
           </View>
-        ))}
-      </View>
-    </ScrollView>
+
+          {privacyData.map((section, index) => (
+            <View key={index} className="mb-8">
+              <Text className="text-lg font-bold  mb-4">
+                {t(section.titleKey)}
+              </Text>
+              <Text className="text-muted-foreground text-sm leading-6">
+                {t(section.contentKey)}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </ScreenContainer>
   );
 }

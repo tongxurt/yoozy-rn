@@ -18,7 +18,7 @@ const SubmitButton = ({
     promptId: string;
 }) => {
 
-    const colors = useColors()
+    const { colors } = useTailwindVars();
 
     const {
         settings,

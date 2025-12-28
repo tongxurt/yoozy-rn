@@ -95,7 +95,7 @@ export default function VeogoList() {
             <View className="flex-row items-center justify-center mb-2.5 bg-muted mx-5 py-2 rounded-lg ">
                 <MaterialIcons
                     name="verified"
-                    color={colors.white}
+                    color={"#ffffff"}
                     size={20}
                 />
                 <Text className="text-white text-base font-bold ml-2">

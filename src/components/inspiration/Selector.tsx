@@ -58,6 +58,7 @@ const Selector = ({ value, onChange }: SelectorProps) => {
                 size: 20,
                 keyword: queryKeyword,
                 returnFields: [
+                    "segments",
                     "highlightFrames",
                     "status",
                     "typedTags.text",
@@ -103,7 +104,7 @@ const Selector = ({ value, onChange }: SelectorProps) => {
 
     const renderItem = ({ item }: { item: any }) => {
         const isSelected = value?._id === item._id;
-        const imageUrl = item.highlightFrames?.[0]?.url || item.coverUrl;
+        const imageUrl = item.segments?.[0]?.startFrame || item.highlightFrames?.[0]?.url || item.coverUrl;
 
         return (
             <TouchableOpacity
@@ -111,7 +112,7 @@ const Selector = ({ value, onChange }: SelectorProps) => {
                 onPress={() => onChange(item)}
                 style={{
                     width: cardWidth,
-                    marginBottom: 15,
+                    // marginBottom: 15,
                 }}
                 className="rounded-lg overflow-hidden self-start"
             >
@@ -125,7 +126,7 @@ const Selector = ({ value, onChange }: SelectorProps) => {
                     />
                     {isSelected && (
                         <View className="absolute inset-0 bg-primary/20 items-center justify-center">
-                            <Feather name="check" size={24} color={colors.white} />
+                            <Feather name="check" size={24} color={"#ffffff"} />
                         </View>
                     )}
                 </View>

@@ -1,16 +1,16 @@
+import ScreenContainer from "@/components/ScreenContainer";
+import { useConsecutiveClicks } from "@/hooks/useConsecutiveClicks";
+import { useTranslation } from "@/i18n/translation";
+import { AntDesign } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
   Pressable,
-  Alert,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { useTranslation } from "@/i18n/translation";
-import { useConsecutiveClicks } from "@/hooks/useConsecutiveClicks";
-import { router } from "expo-router";
 
 interface FAQ {
   questionKey: string;
@@ -53,44 +53,48 @@ export default function ProblemScreen() {
   });
 
   return (
-    <ScrollView className="flex-1 bg-plain">
-      <View className="p-5">
-        <Pressable onPress={handlePress}>
-          <Text className="text-2xl font-bold text-white mb-6">
-            {t("faqTitle")}
-          </Text>
-        </Pressable>
+    <ScreenContainer stackScreenProps={{ headerShown: true, title: t("faqTitle") }}>
+      <ScrollView className="flex-1">
+        <View className="p-5">
+          <Pressable onPress={handlePress}>
+            {/* 
+            <Text className="text-2xl font-bold  mb-6">
+              {t("faqTitle")}
+            </Text>
+            */}
+          </Pressable>
 
-        {faqs.map((faq, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => toggleExpand(index)}
-            className="mb-4"
-            activeOpacity={1}
-          >
-            <View className="bg-background/70 rounded-xl p-4">
-              <View className="flex-row justify-between items-center">
-                <Text className="text-white text-base flex-1 mr-2">
-                  {t(faq.questionKey)}
-                </Text>
-                <AntDesign
-                  name={expandedIndex === index ? "minus" : "plus"}
-                  size={20}
-                  color="#666"
-                />
-              </View>
-
-              {expandedIndex === index && (
-                <View className="mt-3 pt-3 border-t border-divider">
-                  <Text className="text-white/70 text-sm leading-6">
-                    {t(faq.answerKey)}
+          {faqs.map((faq, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => toggleExpand(index)}
+              className="mb-4"
+              activeOpacity={1}
+            >
+              <View className="bg-card/50 rounded-xl p-4">
+                <View className="flex-row justify-between items-center">
+                  <Text className=" text-base flex-1 mr-2">
+                    {t(faq.questionKey)}
                   </Text>
+                  <AntDesign
+                    name={expandedIndex === index ? "minus" : "plus"}
+                    size={20}
+                    color="#666"
+                  />
                 </View>
-              )}
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </ScrollView>
+
+                {expandedIndex === index && (
+                  <View className="mt-3 pt-3 border-t border-divider">
+                    <Text className="text-muted-foreground text-sm leading-6">
+                      {t(faq.answerKey)}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </ScreenContainer>
   );
 }

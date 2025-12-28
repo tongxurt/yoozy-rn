@@ -1,12 +1,13 @@
 
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { Feather } from "@expo/vector-icons";
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import React from 'react';
-import { StatusBarStyle, StyleProp, ViewStyle } from 'react-native';
-import { Edge, SafeAreaView } from 'react-native-safe-area-context';
+import { Platform, StatusBarStyle, StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
+import { Edge, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ScreenContainerProps {
     children: React.ReactNode;
@@ -34,23 +35,48 @@ const ScreenContainer: React.FC<ScreenContainerProps> = ({
     const { colorScheme } = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
+    const insets = useSafeAreaInsets();
+    const isHeaderShown = stackScreenProps?.headerShown;
+    const effectiveEdges = isHeaderShown
+        ? edges.filter(e => e !== 'top')
+        : edges;
+
     return (
         <SafeAreaView
-            edges={edges}
+            edges={effectiveEdges}
             style={[
                 {
                     flex: 1,
                     backgroundColor: colors.background,
+                    // paddingTop: insets.top,
                 },
                 style,
             ]}
-            className={className}
+        // className={className}
         >
             <Stack.Screen
                 options={{
                     headerShown: false,
-                    headerStyle: { backgroundColor: 'transparent' }, // Optional: customizable
-                    headerTransparent: true, // Optional: useful for full screen
+                    headerStyle: { backgroundColor: colors.background }, // Optional: customizable
+                    headerTransparent: !stackScreenProps?.headerShown, // Optional: useful for full screen
+                    headerLeft: ({ canGoBack }) =>
+                        canGoBack ? (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    router.back();
+                                }}
+                                style={{
+                                    // width: 20,
+                                    // height: 20,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginLeft: Platform.OS === "ios" ? 0 : 8,
+                                }}
+                            // hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                            >
+                                <Feather name="arrow-left" size={24} color={colors.foreground} />
+                            </TouchableOpacity>
+                        ) : null,
                     ...stackScreenProps,
                 }}
             />

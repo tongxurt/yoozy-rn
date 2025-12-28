@@ -13,7 +13,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 
 export default function ItemList({category}: { category?: string }) {
     const {t} = useTranslation();
-    const colors = useColors();
+    const { colors } = useTailwindVars();
 
     const {
         data,

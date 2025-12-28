@@ -2,7 +2,7 @@ export const light = {
   "--background": "255 255 255",
   "--foreground": "28 28 30", // Darker for better contrast
 
-  "--card": "255 255 255", // Clean card look
+  "--card": "240 240 240", // Clean card look
   "--card-foreground": "28 28 30",
 
   "--popover": "255 255 255",

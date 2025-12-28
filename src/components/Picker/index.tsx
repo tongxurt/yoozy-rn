@@ -1,24 +1,24 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import MediaView from "@/components/Resource/MediaView";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { useTranslation } from "@/i18n/translation";
+import { Resource } from "@/types";
+import { getUrl } from "@/utils";
+import { MaterialIcons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
     Alert,
+    Dimensions,
     FlatList,
+    Image,
     Modal,
     Platform,
     Text,
     TouchableOpacity,
     View,
-    Dimensions,
-    Image,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
-import {MaterialIcons} from "@expo/vector-icons";
-import {Resource} from "@/types";
-import MediaView from "@/components/Resource/MediaView";
-import {useTranslation} from "@/i18n/translation";
-import {getUrl} from "@/utils";
 import VideoPlayer from "../VideoPlayer";
 
 
@@ -33,15 +33,15 @@ interface PickerProps {
 }
 
 const Picker = ({
-                    files = [],
-                    onChange,
-                    maxFiles = 5,
-                    maxSizeMB = 1000,
-                    allowedTypes = ["image", "video"],
-                    selectFilesTitle = "",
-                    showPreview = true,
-                }: PickerProps) => {
-    const {t} = useTranslation();
+    files = [],
+    onChange,
+    maxFiles = 5,
+    maxSizeMB = 1000,
+    allowedTypes = ["image", "video"],
+    selectFilesTitle = "",
+    showPreview = true,
+}: PickerProps) => {
+    const { t } = useTranslation();
     const { colors } = useTailwindVars();
     const [visible, setIsVisible] = useState(false);
     const [hasPermission, setHasPermission] = useState(false);
@@ -57,7 +57,7 @@ const Picker = ({
     }, [files]);
 
     // 获取屏幕宽度
-    const {width: screenWidth} = Dimensions.get("window");
+    const { width: screenWidth } = Dimensions.get("window");
 
     // 判断是否为视频文件 - 只支持iOS原生支持的格式
     const isVideoFile = useCallback((resource: Resource) => {
@@ -86,9 +86,9 @@ const Picker = ({
 
     useEffect(() => {
         (async () => {
-            const {status: mediaLibraryStatus} =
+            const { status: mediaLibraryStatus } =
                 await ImagePicker.requestMediaLibraryPermissionsAsync();
-            const {status: cameraStatus} =
+            const { status: cameraStatus } =
                 await ImagePicker.requestCameraPermissionsAsync();
 
             setHasPermission(
@@ -97,7 +97,7 @@ const Picker = ({
 
             if (mediaLibraryStatus !== "granted" || cameraStatus !== "granted") {
                 Alert.alert(t("needPermission"), t("allowAccessToAlbumAndCamera"), [
-                    {text: t("ok"), style: "default"},
+                    { text: t("ok"), style: "default" },
                 ]);
             }
         })();
@@ -111,7 +111,7 @@ const Picker = ({
             try {
                 const assetsToProcess = assets.slice(0, maxFiles - files.length);
                 const fileInfoPromises = assetsToProcess.map((asset) =>
-                    FileSystem.getInfoAsync(asset.uri, {size: true})
+                    FileSystem.getInfoAsync(asset.uri, { size: true })
                 );
                 const fileInfos = await Promise.all(fileInfoPromises);
                 const newItems: Resource[] = [];
@@ -130,8 +130,7 @@ const Picker = ({
                     const timestamp = Date.now() + i;
                     const fileName =
                         asset.fileName ||
-                        `${type === "video" ? "video" : "image"}_${timestamp}.${
-                            type === "video" ? "mp4" : "jpg"
+                        `${type === "video" ? "video" : "image"}_${timestamp}.${type === "video" ? "mp4" : "jpg"
                         }`;
 
                     newItems.push({
@@ -249,7 +248,7 @@ const Picker = ({
         ...Platform.select({
             ios: {
                 shadowColor: colors.primary,
-                shadowOffset: {width: 0, height: 2},
+                shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
             },
@@ -262,11 +261,11 @@ const Picker = ({
     return (
         <View className={"flex-col"}>
             <FlatList
-                data={[...files, {addComponent: true}]}
+                data={[...files, { addComponent: true }]}
                 ItemSeparatorComponent={() => (
-                    <View style={{width: 10, height: 10}}></View>
+                    <View style={{ width: 10, height: 10 }}></View>
                 )}
-                renderItem={({item: resource, index}) => {
+                renderItem={({ item: resource, index }) => {
                     if (resource.addComponent) {
                         if (files?.length >= maxFiles) {
                             return <></>;
@@ -280,7 +279,7 @@ const Picker = ({
                                 >
                                     {isProcessing ? (
                                         <>
-                                            <ActivityIndicator size="small" color="#666"/>
+                                            <ActivityIndicator size="small" color="#666" />
                                             <Text className="text-[#666] text-md font-medium" numberOfLines={1}>
                                                 {t("adding")}
                                             </Text>
@@ -336,7 +335,7 @@ const Picker = ({
                             onPress={() => setIsVisible(false)}
                             className="bg-black/20 px-[5px] py-[5px] rounded-full"
                         >
-                            <MaterialIcons name="close" size={20} color="colors.background"/>
+                            <MaterialIcons name="close" size={20} color="colors.background" />
                         </TouchableOpacity>
                     </View>
 
@@ -358,11 +357,11 @@ const Picker = ({
                             );
                             setCurrentIndex(index);
                         }}
-                        renderItem={({item, index}) => {
+                        renderItem={({ item, index }) => {
                             const isCurrentPage = index === currentIndex;
 
                             return (
-                                <View style={{width: screenWidth, flex: 1}}>
+                                <View style={{ width: screenWidth, flex: 1 }}>
                                     {item.isVideo ? (
                                         // 渲染视频播放器
                                         <VideoPlayer
@@ -384,7 +383,7 @@ const Picker = ({
                                             }}
                                         >
                                             <Image
-                                                source={{uri: item.uri}}
+                                                source={{ uri: item.uri }}
                                                 style={{
                                                     width: screenWidth,
                                                     height: "80%",
@@ -429,7 +428,7 @@ const Picker = ({
                                 onPress={() => removeItem(files[currentIndex])}
                                 className="bg-black/20 px-[15px] py-[7px] rounded-full flex-row items-center gap-[5px]"
                             >
-                                <MaterialIcons name="delete" size={16} color={colors.background}/>
+                                <MaterialIcons name="delete" size={16} color={colors.background} />
                                 <Text className="text-colors.background">{t("delete")}</Text>
                             </TouchableOpacity>
                         </View>
