@@ -1,12 +1,12 @@
 
-export const workflowConfig = {
-    videoReplication: {
+export const workflowConfig: Record<string, any> = {
+    VideoReplication: {
         label: '视频复刻',
     },
-    videoReplication2: {
+    VideoReplication2: {
         label: '视频复刻',
     },
-    videoGeneration: {
+    VideoGeneration: {
         label: '创意视频生成',
     }
 }
