@@ -10,6 +10,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
 import SegmentScriptJob from "./SegmentScriptJob";
 import VideoGenerationJob from "./VideoGenerationJob";
 
@@ -105,6 +106,7 @@ const AssetEditorScreen = () => {
                         return (
                             <View key={index} className="bg-card m-5 rounded-2xl">
                                 {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                 {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
 
                                 {
