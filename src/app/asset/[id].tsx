@@ -9,6 +9,8 @@ import React, { useRef, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SegmentScriptJob from "./SegmentScriptJob";
+import VideoGenerationJob from "./VideoGenerationJob";
 
 const AssetEditorScreen = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -41,7 +43,9 @@ const AssetEditorScreen = () => {
                     pages?.map((job: any, index: number) => {
                         return (
                             <View key={index} className="flex-1 items-center justify-center bg-card m-5 rounded-2xl p-5">
-                                <Text className="text-xl font-bold">{JSON.stringify(job)}</Text>
+                                {/* <Text>{JSON.stringify(asset)}</Text> */}
+                                {job.name === 'videoGenerationJob' && <VideoGenerationJob job={job} asset={asset} refetch={refetch} />}
+                                {job.name === 'segmentScriptJob' && <SegmentScriptJob job={job} asset={asset} refetch={refetch} />}
                             </View>
                         );
                     })
