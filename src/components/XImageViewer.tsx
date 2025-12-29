@@ -20,6 +20,8 @@ const XImageViewer = ({ children, defaultIndex = 0, images }: { children: React.
                 imageIndex={defaultIndex}
                 visible={visible}
                 onRequestClose={() => setVisible(false)}
+                presentationStyle="overFullScreen"
+                animationType="fade"
                 FooterComponent={({ imageIndex }) => (
                     <View style={{ paddingBottom: insets.bottom + 20, alignItems: 'center', width: '100%' }}>
                         <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 }}>
