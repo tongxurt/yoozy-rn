@@ -84,7 +84,21 @@ const AssetEditorScreen = () => {
                 ref={pagerRef}
                 style={{ flex: 1 }}
                 initialPage={maxEnabledPage}
-                onPageSelected={(e) => setActiveTabIndex(e.nativeEvent.position)}
+                scrollEnabled={true}
+                onPageScroll={(e) => {
+                    const position = e.nativeEvent.position;
+                    // Prevent scrolling beyond maxEnabledPage
+                    if (position >= maxEnabledPage && e.nativeEvent.offset > 0) {
+                        pagerRef.current?.setPage(maxEnabledPage);
+                    }
+                }}
+                onPageSelected={(e) => {
+                    if (e.nativeEvent.position > maxEnabledPage) {
+                        pagerRef.current?.setPage(maxEnabledPage);
+                    } else {
+                        setActiveTabIndex(e.nativeEvent.position);
+                    }
+                }}
             >
                 {
                     pages?.map((job: any, index: number) => {
@@ -116,14 +130,20 @@ const AssetEditorScreen = () => {
                     pages?.map((job: any, index: number) => {
                         const isActive = index === activeTabIndex;
                         const config = assetWorkflowJobConfig[job.name];
+                        const isDisabled = index > maxEnabledPage;
 
                         return (
                             <TouchableOpacity
                                 key={index}
-                                onPress={() => pagerRef.current?.setPage(index)}
+                                onPress={() => {
+                                    if (!isDisabled) {
+                                        pagerRef.current?.setPage(index);
+                                    }
+                                }}
+                                disabled={isDisabled}
                                 className={`flex-col gap-2 items-center justify-center}`}
                             >
-                                <View className={`rounded-full px-5 py-2 bg-card ${isActive ? 'bg-primary/20 border-primary/30 border' : ''}`}>
+                                <View className={`rounded-full px-5 py-2 bg-card ${isActive ? 'bg-primary/20 border-primary/30 border' : ''} ${isDisabled ? 'opacity-50' : ''}`}>
                                     {config?.icon(colors.primary)}
                                 </View>
                                 <Text className={`text-xs font-bold ${isActive ? 'text-black' : 'text-gray-400'}`}>

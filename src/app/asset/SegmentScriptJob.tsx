@@ -60,7 +60,7 @@ const Job = ({ index, job, asset, refetch }: JobProps) => {
     };
 
     return <ScrollView>
-        <View className="">
+        <View className="p-5">
             {
                 images && (
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 gap-3 py-2">
