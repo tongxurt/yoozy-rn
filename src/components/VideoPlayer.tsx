@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { ResizeMode, Video } from "expo-av";
 import React from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Modal, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface VideoPlayerProps {
@@ -23,7 +23,8 @@ const VideoPlayer = ({ videoUrl, visible, onClose }: VideoPlayerProps) => {
             onRequestClose={onClose}
             statusBarTranslucent
         >
-            <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <StatusBar hidden />
+            <View style={styles.container}>
                 <Video
                     source={{ uri: videoUrl }}
                     style={styles.video}
