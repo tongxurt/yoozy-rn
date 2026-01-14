@@ -14,7 +14,8 @@ import {
 } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.80; // 调整宽度以便更明显地看到下一个卡片的边缘
+const CARD_WIDTH = SCREEN_WIDTH * 0.85;
+// 调整宽度以便更明显地看到下一个卡片的边缘
 
 // --- Sub-component 1: Segments Editor (for structured segments) ---
 

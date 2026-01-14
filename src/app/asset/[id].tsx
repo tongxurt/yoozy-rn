@@ -1,5 +1,6 @@
 import { getAsset } from "@/api/asset";
-import { replaceWorkflow } from "@/api/workflow";
+import { backWorkflowJob, confirmWorkflowJob, retryWorkflowJob } from "@/api/workflow";
+
 import ScreenContainer from "@/components/ScreenContainer";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { assetWorkflowJobConfig, workflowConfig } from "@/consts";
@@ -7,7 +8,7 @@ import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
@@ -43,44 +44,20 @@ const AssetEditorScreen = () => {
         return { asset, pages, maxEnabledPage };
     }, [d]);
 
-    const handleConfirm = (job: any) => {
-        if (job.name === 'videoSegmentsGenerationJob' && !jobSelections[job.index]) {
-            Alert.alert("提示", "请先选择一个片段");
-            return;
-        }
-
+    const handleConfirm = useCallback((job: any) => {
         Alert.alert(
             "确认结果",
-            "确认当前生成结果并继续下一步？",
+            "确认当前生成结果并继续下一步吗？",
             [
                 { text: "取消", style: "cancel" },
                 {
                     text: "确认",
                     onPress: async () => {
                         try {
-                            const currentWorkflow = asset?.workflow;
-                            if (!currentWorkflow) return;
-
-                            const newWorkflow = {
-                                ...currentWorkflow,
-                                jobs: currentWorkflow?.jobs.map((x: any) => {
-                                    if (x.index === job.index) {
-                                        return { ...x, status: "completed" };
-                                    }
-                                    return x;
-                                }),
-                            };
-
-                            if (job.name === 'videoSegmentsGenerationJob') {
-                                newWorkflow.dataBus = {
-                                    ...newWorkflow.dataBus,
-                                    selectedVideoGeneration: jobSelections[job.index]
-                                };
-                            }
-
-                            console.log(newWorkflow);
-
-                            await replaceWorkflow(newWorkflow);
+                            await confirmWorkflowJob({
+                                id: asset.workflow._id,
+                                index: job.index,
+                            });
                             refetch();
                         } catch (e) {
                             Alert.alert("Error", "提交失败，请重试");
@@ -89,46 +66,55 @@ const AssetEditorScreen = () => {
                 },
             ]
         );
-    };
+    }, [asset?.workflow?._id, refetch]);
 
-    const handleRetry = (job: any) => {
+    const handleRetry = useCallback((job: any) => {
         Alert.alert(
-            "确认重试",
-            "确认重新执行当前任务？当前任务的数据将被清空",
+            "确认重新执行当前任务？",
+            "当前步骤以及后续步骤的所有任务数据将被清除，重新执行将生成新的数据。",
             [
                 { text: "取消", style: "cancel" },
                 {
                     text: "确认",
                     onPress: async () => {
                         try {
-                            const currentWorkflow = asset?.workflow;
-                            if (!currentWorkflow) return;
-
-                            const newWorkflow = {
-                                ...currentWorkflow,
-                                jobs: currentWorkflow?.jobs.map((x: any) => {
-                                    if (x.index === job.index) {
-                                        return { ...x, status: "running" };
-                                    }
-                                    return x;
-                                }),
-                                dataBus: {
-                                    ...currentWorkflow.dataBus,
-                                    // [dataKey]: null,
-                                },
-                            };
-                            await replaceWorkflow(newWorkflow);
+                            await retryWorkflowJob({
+                                id: asset?.workflow?._id,
+                                index: job.index,
+                            });
                             refetch();
-
-                            setActiveTabIndex(prev => prev + 1);
                         } catch (e) {
-                            Alert.alert("Error", "重试提交失败");
+                            Alert.alert("Error", "重新执行失败，请重试");
                         }
                     },
                 },
             ]
         );
-    };
+    }, [asset?.workflow?._id, refetch]);
+
+    const handleBack = useCallback((job: any) => {
+        Alert.alert(
+            "确认回到上一步吗？",
+            "当前步骤的所有任务数据将被清除",
+            [
+                { text: "取消", style: "cancel" },
+                {
+                    text: "确认",
+                    onPress: async () => {
+                        try {
+                            await backWorkflowJob({
+                                id: asset?.workflow?._id,
+                                index: job.index,
+                            });
+                            refetch();
+                        } catch (e) {
+                            Alert.alert("Error", "回到上一步失败，请重试");
+                        }
+                    },
+                },
+            ]
+        );
+    }, [asset?.workflow?._id, refetch]);
 
     return (
         <ScreenContainer>
@@ -158,7 +144,7 @@ const AssetEditorScreen = () => {
                         return (
                             <View key={index} className="bg-card m-5 flex-1 overflow-hidden">
                                 <View className="flex-1 rounded-2xl ">
-                                    {
+                                    {/* {
                                         job.status === 'running' && (
                                             <View className="w-full h-full items-center justify-center gap-2 bg-primary/20">
                                                 <View className="w-12 h-12 rounded-full bg-primary/20 items-center justify-center">
@@ -167,11 +153,8 @@ const AssetEditorScreen = () => {
                                                 <Text className="text-primary text-sm font-bold tracking-wide">创作进行中</Text>
                                             </View>
                                         )
-                                    }
+                                    } */}
 
-                                    {
-                                        (job.status === 'confirming' || job.status === 'completed') && (
-                                            <>
                                                 {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                                 {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                                 {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
@@ -185,13 +168,19 @@ const AssetEditorScreen = () => {
                                                         onSelect={(item: any) => setJobSelections(prev => ({ ...prev, [index]: item }))}
                                                     />
                                                 )}
-                                            </>
-                                        )
-                                    }
                                 </View>
                                 {
                                     job.status === 'confirming' && (
                                         <View className="p-4 flex-row items-center justify-end gap-3 bg-white border-t border-gray-100">
+                                            {job.index > 0 && (
+                                                <TouchableOpacity
+                                                    onPress={() => handleBack(job)}
+                                                    className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center border border-gray-200"
+                                                >
+                                                    <Feather name="arrow-left" size={16} color="#6b7280" />
+                                                </TouchableOpacity>
+                                            )}
+
                                             <TouchableOpacity
                                                 onPress={() => handleRetry(job)}
                                                 className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center border border-gray-200"

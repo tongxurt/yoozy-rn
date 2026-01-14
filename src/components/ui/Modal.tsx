@@ -7,7 +7,8 @@ import {
     ViewStyle,
     Dimensions,
     Platform,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Modal as RNModal
 } from 'react-native';
 import {ReactNode, useEffect, useRef} from 'react';
 import useTailwindVars from "@/hooks/useTailwindVars";
@@ -20,12 +21,12 @@ interface CustomModalProps {
     visible?: boolean;
     onClose?: () => void;
     position?: Position;
-    showCloseButton?: boolean;
-    closeButtonStyle?: ViewStyle;
     contentStyle?: ViewStyle;
     animationDuration?: number;
     backgroundOpacity?: number;
     closeOnBackdropPress?: boolean;
+    useScale?: boolean;
+    showIndicator?: boolean;
     children: ReactNode;
 }
 
@@ -35,20 +36,21 @@ const Modal = ({
                    position = 'bottom',
                    contentStyle,
                    animationDuration = 300,
-                   backgroundOpacity = 0.6, // 增加默认蒙层透明度
+                   backgroundOpacity = 0.6,
                    closeOnBackdropPress = true,
+                   useScale = true,
+                   showIndicator = true,
                    children,
                }: CustomModalProps) => {
     const animation = useRef(new Animated.Value(0)).current;
-    const scaleAnimation = useRef(new Animated.Value(0.95)).current; // 添加缩放动画
+    const scaleAnimation = useRef(new Animated.Value(useScale ? 0.95 : 1)).current;
     const {height} = Dimensions.get('window');
     const { colors } = useTailwindVars();
 
     useEffect(() => {
         if (visible) {
-            // 确保动画从初始值开始
             animation.setValue(0);
-            scaleAnimation.setValue(0.95);
+            scaleAnimation.setValue(useScale ? 0.95 : 1);
 
             Animated.parallel([
                 Animated.timing(animation, {
@@ -56,12 +58,14 @@ const Modal = ({
                     duration: animationDuration,
                     useNativeDriver: true,
                 }),
-                Animated.spring(scaleAnimation, {
-                    toValue: 1,
-                    tension: 100,
-                    friction: 8,
-                    useNativeDriver: true,
-                }),
+                ...(useScale ? [
+                    Animated.spring(scaleAnimation, {
+                        toValue: 1,
+                        tension: 100,
+                        friction: 8,
+                        useNativeDriver: true,
+                    })
+                ] : []),
             ]).start();
         } else {
             Animated.parallel([
@@ -70,14 +74,16 @@ const Modal = ({
                     duration: animationDuration,
                     useNativeDriver: true,
                 }),
-                Animated.timing(scaleAnimation, {
-                    toValue: 0.95,
-                    duration: animationDuration,
-                    useNativeDriver: true,
-                }),
+                ...(useScale ? [
+                    Animated.timing(scaleAnimation, {
+                        toValue: 0.95,
+                        duration: animationDuration,
+                        useNativeDriver: true,
+                    })
+                ] : []),
             ]).start();
         }
-    }, [visible, animationDuration]);
+    }, [visible, animationDuration, useScale]);
 
     // 计算从哪个方向滑入
     const translateY = animation.interpolate({
@@ -90,9 +96,6 @@ const Modal = ({
         outputRange: [0, backgroundOpacity],
     });
 
-    // 不可见时不渲染
-    if (!visible) return null;
-
     // 内容样式基于位置
     const positionStyle: ViewStyle = {
         ...(position === 'top' ? {top: 0} : {bottom: 0}),
@@ -101,7 +104,7 @@ const Modal = ({
         position: 'absolute',
     };
 
-    // 内容边框圆角基于位置 - 改进圆角设计
+    // 内容边框圆角基于位置
     const borderRadiusStyle: ViewStyle = {
         ...(position === 'top'
             ? {
@@ -119,14 +122,8 @@ const Modal = ({
     };
 
     const modalContainerStyle = {
-        position: 'absolute' as const,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        flex: 1,
         justifyContent: position === 'top' ? 'flex-start' : 'flex-end',
-        zIndex: 1000,
-        pointerEvents: 'box-none' as const,
     } as any;
 
     const pressableOverlayStyle = {
@@ -142,7 +139,6 @@ const Modal = ({
         position: 'relative' as const,
         zIndex: 1002,
         overflow: 'hidden' as const,
-        // 添加阴影效果
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -151,60 +147,65 @@ const Modal = ({
         shadowOpacity: 0.25,
         shadowRadius: 16,
         elevation: 15,
-        // 添加最小高度和内边距
         minHeight: 100,
         paddingTop: position === 'top' ? 20 : 12,
         paddingBottom: position === 'bottom' ? 20 : 12,
     };
 
     return (
-        <View style={modalContainerStyle}>
-            {/* 改进的蒙层部分 */}
-            <Animated.View
-                style={[
-                    {
-                        opacity: overlayOpacity,
-                        ...pressableOverlayStyle,
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // 增加蒙层透明度
-                        pointerEvents: 'auto' as const,
-                        zIndex: 1001,
-                    },
-                ]}
-                className="h-screen"
-            >
-                <Pressable style={pressableOverlayStyle} onPress={closeOnBackdropPress ? onClose : undefined}/>
-            </Animated.View>
+        <RNModal
+            visible={visible}
+            transparent
+            animationType="none"
+            onRequestClose={onClose}
+        >
+            <View style={modalContainerStyle}>
+                {/* 改进的蒙层部分 */}
+                <Animated.View
+                    style={[
+                        {
+                            opacity: overlayOpacity,
+                            ...pressableOverlayStyle,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            pointerEvents: 'auto' as const,
+                            zIndex: 1001,
+                        },
+                    ]}
+                >
+                    <Pressable style={pressableOverlayStyle} onPress={closeOnBackdropPress ? onClose : undefined}/>
+                </Animated.View>
 
 
-            <Animated.View
-                style={[
-                    modalContentStyle,
-                    positionStyle,
-                    borderRadiusStyle,
-                    {
-                        transform: [
-                            {translateY},
-                            {scale: scaleAnimation}
-                        ]
-                    },
-                    contentStyle,
-                ]}
-                className="overflow-hidden"
-                pointerEvents="auto"
-            >
-                {/* 添加顶部指示器（仅bottom位置） */}
-                {position === 'bottom' && (
-                    <View className="items-center">
-                        <View
-                            className="w-10 h-1 rounded-full"
-                            style={{backgroundColor: colors['muted-foreground']}}
-                        />
-                    </View>
-                )}
+                <Animated.View
+                    style={[
+                        modalContentStyle,
+                        positionStyle,
+                        borderRadiusStyle,
+                        {
+                            transform: [
+                                {translateY},
+                                {scale: scaleAnimation}
+                            ]
+                        },
+                        contentStyle,
+                    ]}
+                    className="overflow-hidden"
+                    pointerEvents="auto"
+                >
+                    {/* 添加顶部指示器（仅bottom位置） */}
+                    {position === 'bottom' && showIndicator && (
+                        <View className="items-center">
+                            <View
+                                className="w-10 h-1 rounded-full"
+                                style={{backgroundColor: colors['muted-foreground']}}
+                            />
+                        </View>
+                    )}
 
-                {children}
-            </Animated.View>
-        </View>
+                    {children}
+                </Animated.View>
+            </View>
+        </RNModal>
     );
 };
 

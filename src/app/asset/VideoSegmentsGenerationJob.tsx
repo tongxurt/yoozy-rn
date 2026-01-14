@@ -1,15 +1,20 @@
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
     ActivityIndicator,
+    Dimensions,
     Image,
     ScrollView,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
+import VideoGenerationEditorDrawer from "./VideoGenerationEditorDrawer";
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const CARD_WIDTH = SCREEN_WIDTH * 0.85; // Adjusted for better focus and peeking
 
 interface JobProps {
     index: number;
@@ -20,78 +25,163 @@ interface JobProps {
     onSelect?: (item: any) => void;
 }
 
-const Job = ({ index, job, asset, refetch, selectedItem, onSelect }: JobProps) => {
+const VideoCard = React.memo(({
+    item,
+    index,
+    editable,
+    onPreview,
+    onEdit,
+}: {
+    item: any;
+    index: number;
+    editable?: boolean;
+    onPreview: (url: string) => void;
+    onEdit: (index: number) => void;
+}) => {
     const { colors } = useTailwindVars();
-
-    const data = asset?.workflow?.dataBus?.videoGenerations;
-
-    if (!data) return null;
+    const isRunning = item.status?.toLowerCase() === 'running';
 
     return (
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16 }}>
-            <View className="flex-row flex-wrap justify-between gap-y-4">
-                {data.map((item: any, index: number) => {
-                    const isSelected = selectedItem?.url === item.url;
-                    const isAnySelected = !!selectedItem;
-
-                    return (
-                        <TouchableOpacity
-                            key={index}
-                            activeOpacity={0.9}
-                            onPress={() => onSelect?.(item)}
-                            className={`w-[48%] bg-card rounded-xl overflow-hidden shadow-sm border-2 ${isSelected ? 'border-primary' : 'border-transparent'} ${isAnySelected && !isSelected ? 'opacity-50' : 'opacity-100'}`}
-                            style={{ aspectRatio: 9 / 16 }}
-                        >
-                            {!item.url ? (
-                                <View className="flex-1 items-center justify-center gap-2 bg-primary/20">
-                                    <View className="w-12 h-12 rounded-full bg-primary/20 items-center justify-center">
-                                        <ActivityIndicator size="small" color={colors.primary} />
-                                    </View>
-                                    <Text className="text-primary text-sm font-bold tracking-wide">创作进行中</Text>
-                                </View>
-                            ) : (
-                                <View className="w-full h-full relative">
-                                    <Image
-                                        source={{ uri: item.coverUrl || item.lastFrame }}
-                                        className="w-full h-full"
-                                        resizeMode="cover"
-                                    />
-                                    <View className="absolute inset-0 bg-black/20" pointerEvents="none" />
-
-                                    <View className="absolute inset-0 items-center justify-center">
-                                        <TouchableOpacity
-                                            activeOpacity={0.7}
-                                            onPress={() => router.push(`/video?url=${encodeURIComponent(item.url)}`)}
-                                            className="w-12 h-12 rounded-full bg-black/40 items-center justify-center backdrop-blur-sm"
-                                        >
-                                            <Feather name="play" size={20} color="white" style={{ marginLeft: 2 }} />
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <View className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded-md">
-                                        <Text className="text-white text-[10px] font-medium">
-                                            Segment {index + 1}
-                                        </Text>
-                                    </View>
-
-                                    {isSelected && (
-                                        <View className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary items-center justify-center border-2 border-white">
-                                            <Feather name="check" size={14} color="white" />
-                                        </View>
-                                    )}
-
-                                    {!isSelected && !isAnySelected && (
-                                        <View className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/30 items-center justify-center border border-white/50">
-                                        </View>
-                                    )}
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    );
-                })}
+        <View
+            style={{ width: CARD_WIDTH }}
+            className="bg-white rounded-[24px] border border-gray-100 shadow-sm overflow-hidden mr-4 h-full"
+        >
+            {/* Header */}
+            <View className="px-4 py-3 border-b border-gray-100 bg-gray-50/50 flex-row items-center justify-between">
+                <View className="flex-row items-center gap-2">
+                    <View className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Text className="text-primary text-[10px] font-black">#{index + 1}</Text>
+                    </View>
+                    <Text className="font-bold text-gray-800 text-sm">视频生成</Text>
+                </View>
             </View>
-        </ScrollView>
+
+            {/* Content */}
+            <View className="p-4 flex-1">
+                <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => item.url && !isRunning ? onPreview(item.url) : null}
+                    className="flex-1 relative bg-gray-100 rounded-xl overflow-hidden border border-gray-100"
+                >
+                    {item.url && !isRunning ? (
+                        <View className="w-full h-full">
+                            <Image
+                                source={{ uri: item.coverUrl || item.lastFrame }}
+                                className="w-full h-full"
+                                resizeMode="cover"
+                            />
+                            {/* Centered Play Icon - Video Indicator */}
+                            <View className="absolute inset-0 items-center justify-center">
+                                <View className="w-12 h-12 rounded-full bg-black/40 items-center justify-center backdrop-blur-sm">
+                                    <Feather name="play" size={24} color="white" style={{ marginLeft: 2 }} />
+                                </View>
+                            </View>
+
+                            {/* Floating Edit Button */}
+                            {editable && (
+                                <TouchableOpacity 
+                                    onPress={(e) => {
+                                        e.stopPropagation();
+                                        onEdit(index);
+                                    }}
+                                    className="absolute bottom-3 right-3 w-10 h-10 bg-primary rounded-full items-center justify-center shadow-md shadow-black/20"
+                                >
+                                    <Feather name="edit-2" size={18} color="white" />
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    ) : (
+                        <View className="w-full h-full items-center justify-center bg-black/5">
+                            {(item.lastFrame || item.coverUrl) && (
+                                <Image
+                                    source={{ uri: item.lastFrame || item.coverUrl }}
+                                    className="absolute inset-0 w-full h-full opacity-40"
+                                    blurRadius={1}
+                                />
+                            )}
+                            <ActivityIndicator size="small" color={colors.primary} />
+                            <Text className="text-[10px] text-gray-500 mt-2 font-bold tracking-widest uppercase">生成中</Text>
+                        </View>
+                    )}
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+});
+
+const VideoSegmentsGenerationJob = ({ index: jobIndex, job, asset, refetch, selectedItem, onSelect }: JobProps) => {
+    const data = job?.dataBus?.videoGenerations || [];
+    const editable = job.status === 'confirming';
+    
+    const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const handlePreview = (url: string) => {
+        router.push(`/video?url=${encodeURIComponent(url)}`);
+    };
+
+    const onScroll = (event: any) => {
+        const x = event.nativeEvent.contentOffset.x;
+        const index = Math.round(x / (CARD_WIDTH + 16));
+        if (index !== activeIndex) {
+            setActiveIndex(index);
+        }
+    };
+
+    if (data.length === 0) return null;
+
+    return (
+        <View className="flex-1 p-4">
+            <View className="flex-row items-center gap-2 mb-4 px-1">
+                <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">视频生成详情</Text>
+                <Text className="text-[10px] text-gray-300 font-bold">({activeIndex + 1}/{data.length})</Text>
+            </View>
+
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                snapToInterval={CARD_WIDTH + 16}
+                decelerationRate="fast"
+                contentContainerStyle={{ flexGrow: 1 }}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+                className="flex-1"
+            >
+                {data.map((item: any, index: number) => (
+                    <VideoCard
+                        key={index}
+                        item={item}
+                        index={index}
+                        editable={editable}
+                        onPreview={handlePreview}
+                        onEdit={setSelectedIdx}
+                    />
+                ))}
+            </ScrollView>
+
+            {/* Indicator Dots */}
+            {data.length > 1 && (
+                <View className="flex-row justify-center items-center mt-4 gap-1.5">
+                    {data.map((_: any, idx: number) => (
+                        <View 
+                            key={idx}
+                            className={`h-1.5 rounded-full ${idx === activeIndex ? 'w-4 bg-primary' : 'w-1.5 bg-gray-200'}`}
+                        />
+                    ))}
+                </View>
+            )}
+
+            <VideoGenerationEditorDrawer
+                job={job}
+                visible={selectedIdx !== null}
+                onClose={() => setSelectedIdx(null)}
+                video={selectedIdx !== null ? data[selectedIdx] : null}
+                index={selectedIdx}
+                asset={asset}
+                onRefresh={refetch}
+            />
+        </View>
     );
 };
 
-export default Job;
+export default React.memo(VideoSegmentsGenerationJob);
