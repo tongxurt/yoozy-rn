@@ -118,7 +118,7 @@ const AssetEditorScreen = () => {
 
     return (
         <ScreenContainer>
-            <ScreenHeader title={workflowConfig[asset?.workflow?.name]?.label} />
+            <ScreenHeader title={workflowConfig[asset?.workflow?.name]?.label || "任务详情"} />
             <PagerView
                 ref={pagerRef}
                 style={{ flex: 1 }}
@@ -142,8 +142,8 @@ const AssetEditorScreen = () => {
                 {
                     pages?.map((job: any, index: number) => {
                         return (
-                            <View key={index} className="bg-card m-5 flex-1 overflow-hidden">
-                                <View className="flex-1 rounded-2xl ">
+                            <View key={index} className="bg-card m-5 flex-1 overflow-hidden rounded-[24px] border border-gray-100">
+                                <View className="flex-1">
                                     {/* {
                                         job.status === 'running' && (
                                             <View className="w-full h-full items-center justify-center gap-2 bg-primary/20">
