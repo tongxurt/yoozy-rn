@@ -156,8 +156,8 @@ const AssetEditorScreen = () => {
                 {
                     pages?.map((job: any, index: number) => {
                         return (
-                            <View key={index} className="bg-card m-5 rounded-2xl flex-1 overflow-hidden">
-                                <View className="flex-1">
+                            <View key={index} className="bg-card m-5 flex-1 overflow-hidden">
+                                <View className="flex-1 rounded-2xl ">
                                     {
                                         job.status === 'running' && (
                                             <View className="w-full h-full items-center justify-center gap-2 bg-primary/20">

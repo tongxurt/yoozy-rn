@@ -1,6 +1,15 @@
 import Entypo from '@expo/vector-icons/Entypo';
 
 
+export const aspectRatioConfig: Record<string, string> = {
+    '21:9': '21:9',
+    '16:9': '16:9',
+    '4:3': '4:3',
+    '1:1': '1:1',
+    '3:4': '3:4',
+    '9:16': '9:16'
+}
+
 export const workflowConfig: Record<string, any> = {
     VideoReplication: {
         label: '视频复刻',
@@ -10,6 +19,23 @@ export const workflowConfig: Record<string, any> = {
     },
     VideoGeneration: {
         label: '创意视频生成',
+    },
+    status: {
+        running: {
+            name: '运行中',
+            color: '#3B82F6', // blue-500
+            bg: '#EFF6FF' // blue-50
+        },
+        completed: {
+            name: '完成',
+            color: '#10B981', // green-500
+            bg: '#ECFDF5' // green-50
+        },
+        canceled: {
+            name: '已取消',
+            color: '#9CA3AF', // gray-400
+            bg: '#F9FAFB' // gray-50
+        }
     }
 }
 
