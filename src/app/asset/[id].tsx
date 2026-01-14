@@ -4,23 +4,26 @@ import ScreenContainer from "@/components/ScreenContainer";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { assetWorkflowJobConfig, workflowConfig } from "@/consts";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import React, { useMemo, useRef, useState } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
 import SegmentScriptJob from "./SegmentScriptJob";
 import VideoGenerationJob from "./VideoGenerationJob";
+import VideoSegmentsGenerationJob from "./VideoSegmentsGenerationJob";
 
 const AssetEditorScreen = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { colors } = useTailwindVars();
+
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const pagerRef = useRef<PagerView>(null);
-    const insets = useSafeAreaInsets();
-    const [videoPreview, setVideoPreview] = React.useState<string | null>(null);
+
+
+    const [jobSelections, setJobSelections] = useState<Record<number, any>>({});
 
 
     const { data: d, isLoading, refetch } = useQuery({
@@ -29,7 +32,6 @@ const AssetEditorScreen = () => {
         enabled: !!id,
         refetchInterval: 5000,
     });
-
 
     const { asset, pages, maxEnabledPage } = useMemo(() => {
         const asset = d?.data?.data;
@@ -42,6 +44,11 @@ const AssetEditorScreen = () => {
     }, [d]);
 
     const handleConfirm = (job: any) => {
+        if (job.name === 'videoSegmentsGenerationJob' && !jobSelections[job.index]) {
+            Alert.alert("提示", "请先选择一个片段");
+            return;
+        }
+
         Alert.alert(
             "确认结果",
             "确认当前生成结果并继续下一步？",
@@ -64,6 +71,13 @@ const AssetEditorScreen = () => {
                                 }),
                             };
 
+                            if (job.name === 'videoSegmentsGenerationJob') {
+                                newWorkflow.dataBus = {
+                                    ...newWorkflow.dataBus,
+                                    selectedVideoGeneration: jobSelections[job.index]
+                                };
+                            }
+
                             console.log(newWorkflow);
 
                             await replaceWorkflow(newWorkflow);
@@ -77,10 +91,48 @@ const AssetEditorScreen = () => {
         );
     };
 
+    const handleRetry = (job: any) => {
+        Alert.alert(
+            "确认重试",
+            "确认重新执行当前任务？当前任务的数据将被清空",
+            [
+                { text: "取消", style: "cancel" },
+                {
+                    text: "确认",
+                    onPress: async () => {
+                        try {
+                            const currentWorkflow = asset?.workflow;
+                            if (!currentWorkflow) return;
+
+                            const newWorkflow = {
+                                ...currentWorkflow,
+                                jobs: currentWorkflow?.jobs.map((x: any) => {
+                                    if (x.index === job.index) {
+                                        return { ...x, status: "running" };
+                                    }
+                                    return x;
+                                }),
+                                dataBus: {
+                                    ...currentWorkflow.dataBus,
+                                    // [dataKey]: null,
+                                },
+                            };
+                            await replaceWorkflow(newWorkflow);
+                            refetch();
+
+                            setActiveTabIndex(prev => prev + 1);
+                        } catch (e) {
+                            Alert.alert("Error", "重试提交失败");
+                        }
+                    },
+                },
+            ]
+        );
+    };
+
     return (
         <ScreenContainer>
             <ScreenHeader title={workflowConfig[asset?.workflow?.name]?.label} />
-            <Text>{maxEnabledPage}</Text>
             <PagerView
                 ref={pagerRef}
                 style={{ flex: 1 }}
@@ -104,19 +156,57 @@ const AssetEditorScreen = () => {
                 {
                     pages?.map((job: any, index: number) => {
                         return (
-                            <View key={index} className="bg-card m-5 rounded-2xl">
-                                {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
+                            <View key={index} className="bg-card m-5 rounded-2xl flex-1 overflow-hidden">
+                                <View className="flex-1">
+                                    {
+                                        job.status === 'running' && (
+                                            <View className="w-full h-full items-center justify-center gap-2 bg-primary/20">
+                                                <View className="w-12 h-12 rounded-full bg-primary/20 items-center justify-center">
+                                                    <ActivityIndicator size="small" color={colors.primary} />
+                                                </View>
+                                                <Text className="text-primary text-sm font-bold tracking-wide">创作进行中</Text>
+                                            </View>
+                                        )
+                                    }
 
+                                    {
+                                        (job.status === 'confirming' || job.status === 'completed') && (
+                                            <>
+                                                {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                                {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                                {job.name === 'videoSegmentsGenerationJob' && (
+                                                    <VideoSegmentsGenerationJob
+                                                        index={index}
+                                                        job={job}
+                                                        asset={asset}
+                                                        refetch={refetch}
+                                                        selectedItem={jobSelections[index]}
+                                                        onSelect={(item: any) => setJobSelections(prev => ({ ...prev, [index]: item }))}
+                                                    />
+                                                )}
+                                            </>
+                                        )
+                                    }
+                                </View>
                                 {
                                     job.status === 'confirming' && (
-                                        <TouchableOpacity
-                                            onPress={() => handleConfirm(job)}
-                                            className="absolute bottom-5 right-5"
-                                        >
-                                            <Text className="text-white bg-primary px-5 py-2 rounded-full">确认</Text>
-                                        </TouchableOpacity>
+                                        <View className="p-4 flex-row items-center justify-end gap-3 bg-white border-t border-gray-100">
+                                            <TouchableOpacity
+                                                onPress={() => handleRetry(job)}
+                                                className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center border border-gray-200"
+                                            >
+                                                <Feather name="refresh-ccw" size={16} color="#6b7280" />
+                                            </TouchableOpacity>
+
+                                            <TouchableOpacity
+                                                onPress={() => handleConfirm(job)}
+                                                className="h-10 px-5 bg-primary rounded-full flex-row items-center justify-center shadow-sm shadow-primary/30"
+                                            >
+                                                <Feather name="check" size={16} color="white" style={{ marginRight: 6 }} />
+                                                <Text className="text-white font-bold text-sm">{activeTabIndex === pages.length - 1 ? '点击完成' : '点击进入下一步'}</Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     )
                                 }
                             </View>

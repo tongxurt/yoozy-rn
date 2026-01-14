@@ -133,7 +133,7 @@ export default function MyScreen() {
               </TouchableOpacity>
 
               <Text
-                className="text-md text-white leading-5 max-w-[200px]"
+                className="text-md  leading-5 max-w-[200px]"
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >

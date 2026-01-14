@@ -1,3 +1,4 @@
+
 import CreditEntry from "@/components/CreditEntry";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -12,6 +13,8 @@ interface ScreenHeaderProps {
 
 export const ScreenHeader: React.FC<ScreenHeaderProps> = ({ title = "", closeable = true }) => {
     const { colors } = useTailwindVars();
+
+
 
     return (
         <View className={"px-5 pb-4 flex-row justify-between items-center"}>
