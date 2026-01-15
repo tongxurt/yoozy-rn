@@ -11,10 +11,10 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import PagerView from 'react-native-pager-view';
 import KeyFrameEditorDrawer from "./KeyFrameEditorDrawer";
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.85;
 
 interface Frame {
     url?: string;
@@ -115,32 +115,24 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
         return pairs;
     }, [frames]);
 
-    const onScroll = (event: any) => {
-        const x = event.nativeEvent.contentOffset.x;
-        const index = Math.round(x / (CARD_WIDTH + 16));
-        if (index !== activeIndex) {
-            setActiveIndex(index);
-        }
+    const onPageSelected = (e: any) => {
+        setActiveIndex(e.nativeEvent.position);
     };
 
     if (frames.length === 0) return null;
 
     return (
-        <View className="flex-1 p-4">
-            <View className="flex-row items-center gap-2 mb-4 px-1">
+        <View className="flex-1 py-4">
+            <View className="flex-row items-center gap-2 mb-4 px-5">
                 <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">分镜关键帧</Text>
                 <Text className="text-[10px] text-gray-300 font-bold">({activeIndex + 1}/{framePairs.length})</Text>
             </View>
 
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={CARD_WIDTH + 16}
-                decelerationRate="fast"
-                onScroll={onScroll}
-                scrollEventThrottle={16}
-                contentContainerStyle={{ flexGrow: 1 }}
-                className="flex-1"
+            <PagerView
+                style={{ flex: 1 }}
+                initialPage={0}
+                onPageSelected={onPageSelected}
+                pageMargin={0}
             >
                 {framePairs.map((pair, pairIndex) => {
                     const [startFrame, endFrame] = pair;
@@ -150,44 +142,47 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
                     return (
                         <View
                             key={pairIndex}
-                            style={{ width: CARD_WIDTH }}
-                            className="bg-white rounded-[24px] border border-gray-100 shadow-sm mr-4 overflow-hidden"
+                            style={{ flex: 1 }}
+                            className="px-4"
+                            collapsable={false}
                         >
-                            {/* Pair Header */}
-                            <View className="px-4 py-3 border-b border-gray-100 bg-gray-50/50 flex-row items-center justify-between">
-                                <View className="flex-row items-center gap-2">
-                                    <View className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <Text className="text-primary text-[10px] font-black">#{pairIndex + 1}</Text>
+                            <View className="bg-white rounded-[24px] border border-gray-100 shadow-sm overflow-hidden flex-1">
+                                {/* Pair Header */}
+                                <View className="px-4 py-3 border-b border-gray-100 bg-gray-50/50 flex-row items-center justify-between">
+                                    <View className="flex-row items-center gap-2">
+                                        <View className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                                            <Text className="text-primary text-[10px] font-black">#{pairIndex + 1}</Text>
+                                        </View>
+                                        <Text className="text-xs font-bold text-gray-600">视频关键帧</Text>
                                     </View>
-                                    <Text className="text-xs font-bold text-gray-600">视频关键帧</Text>
                                 </View>
-                            </View>
 
-                            {/* Frame Pair Container */}
-                            <View className="flex-row gap-3 p-4">
-                                <FrameItem
-                                    frame={startFrame}
-                                    index={startIdx}
-                                    editable={editable}
-                                    label="起始帧"
-                                    images={images}
-                                    onEdit={setSelectedIdx}
-                                />
-                                {endFrame && (
+                                {/* Frame Pair Container */}
+                                <View className="flex-row gap-3 p-4 flex-1">
                                     <FrameItem
-                                        frame={endFrame}
-                                        index={endIdx}
+                                        frame={startFrame}
+                                        index={startIdx}
                                         editable={editable}
-                                        label="结束帧"
+                                        label="起始帧"
                                         images={images}
                                         onEdit={setSelectedIdx}
                                     />
-                                )}
+                                    {endFrame && (
+                                        <FrameItem
+                                            frame={endFrame}
+                                            index={endIdx}
+                                            editable={editable}
+                                            label="结束帧"
+                                            images={images}
+                                            onEdit={setSelectedIdx}
+                                        />
+                                    )}
+                                </View>
                             </View>
                         </View>
                     );
                 })}
-            </ScrollView>
+            </PagerView>
 
             {/* Indicator Dots */}
             {framePairs.length > 1 && (
