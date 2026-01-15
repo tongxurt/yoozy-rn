@@ -15,7 +15,7 @@ const VideoPage = () => {
 
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{ headerShown: false, animation: 'fade', animationDuration: 1, gestureEnabled: false }} />
+            <Stack.Screen options={{ headerShown: false, animation: 'slide_from_bottom', animationDuration: 200}} />
             <StatusBar hidden />
 
             <ExpoVideo

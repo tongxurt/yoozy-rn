@@ -230,7 +230,10 @@ const SegmentsEditor = ({ job, data, asset, refetch, editable }: SegmentsEditorP
                 showsHorizontalScrollIndicator={false}
                 snapToInterval={CARD_WIDTH + 16}
                 decelerationRate="fast"
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{ 
+                    flexGrow: 1,
+                    // paddingHorizontal: 16
+                }}
                 onScroll={onScroll}
                 scrollEventThrottle={16}
             >
