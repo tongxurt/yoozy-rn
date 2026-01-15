@@ -142,7 +142,7 @@ const AssetEditorScreen = () => {
                 {
                     pages?.map((job: any, index: number) => {
                         return (
-                            <View key={index} className="bg-card m-5 flex-1 overflow-hidden rounded-[24px] border border-gray-100">
+                            <View key={index} className="bg-card m-[16px] flex-1 overflow-hidden rounded-[24px] border border-gray-100">
                                 <View className="flex-1">
                                     {/* {
                                         job.status === 'running' && (
@@ -171,7 +171,7 @@ const AssetEditorScreen = () => {
                                 </View>
                                 {
                                     job.status === 'confirming' && (
-                                        <View className="p-4 flex-row items-center justify-end gap-3 bg-white border-t border-gray-100">
+                                        <View className="p-[16px] flex-row items-center justify-end gap-3">
                                             {job.index > 0 && (
                                                 <TouchableOpacity
                                                     onPress={() => handleBack(job)}
