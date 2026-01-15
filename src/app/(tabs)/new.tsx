@@ -17,13 +17,13 @@ const FEATURE_ITEMS = [
     title: "高光视频复刻",
     route: "/create/segment-replication",
   },
-  {
-    id: "video-generation",
-    icon: "play",
-    sparkle: true,
-    title: "输入灵感, 智能生视频",
-    route: "/create/video-generation",
-  },
+  // {
+  //   id: "video-generation",
+  //   icon: "play",
+  //   sparkle: true,
+  //   title: "输入灵感, 智能生视频",
+  //   route: "/create/video-generation",
+  // },
   // {
   //   id: "ai-design",
   //   icon: "apps",
@@ -106,7 +106,7 @@ export default function Screen() {
   };
 
   const handleCreate = () => {
-    router.navigate(`/create/smark-video`);
+    router.navigate(`/create/segment-replication`);
   };
 
   return (

@@ -44,7 +44,7 @@ const AssetList = () => {
     const renderItem = ({ item, index }: { item: any; index: number }) => {
         const coverUrl = item.coverUrl || item.commodity?.media?.[0]?.url;
         // Logic: If workflow exists and status is NOT completed, it is creating.
-        const isCreating = item?.workflow?.status !== 'completed';
+        const isCreating = item?.status !== 'completed';
 
         const workflowType = item.workflow?.type || 'videoGeneration';
         const workflowLabel = workflowConfig[workflowType as keyof typeof workflowConfig]?.label || '智能生视频';

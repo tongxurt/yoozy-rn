@@ -11,22 +11,22 @@ import {
 } from "react-native";
 
 
-interface RemixJobProps {
+interface VideoGenerationJobProps {
     index: number;
     job: any;
     asset: any;
     refetch: () => void;
 }
 
-const RemixJob = ({ job, asset, refetch }: RemixJobProps) => {
+const VideoGenerationJob = ({ job, asset, refetch }: VideoGenerationJobProps) => {
     const { colors } = useTailwindVars();
-    const [videoPreview, setVideoPreview] = React.useState<string | null>(null);
 
-    const data =job?.dataBus?.remix;
+    const data = job?.dataBus?.remix;
     if (!data) return null;
 
     return <>
         <View className={`rounded-2xl overflow-hidden`}>
+            {/* <Text className="text-gray-500 text-sm leading-relaxed mb-6">{JSON.stringify(data)} </Text> */}
             {
                 !data?.url ?
                     (
@@ -57,4 +57,4 @@ const RemixJob = ({ job, asset, refetch }: RemixJobProps) => {
     </>
 };
 
-export default RemixJob;
+export default VideoGenerationJob;

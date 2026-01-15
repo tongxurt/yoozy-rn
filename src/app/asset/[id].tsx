@@ -45,9 +45,11 @@ const AssetEditorScreen = () => {
     }, [d]);
 
     const handleConfirm = useCallback((job: any) => {
+
+
         Alert.alert(
             "确认结果",
-            "确认当前生成结果并继续下一步吗？",
+            "确认当前结果并继续吗？",
             [
                 { text: "取消", style: "cancel" },
                 {
@@ -57,6 +59,7 @@ const AssetEditorScreen = () => {
                             await confirmWorkflowJob({
                                 id: asset.workflow._id,
                                 index: job.index,
+                                runImmediately: job.name === 'videoSegmentsGenerationJob',
                             });
                             refetch();
                         } catch (e) {
@@ -143,22 +146,12 @@ const AssetEditorScreen = () => {
                     pages?.map((job: any, index: number) => {
                         return (
                             <View key={index} className="bg-card m-[16px] flex-1 overflow-hidden rounded-[24px] border border-gray-100">
+                                {/* <Text className="text-gray-500 text-sm leading-relaxed mb-6">{JSON.stringify(job)} </Text> */}
                                 <View className="flex-1">
-                                    {/* {
-                                        job.status === 'running' && (
-                                            <View className="w-full h-full items-center justify-center gap-2 bg-primary/20">
-                                                <View className="w-12 h-12 rounded-full bg-primary/20 items-center justify-center">
-                                                    <ActivityIndicator size="small" color={colors.primary} />
-                                                </View>
-                                                <Text className="text-primary text-sm font-bold tracking-wide">创作进行中</Text>
-                                            </View>
-                                        )
-                                    } */}
-
-                                                {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                                {job.name === 'videoSegmentsGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                                {job.name === 'remix' && <RemixJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'videoSegmentsGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'videoSegmentsRemixJob' && <RemixJob index={index} job={job} asset={asset} refetch={refetch} />}
                                 </View>
                                 {
                                     job.status === 'confirming' && (
