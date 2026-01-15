@@ -12,9 +12,10 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import PagerView from 'react-native-pager-view';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH - 16 * 2 - 16 * 2;
+
 interface SegmentItemProps {
     segment: any;
     index: number;
@@ -30,116 +31,119 @@ const SegmentItem = React.memo(({
 }: SegmentItemProps) => {
     return (
         <View 
-            style={{ width: CARD_WIDTH }}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mr-4 h-full"
+            style={{ flex: 1 }}
+            className="px-4"
+            collapsable={false}
         >
-            {/* Header: Style & Index */}
-            <View className="bg-gray-50/50 px-4 py-3 border-b border-gray-100 flex-row items-center justify-between">
-                <View className="flex-row items-center gap-3">
-                    <View className="w-6 h-6 rounded-full bg-primary/10 items-center justify-center">
-                        <Text className="text-primary text-xs font-bold">{index + 1}</Text>
+            <View className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-1">
+                {/* Header: Style & Index */}
+                <View className="bg-gray-50/50 px-4 py-3 border-b border-gray-100 flex-row items-center justify-between">
+                    <View className="flex-row items-center gap-3">
+                        <View className="w-6 h-6 rounded-full bg-primary/10 items-center justify-center">
+                            <Text className="text-primary text-xs font-bold">{index + 1}</Text>
+                        </View>
+                        <Text className="font-bold text-gray-800 text-sm">
+                            {segment.style || `分镜 ${index + 1}`}
+                        </Text>
                     </View>
-                    <Text className="font-bold text-gray-800 text-sm">
-                        {segment.style || `分镜 ${index + 1}`}
-                    </Text>
+                    <View className="flex-row items-center gap-1 bg-white px-2 py-0.5 rounded-full border border-gray-100 shadow-sm">
+                        <Feather name="clock" size={10} color="#9CA3AF" />
+                        <Text className="text-[10px] font-bold text-gray-500">
+                            {segment.timeStart || 0}s - {segment.timeEnd || 0}s
+                        </Text>
+                    </View>
                 </View>
-                <View className="flex-row items-center gap-1 bg-white px-2 py-0.5 rounded-full border border-gray-100 shadow-sm">
-                    <Feather name="clock" size={10} color="#9CA3AF" />
-                    <Text className="text-[10px] font-bold text-gray-500">
-                        {segment.timeStart || 0}s - {segment.timeEnd || 0}s
-                    </Text>
-                </View>
-            </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-                <View className="p-4 gap-y-4">
-                    {/* Key Fields Section */}
-                    <View className="gap-y-3">
-                        {segment.coreAction && (
-                            <View>
-                                <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">核心动作</Text>
-                                <View className="bg-primary/5 rounded-xl p-3 border border-primary/10">
-                                    <Text className="text-sm text-primary font-bold">{segment.coreAction}</Text>
-                                </View>
-                            </View>
-                        )}
-
-                        {segment.elementTransformation && (
-                            <View>
-                                <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">元素变换</Text>
-                                <Text className="text-sm text-gray-700 leading-relaxed pl-1">
-                                    {segment.elementTransformation}
-                                </Text>
-                            </View>
-                        )}
-
-                        {segment.visualChange && (
-                            <View>
-                                <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">视觉变化</Text>
-                                <Text className="text-sm text-gray-600 leading-relaxed pl-1">
-                                    {segment.visualChange}
-                                </Text>
-                            </View>
-                        )}
-
-                        {segment.intention && (
-                            <View>
-                                <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">意图</Text>
-                                <Text className="text-sm text-gray-600 leading-relaxed pl-1">
-                                    {segment.intention}
-                                </Text>
-                            </View>
-                        )}
-
-                        <View>
-                            <View className="flex-row items-center gap-1.5 mb-1 pl-1">
-                                <Text className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">文案</Text>
-                                {editable && <Feather name="edit-2" size={10} color="#7150FF" style={{ opacity: 0.6 }} />}
-                            </View>
-                            {editable ? (
-                                <TextInput
-                                    value={segment.subtitle}
-                                    onChangeText={(val) => onSubtitleChange(index, val)}
-                                    multiline
-                                    className="bg-primary/5 text-sm text-primary font-bold rounded-xl p-3 border border-primary/10 min-h-[40px]"
-                                    style={{ textAlignVertical: 'top' }}
-                                />
-                            ) : (
-                                <View className="bg-primary/5 rounded-xl p-3 border border-primary/10">
-                                    <Text className="text-sm text-primary font-bold">{segment.subtitle}</Text>
+                <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+                    <View className="p-4 gap-y-4">
+                        {/* Key Fields Section */}
+                        <View className="gap-y-3">
+                            {segment.coreAction && (
+                                <View>
+                                    <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">核心动作</Text>
+                                    <View className="bg-primary/5 rounded-xl p-3 border border-primary/10">
+                                        <Text className="text-sm text-primary font-bold">{segment.coreAction}</Text>
+                                    </View>
                                 </View>
                             )}
-                        </View>
-                    </View>
 
-                    {/* Styles Grid */}
-                    <View className="flex-row gap-3">
-                        <View className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100/50">
-                            <Text className="text-[10px] text-gray-400 mb-1 font-medium">内容风格</Text>
-                            <Text className="text-xs text-gray-600 font-medium" numberOfLines={1}>{segment.contentStyle}</Text>
-                        </View>
-                        <View className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100/50">
-                            <Text className="text-[10px] text-gray-400 mb-1 font-medium">场景风格</Text>
-                            <Text className="text-xs text-gray-600 font-medium" numberOfLines={1}>{segment.sceneStyle}</Text>
-                        </View>
-                    </View>
+                            {segment.elementTransformation && (
+                                <View>
+                                    <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">元素变换</Text>
+                                    <Text className="text-sm text-gray-700 leading-relaxed pl-1">
+                                        {segment.elementTransformation}
+                                    </Text>
+                                </View>
+                            )}
 
-                    {/* Tags */}
-                    {segment.typedTags && (
-                        <View className="flex-row flex-wrap gap-2 pt-2 border-t border-dashed border-gray-100">
-                            {Object.values(segment.typedTags)
-                                .flat()
-                                .filter(tag => typeof tag === 'string')
-                                .map((tag: any, i: number) => (
-                                    <View key={i} className="px-2 py-1 bg-primary/5 border border-primary/10 rounded-lg">
-                                        <Text className="text-[10px] text-primary font-medium">{tag}</Text>
+                            {segment.visualChange && (
+                                <View>
+                                    <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">视觉变化</Text>
+                                    <Text className="text-sm text-gray-600 leading-relaxed pl-1">
+                                        {segment.visualChange}
+                                    </Text>
+                                </View>
+                            )}
+
+                            {segment.intention && (
+                                <View>
+                                    <Text className="text-[10px] text-gray-400 mb-1 font-bold uppercase tracking-wider pl-1">意图</Text>
+                                    <Text className="text-sm text-gray-600 leading-relaxed pl-1">
+                                        {segment.intention}
+                                    </Text>
+                                </View>
+                            )}
+
+                            <View>
+                                <View className="flex-row items-center gap-1.5 mb-1 pl-1">
+                                    <Text className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">文案</Text>
+                                    {editable && <Feather name="edit-2" size={10} color="#7150FF" style={{ opacity: 0.6 }} />}
+                                </View>
+                                {editable ? (
+                                    <TextInput
+                                        value={segment.subtitle}
+                                        onChangeText={(val) => onSubtitleChange(index, val)}
+                                        multiline
+                                        className="bg-primary/5 text-sm text-primary font-bold rounded-xl p-3 border border-primary/10 min-h-[40px]"
+                                        style={{ textAlignVertical: 'top' }}
+                                    />
+                                ) : (
+                                    <View className="bg-primary/5 rounded-xl p-3 border border-primary/10">
+                                        <Text className="text-sm text-primary font-bold">{segment.subtitle}</Text>
                                     </View>
-                                ))
-                            }
+                                )}
+                            </View>
                         </View>
-                    )}
-                </View>
-            </ScrollView>
+
+                        {/* Styles Grid */}
+                        <View className="flex-row gap-3">
+                            <View className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100/50">
+                                <Text className="text-[10px] text-gray-400 mb-1 font-medium">内容风格</Text>
+                                <Text className="text-xs text-gray-600 font-medium" numberOfLines={1}>{segment.contentStyle}</Text>
+                            </View>
+                            <View className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100/50">
+                                <Text className="text-[10px] text-gray-400 mb-1 font-medium">场景风格</Text>
+                                <Text className="text-xs text-gray-600 font-medium" numberOfLines={1}>{segment.sceneStyle}</Text>
+                            </View>
+                        </View>
+
+                        {/* Tags */}
+                        {segment.typedTags && (
+                            <View className="flex-row flex-wrap gap-2 pt-2 border-t border-dashed border-gray-100">
+                                {Object.values(segment.typedTags)
+                                    .flat()
+                                    .filter(tag => typeof tag === 'string')
+                                    .map((tag: any, i: number) => (
+                                        <View key={i} className="px-2 py-1 bg-primary/5 border border-primary/10 rounded-lg">
+                                            <Text className="text-[10px] text-primary font-medium">{tag}</Text>
+                                        </View>
+                                    ))
+                                }
+                            </View>
+                        )}
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     );
 });
@@ -207,35 +211,25 @@ const SegmentsEditor = ({ job, data, asset, refetch, editable }: SegmentsEditorP
         });
     }, []);
 
-    const onScroll = (event: any) => {
-        const x = event.nativeEvent.contentOffset.x;
-        const index = Math.round(x / (CARD_WIDTH + 16));
-        if (index !== activeIndex) {
-            setActiveIndex(index);
-        }
+    const onPageSelected = (e: any) => {
+        setActiveIndex(e.nativeEvent.position);
     };
 
     return (
-        <View className="p-4 flex-1">
-            <View className="flex-row items-center justify-between mb-4 px-1">
+        <View className="py-4 flex-1">
+            <View className="flex-row items-center justify-between mb-4 px-5">
                 <View className="flex-row items-center gap-2">
                     <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">分镜详情</Text>
                     <Text className="text-[10px] text-gray-300 font-bold">({activeIndex + 1}/{localSegments.length})</Text>
                 </View>
                 {saving && <ActivityIndicator size="small" color="#7150FF" />}
             </View>
-            <ScrollView 
-                horizontal 
-                className="flex-1"
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={CARD_WIDTH + 16}
-                decelerationRate="fast"
-                contentContainerStyle={{ 
-                    flexGrow: 1,
-                    // paddingHorizontal: 16
-                }}
-                onScroll={onScroll}
-                scrollEventThrottle={16}
+
+            <PagerView 
+                style={{ flex: 1 }}
+                initialPage={0}
+                onPageSelected={onPageSelected}
+                pageMargin={0}
             >
                 {localSegments.map((segment: any, idx: number) => (
                     <SegmentItem
@@ -246,7 +240,7 @@ const SegmentsEditor = ({ job, data, asset, refetch, editable }: SegmentsEditorP
                         onSubtitleChange={handleSubtitleChange}
                     />
                 ))}
-            </ScrollView>
+            </PagerView>
 
             {/* Indicator Dots */}
             {localSegments.length > 1 && (
