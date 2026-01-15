@@ -13,7 +13,7 @@ import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-na
 import PagerView from "react-native-pager-view";
 import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
 import SegmentScriptJob from "./SegmentScriptJob";
-import VideoGenerationJob from "./VideoGenerationJob";
+import RemixJob from "./RemixJob";
 import VideoSegmentsGenerationJob from "./VideoSegmentsGenerationJob";
 
 const AssetEditorScreen = () => {
@@ -155,19 +155,10 @@ const AssetEditorScreen = () => {
                                         )
                                     } */}
 
-                                                {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                                 {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                                {job.name === 'videoSegmentsGenerationJob' && (
-                                                    <VideoSegmentsGenerationJob
-                                                        index={index}
-                                                        job={job}
-                                                        asset={asset}
-                                                        refetch={refetch}
-                                                        selectedItem={jobSelections[index]}
-                                                        onSelect={(item: any) => setJobSelections(prev => ({ ...prev, [index]: item }))}
-                                                    />
-                                                )}
+                                                {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                                {job.name === 'videoSegmentsGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                                {job.name === 'remix' && <RemixJob index={index} job={job} asset={asset} refetch={refetch} />}
                                 </View>
                                 {
                                     job.status === 'confirming' && (

@@ -22,6 +22,7 @@ interface Frame {
     status?: 'waiting' | 'running' | 'done';
     prompt?: string;
     refs?: string[];
+    aspectRatio?: string;
 }
 
 interface JobProps {
@@ -45,14 +46,16 @@ const FrameItem = React.memo(({
     label: string;
     images: string[];
     onEdit: (index: number) => void;
+    jobAspectRatio?: string;
 }) => {
     const isRunning = frame.status?.toLowerCase() === 'running';
+    const displayAspect = frame.aspectRatio;
 
     return (
         <View
-            className={`flex-1 min-w-[140px] flex flex-col rounded-xl border border-gray-100 overflow-hidden ${isRunning ? 'opacity-90' : ''}`}
+            className={`flex-1 flex flex-col rounded-xl border border-gray-100 overflow-hidden ${isRunning ? 'opacity-90' : ''}`}
         >
-            <View className="relative aspect-[9/16] bg-gray-50 overflow-hidden">
+            <View className="relative flex-1 bg-gray-50 overflow-hidden">
                 {frame.url ? (
                     <XImageViewer defaultIndex={index} images={images}>
                         <Image
@@ -75,13 +78,25 @@ const FrameItem = React.memo(({
                 )}
 
                 {/* Label */}
-                <View className={`absolute top-2 ${label === '起始帧' ? 'left-2' : 'right-2'} z-10`}>
+                <View className={`absolute top-2 left-2 z-10`}>
                     <View className={`px-2 py-0.5 rounded-md ${label === '起始帧' ? 'bg-green-500/90' : 'bg-blue-500/90'} backdrop-blur-sm border border-white/20`}>
-                        <Text className="text-white text-[9px] font-bold">
+                        <Text className="text-white text-[12px] font-bold">
                             {label}
                         </Text>
                     </View>
                 </View>
+
+                {/* Aspect Ratio Label */}
+                {displayAspect && (
+                    <View className="absolute top-2 right-2 z-10">
+                        <View className="px-2 py-0.5 rounded-md bg-black/40 backdrop-blur-sm border border-white/10 flex-row items-center gap-1">
+                            <Feather name="maximize" size={8} color="white" />
+                            <Text className="text-white text-[9px] font-bold">
+                                {displayAspect}
+                            </Text>
+                        </View>
+                    </View>
+                )}
 
                 {/* Edit Button Overlay - only if editable */}
                 {editable && !isRunning && frame.url && (
@@ -106,6 +121,7 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
 
     const frames = data?.frames || [];
     const images = useMemo(() => frames.map((f: any) => f.url).filter(Boolean), [frames]);
+    const aspectRatio = data?.aspectRatio || '9:16';
 
     const framePairs = useMemo(() => {
         const pairs: [Frame, Frame | null][] = [];
@@ -123,9 +139,12 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
 
     return (
         <View className="flex-1 py-4">
-            <View className="flex-row items-center gap-2 mb-4 px-5">
-                <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">分镜关键帧</Text>
-                <Text className="text-[10px] text-gray-300 font-bold">({activeIndex + 1}/{framePairs.length})</Text>
+            <View className="flex-row items-center justify-between mb-4 px-5">
+                <View className="flex-row items-center gap-2">
+                    <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">分镜关键帧</Text>
+                    <Text className="text-[10px] text-gray-300 font-bold">({activeIndex + 1}/{framePairs.length})</Text>
+                </View>
+               
             </View>
 
             <PagerView
@@ -158,7 +177,7 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
                                 </View>
 
                                 {/* Frame Pair Container */}
-                                <View className="flex-row gap-3 p-4 flex-1">
+                                <View className="flex-col gap-3 p-4 flex-1">
                                     <FrameItem
                                         frame={startFrame}
                                         index={startIdx}
@@ -166,6 +185,7 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
                                         label="起始帧"
                                         images={images}
                                         onEdit={setSelectedIdx}
+                                        jobAspectRatio={aspectRatio}
                                     />
                                     {endFrame && (
                                         <FrameItem
@@ -175,6 +195,7 @@ const KeyFramesGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobPro
                                             label="结束帧"
                                             images={images}
                                             onEdit={setSelectedIdx}
+                                            jobAspectRatio={aspectRatio}
                                         />
                                     )}
                                 </View>

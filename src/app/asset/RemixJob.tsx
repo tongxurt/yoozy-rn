@@ -11,18 +11,18 @@ import {
 } from "react-native";
 
 
-interface VideoGenerationJobProps {
+interface RemixJobProps {
     index: number;
     job: any;
     asset: any;
     refetch: () => void;
 }
 
-const VideoGenerationJob = ({ job, asset, refetch }: VideoGenerationJobProps) => {
+const RemixJob = ({ job, asset, refetch }: RemixJobProps) => {
     const { colors } = useTailwindVars();
     const [videoPreview, setVideoPreview] = React.useState<string | null>(null);
 
-    const data = asset?.workflow?.dataBus?.videoGenerations?.[0];
+    const data =job?.dataBus?.remix;
     if (!data) return null;
 
     return <>
@@ -57,4 +57,4 @@ const VideoGenerationJob = ({ job, asset, refetch }: VideoGenerationJobProps) =>
     </>
 };
 
-export default VideoGenerationJob;
+export default RemixJob;

@@ -1,4 +1,7 @@
 import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
 export const aspectRatioConfig: Record<string, string> = {
@@ -69,7 +72,7 @@ export const assetWorkflowJobConfig: Record<string, any> = {
     },
     keyFramesGenerationJob: {
         label: '关键帧生成',
-        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
+        icon: (color: string) => <FontAwesome6 name="images" size={22} color={color} />, status: {
             waiting: {
                 name: '关键帧生成等待中',
                 color: 'text-gray-500',
@@ -95,7 +98,7 @@ export const assetWorkflowJobConfig: Record<string, any> = {
     },
     segmentScriptJob: {
         label: '片段脚本生成',
-        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
+        icon: (color: string) => <MaterialCommunityIcons name="script-text" size={24} color={color} />, status: {
             waiting: {
                 name: '片段脚本生成等待中',
                 color: 'text-gray-500',
@@ -119,35 +122,10 @@ export const assetWorkflowJobConfig: Record<string, any> = {
         },
         dataKey: 'segmentScript'
     },
-    commodityReplacementJob: {
-        label: '商品替换',
-        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
-            waiting: {
-                name: '商品替换等待中',
-                color: 'text-gray-500',
-                bg: 'bg-gray-50'
-            },
-            running: {
-                name: '商品替换运行中',
-                color: 'text-blue-500',
-                bg: 'bg-blue-50'
-            },
-            confirming: {
-                name: '商品替换确认中',
-                color: 'text-yellow-500',
-                bg: 'bg-yellow-50'
-            },
-            completed: {
-                name: '商品替换完成',
-                color: 'text-green-500',
-                bg: 'bg-green-50'
-            },
-        },
-        dataKey: 'videoFramesChanges'
-    },
+    
     videoSegmentsGenerationJob: {
         label: '片段复刻',
-        icon: (color: string) => <Entypo name="video" size={24} color={color} />, status: {
+        icon: (color: string) => <MaterialIcons name="subscriptions" size={24} color={color} />, status: {
             waiting: {
                 name: '片段复刻等待中',
                 color: 'text-gray-500',
