@@ -13,7 +13,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.trafigura.pricingportal",
+    bundleIdentifier: "com.yoozy.ai",
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       NSCameraUsageDescription:
@@ -37,7 +37,7 @@ const config = ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: "#ffffff",
     },
     // edgeToEdgeEnabled: true,
-    package: "com.trafigura.pricingportal",
+    package: "com.yoozy.ai",
   },
   web: {
     bundler: "metro",

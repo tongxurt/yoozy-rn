@@ -46,4 +46,3 @@ yarn.lock
 !.yarn/sdks
 !.yarn/versions
 .idea/
-src/config.ts
