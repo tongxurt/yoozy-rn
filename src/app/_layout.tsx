@@ -9,6 +9,7 @@ import ErrorFallback from "@/components/ErrorCallback";
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
 import { useSettings } from "@/hooks/useSettings";
 import { useThemeMode } from "@/hooks/useThemeMode";
+import { initVideoCache } from "@/utils/videoCache";
 import AppThemeProvider from "@/providers/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
@@ -98,7 +99,7 @@ export default function RootLayout() {
     dehydrateOptions: {
       shouldDehydrateQuery: (query) => {
         // 只持久化特定的查询
-        return ["myself"].includes(query.queryKey[0] as string);
+        return ["myself", "items"].includes(query.queryKey[0] as string);
       },
     },
   });
@@ -152,6 +153,7 @@ function RootLayoutNav() {
 
   const load = async () => {
     await fetchSettings();
+    void initVideoCache();
     // await fetchAccounts()
 
     setTimeout(() => {

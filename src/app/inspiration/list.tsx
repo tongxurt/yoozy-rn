@@ -2,10 +2,11 @@ import { listResourceSegments } from "@/api/resource";
 import { CustomRefreshControl } from "@/components/CustomRefreshControl";
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { prefetchVideo, initVideoCache } from "@/utils/videoCache";
 import { Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
     Dimensions,
     FlatList,
@@ -27,6 +28,8 @@ interface InspirationListProps {
 
 export default function InspirationList({ query = "" }: InspirationListProps) {
     const { colors } = useTailwindVars();
+
+    // Removed local initVideoCache as it's now global in _layout.tsx
 
     const {
         data,
@@ -50,22 +53,37 @@ export default function InspirationList({ query = "" }: InspirationListProps) {
                     "typedTags.text",
                     "typedTags.picture",
                     "typedTags.scene",
-                    "description"
+                    "description",
+                    "root.url"
                 ].join(",")
             };
             return listResourceSegments(params);
         },
         getNextPageParam: (lastPage) => {
-            const { size, total, page } = lastPage?.data?.data;
-            return size * page < total ? lastPage?.data?.data?.page + 1 : undefined;
+            const { size, total, page } = lastPage?.data?.data || {};
+            return size * page < total ? (page || 0) + 1 : undefined;
         },
-        staleTime: 1000,
+        staleTime: 1000 * 60 * 10, // 10 minutes cache
+        cacheTime: 1000 * 60 * 60 * 24, // 24 hours persistence
         refetchOnWindowFocus: false,
     });
 
     const flatData = useMemo(() => {
         return data?.pages.flatMap((page) => page?.data?.data?.list || []) || [];
     }, [data]);
+
+    useEffect(() => {
+        if (flatData.length > 0) {
+            // Prefetch videos in the current view and some ahead
+            // Limit to avoid overwhelming network, e.g., next 10 items
+            flatData.forEach(item => {
+                const videoUrl = item.root?.url;
+                if (videoUrl) {
+                    void prefetchVideo(videoUrl);
+                }
+            });
+        }
+    }, [flatData]);
 
     const renderSkeletonItem = (index: number) => {
         return (

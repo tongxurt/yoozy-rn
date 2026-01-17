@@ -314,13 +314,13 @@ const RemixJob = ({ job, asset, refetch }: VideoGenerationJobProps) => {
                             activeOpacity={0.9}
                             onPress={() => router.push(`/video?url=${data.url}`)}
                 className="w-full aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-xl border-[6px] border-white"
-            >
+                        >
                 <Image 
                     source={{ uri: data.coverUrl || data.lastFrame }} 
                     className="w-full h-full" 
                     resizeMode="cover" 
                 />
-                <View className="absolute inset-0 items-center justify-center bg-black/10">
+                            <View className="absolute inset-0 items-center justify-center bg-black/10">
                     <Feather name="play-circle" size={64} color="white" />
                 </View>
             </TouchableOpacity>

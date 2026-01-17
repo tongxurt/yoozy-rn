@@ -4,11 +4,12 @@ import ScreenContainer from "@/components/ScreenContainer";
 import ExpandableText from "@/components/ui/ExpandableText";
 import Modal from "@/components/ui/Modal";
 import useTailwindVars from "@/hooks/useTailwindVars";
+import { getCachedVideoUri } from "@/utils/videoCache";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Video from "react-native-video";
@@ -23,6 +24,7 @@ const Inspiration = () => {
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [previewImages, setPreviewImages] = useState<Array<{ url: string; desc?: string }>>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
+  const [sourceUri, setSourceUri] = useState<string | null>(null);
 
   const { colors } = useTailwindVars();
 
@@ -42,6 +44,14 @@ const Inspiration = () => {
     current?.root?.coverUrl;
 
   const videoUrl = current?.root?.url;
+
+  useEffect(() => {
+    if (videoUrl) {
+      void getCachedVideoUri(videoUrl).then(uri => {
+        setSourceUri(uri);
+      });
+    }
+  }, [videoUrl]);
 
   const videoRef = useRef<any>(null);
   const startTime = current?.timeStart || 0;
@@ -91,7 +101,7 @@ const Inspiration = () => {
         >
           <Video
             ref={videoRef}
-            source={{ uri: videoUrl }}
+            source={{ uri: sourceUri || videoUrl }}
             style={StyleSheet.absoluteFill}
             resizeMode="cover"
             repeat={!endTime} // Only use native repeat if no custom end time
