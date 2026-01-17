@@ -130,12 +130,20 @@ const AssetList = () => {
             itemLayoutAnimation={Layout.springify()}
             ListEmptyComponent={
                 !isLoading ? (
-                    <View className="items-center justify-center py-32 opacity-60">
-                        <View className="bg-gray-100 p-6 rounded-full mb-4">
-                            <Feather name="image" size={32} color={colors['muted-foreground']} />
+                    <View className="items-center justify-center py-32">
+                        <View className="bg-gray-100 p-8 rounded-full mb-6">
+                            <Feather name="video" size={40} color={colors['muted-foreground']} />
                         </View>
-                        <Text className="text-sm font-medium" style={{ color: colors['muted-foreground'] }}>No Assets Found</Text>
-                        <Text className="text-xs mt-2" style={{ color: colors['muted-foreground'] }}>Create your first asset to get started</Text>
+                        <Text className="text-lg font-bold text-foreground mb-2">暂无作品内容</Text>
+                        <Text className="text-sm text-muted-foreground mb-8 text-center px-10">
+                            您还没有创作过作品，快去开启您的智能视频创作之旅吧
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => router.push('/new' as any)}
+                            className="bg-primary px-8 py-3 rounded-full shadow-lg shadow-primary/20"
+                        >
+                            <Text className="text-white font-bold text-base">立即创作</Text>
+                        </TouchableOpacity>
                     </View>
                 ) : null
             }
