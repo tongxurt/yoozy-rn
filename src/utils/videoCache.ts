@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system';
 const VIDEO_CACHE_DIR = `${FileSystem.cacheDirectory}video-cache/`;
 const MAX_CACHE_AGE = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 
-const getFilename = (url: string) => {
+export const getDeterministicLocalUri = (url: string) => {
   if (!url) return '';
   // Create a simple hash from string to use as filename
   let hash = 0;
@@ -14,7 +14,8 @@ const getFilename = (url: string) => {
   }
   // Remove query parameters to keep extension if possible, but hash ensures uniqueness
   const extension = url.split('.').pop()?.split('?')[0] || 'mp4';
-  return `v_${Math.abs(hash)}.${extension}`;
+  const filename = `v_${Math.abs(hash)}.${extension}`;
+  return `${VIDEO_CACHE_DIR}${filename}`;
 };
 
 /**
@@ -64,8 +65,7 @@ export const cleanupCache = async () => {
 export const getCachedVideoUri = async (url: string): Promise<string> => {
   if (!url) return url;
   
-  const filename = getFilename(url);
-  const fileUri = `${VIDEO_CACHE_DIR}${filename}`;
+  const fileUri = getDeterministicLocalUri(url);
   
   const fileInfo = await FileSystem.getInfoAsync(fileUri);
   if (fileInfo.exists && fileInfo.modificationTime) {
@@ -86,8 +86,7 @@ export const getCachedVideoUri = async (url: string): Promise<string> => {
 export const prefetchVideo = async (url: string) => {
   if (!url || !url.startsWith('http')) return;
   
-  const filename = getFilename(url);
-  const fileUri = `${VIDEO_CACHE_DIR}${filename}`;
+  const fileUri = getDeterministicLocalUri(url);
   
   try {
     const fileInfo = await FileSystem.getInfoAsync(fileUri);

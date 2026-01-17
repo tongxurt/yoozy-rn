@@ -1,121 +1,118 @@
-import {StyleSheet, TouchableOpacity, View, ActivityIndicator, StyleProp, ViewStyle} from 'react-native';
-import {ResizeMode, Video} from 'expo-av';
-import React, {useEffect, useRef, useState} from 'react';
-import {Ionicons} from '@expo/vector-icons';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, View, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
+import Video, { ResizeMode, OnProgressData, OnLoadData, VideoRef } from 'react-native-video';
+import { Ionicons } from '@expo/vector-icons';
 
 interface VideoPlayerProps {
-    videoUri: string;
+    videoUrl: string;
     timeStart?: number;
     timeEnd?: number;
-    coverUrl?: string;
     shouldLoop?: boolean;
-
+    resizeMode?: ResizeMode;
+    autoPlay?: boolean;
+    onReadyForDisplay?: () => void;
     style?: StyleProp<ViewStyle>;
 }
 
-const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false, style}: VideoPlayerProps) => {
-    const videoRef = useRef<Video>(null);
-    const [playbackStatus, setPlaybackStatus] = useState<any>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [showControls, setShowControls] = useState(true);
-    const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+const VideoPlayer = ({
+    videoUrl,
+    timeStart = 0,
+    timeEnd,
+    shouldLoop = false,
+    resizeMode = ResizeMode.CONTAIN,
+    autoPlay = false,
+    onReadyForDisplay,
+    style
+}: VideoPlayerProps) => {
+    const videoRef = useRef<VideoRef>(null);
+    const [paused, setPaused] = useState(!autoPlay);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoaded, setIsLoaded] = useState(false);
 
+    // 监听外部 autoPlay 变化
     useEffect(() => {
-        if (timeStart !== undefined && videoRef.current) {
-            videoRef.current.setPositionAsync(timeStart * 1000);
+        setPaused(!autoPlay);
+    }, [autoPlay, videoUrl]);
+
+    const handleLoad = (data: OnLoadData) => {
+        setIsLoaded(true);
+        setIsLoading(false);
+        
+        // 双重保障：初始位置跳转
+        if (timeStart > 0) {
+            videoRef.current?.seek(timeStart);
         }
-    }, [timeStart]);
+    };
 
-    // 播放时隐藏控制器，暂停时显示
-    useEffect(() => {
-        if (isPlaying) {
-            setShowControls(false);
-        } else {
-            setShowControls(true);
-        }
-    }, [isPlaying]);
-
-    const handlePlaybackStatusUpdate = (status: any) => {
-        setPlaybackStatus(status);
-        if (!status.isLoaded) return;
-
-        setIsPlaying(status.isPlaying);
-
-        if (timeEnd !== undefined && status.positionMillis >= timeEnd * 1000) {
-            if (shouldLoop && timeStart !== undefined) {
-                videoRef.current?.setPositionAsync(timeStart * 1000);
+    const handleProgress = (data: OnProgressData) => {
+        // 片段循环逻辑
+        if (timeEnd !== undefined && data.currentTime >= timeEnd) {
+            if (shouldLoop) {
+                videoRef.current?.seek(timeStart);
             } else {
-                videoRef.current?.pauseAsync();
-                if (timeStart !== undefined) {
-                    videoRef.current?.setPositionAsync(timeStart * 1000);
-                }
-            }
-        }
-
-        if (status.didJustFinish) {
-            if (timeStart !== undefined) {
-                videoRef.current?.setPositionAsync(timeStart * 1000);
-            }
-            if (!shouldLoop) {
-                videoRef.current?.pauseAsync();
+                setPaused(true);
             }
         }
     };
 
-    const togglePlayPause = async () => {
-        if (!videoRef.current) return;
-
-        if (isPlaying) {
-            await videoRef.current.pauseAsync();
+    const handleEnd = () => {
+        if (shouldLoop) {
+            videoRef.current?.seek(timeStart);
         } else {
-            await videoRef.current.playAsync();
+            setPaused(true);
         }
     };
 
-    const handleVideoPress = () => {
-        togglePlayPause();
+    const handleReadyForDisplay = () => {
+        if (onReadyForDisplay) {
+            onReadyForDisplay();
+        }
     };
 
-    const isLoading = playbackStatus?.isLoaded === false;
+    const togglePlayPause = () => {
+        if (!isLoaded) return;
+        setPaused(!paused);
+    };
+
+    const showOverlay = paused || isLoading;
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             <TouchableOpacity
-                style={styles.videoContainer}
+                style={StyleSheet.absoluteFill}
                 activeOpacity={1}
-                onPress={handleVideoPress}
+                onPress={togglePlayPause}
             >
                 <Video
                     ref={videoRef}
-                    source={{uri: videoUri}}
-                    posterSource={coverUrl ? {uri: coverUrl} : undefined}
-                    usePoster={!!coverUrl}
-                    shouldPlay={false}
-                    isLooping={shouldLoop && timeStart === undefined && timeEnd === undefined}
-                    useNativeControls={false}
-                    resizeMode={ResizeMode.CONTAIN}
-                    onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-                    style={[styles.video, style]}
+                    source={{ uri: videoUrl }}
+                    style={StyleSheet.absoluteFill}
+                    resizeMode={resizeMode}
+                    paused={paused}
+                    muted={false}
+                    volume={1.0}
+                    onLoad={handleLoad}
+                    onProgress={handleProgress}
+                    onEnd={handleEnd}
+                    onReadyForDisplay={handleReadyForDisplay}
+                    progressUpdateInterval={50}
+                    repeat={false} // 我们手动控制 repeat 以支持片段
+                    playInBackground={false}
+                    playWhenInactive={false}
+                    ignoreSilentSwitch="ignore" // 忽略静音键，确保强制有声
+                    shutterColor="transparent"
+                    disableFocus={true}
+                    mixWithOthers="mix"
                 />
 
-                {/* 只在暂停时显示控制器 */}
-                {showControls && !isPlaying && (
-                    <View style={styles.controlsOverlay}>
-                        <TouchableOpacity
-                            style={styles.playPauseButton}
-                            onPress={togglePlayPause}
-                            activeOpacity={0.7}
-                        >
-                            {isLoading ? (
-                                <ActivityIndicator size="large" color="#fff"/>
-                            ) : (
-                                <Ionicons
-                                    name="play"
-                                    size={50}
-                                    color="#fff"
-                                />
-                            )}
-                        </TouchableOpacity>
+                {/* 交互反馈层 */}
+                {showOverlay && (
+                    <View style={styles.overlay}>
+                        {isLoading ? (
+                            <ActivityIndicator size="large" color="#fff" />
+                        ) : (
+                            <Ionicons name="play" size={60} color="rgba(255,255,255,0.8)" />
+                        )}
                     </View>
                 )}
             </TouchableOpacity>
@@ -125,33 +122,14 @@ const VideoPlayer = ({videoUri, timeStart, timeEnd, coverUrl, shouldLoop = false
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
+        backgroundColor: 'black',
+        overflow: 'hidden',
     },
-    videoContainer: {
-        position: 'relative',
-        width: '100%',
-    },
-    video: {
-        height: 200,
-        width: '100%',
-    },
-    controlsOverlay: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    },
-    playPauseButton: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // 移除了 backgroundColor 和 borderColor
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
     },
 });
 

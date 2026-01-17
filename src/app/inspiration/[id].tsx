@@ -9,64 +9,71 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Video from "react-native-video";
+import VideoPlayer from "@/components/VideoPlayer";
+import { ResizeMode } from "react-native-video";
 
 const { width, height } = Dimensions.get("window");
 
 const Inspiration = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, videoUrl: initialVideoUrl, coverUrl: initialCoverUrl } = useLocalSearchParams<{ 
+    id: string; 
+    videoUrl?: string; 
+    coverUrl?: string; 
+  }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [paused, setPaused] = useState(false);
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [previewImages, setPreviewImages] = useState<Array<{ url: string; desc?: string }>>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
   const [sourceUri, setSourceUri] = useState<string | null>(null);
 
   const { colors } = useTailwindVars();
 
   // Data Fetching
-  const { data, isLoading } = useQuery({
+  const { data, isLoading: isQueryLoading } = useQuery({
     queryKey: ["inspiration", id],
     queryFn: () => getTemplateSegment({ id }),
     enabled: !!id,
   });
 
-
-  // Mock data removed
   const current = data?.data?.data;
+  
+  // Use passed params if available, otherwise use query data
+  const videoUrl = useMemo(() => {
+    return (initialVideoUrl ? decodeURIComponent(initialVideoUrl) : null) || current?.root?.url;
+  }, [current, initialVideoUrl]);
 
-  const coverUrl =
-    current?.highlightFrames?.[0]?.url ||
-    current?.root?.coverUrl;
+  const coverUrl = useMemo(() => {
+    return (initialCoverUrl ? decodeURIComponent(initialCoverUrl) : null) || 
+           current?.highlightFrames?.[0]?.url || 
+           current?.root?.coverUrl;
+  }, [current, initialCoverUrl]);
 
-  const videoUrl = current?.root?.url;
-
+  // Updated sourceUri logic
+  // Initial sourceUri setup and update
   useEffect(() => {
+    let isMounted = true;
     if (videoUrl) {
-      void getCachedVideoUri(videoUrl).then(uri => {
-        setSourceUri(uri);
+      // 优先显示远程 URL 确保能动，异步检查缓存
+      setSourceUri(videoUrl);
+      getCachedVideoUri(videoUrl).then(uri => {
+        if (isMounted && uri && uri !== videoUrl) {
+          setSourceUri(uri);
+        }
       });
     }
+    return () => { isMounted = false; };
   }, [videoUrl]);
 
-  const videoRef = useRef<any>(null);
-  const startTime = current?.timeStart || 0;
-  const endTime = current?.timeEnd;
+  const startTime = useMemo(() => current?.timeStart || 0, [current]);
+  const endTime = useMemo(() => current?.timeEnd, [current]);
 
-  const onProgress = (data: { currentTime: number }) => {
-    if (endTime && data.currentTime >= endTime) {
-      videoRef.current?.seek(startTime);
-    }
-  };
-
-  const onLoad = () => {
-    if (startTime > 0) {
-      videoRef.current?.seek(startTime);
-    }
+  const onReadyForDisplay = () => {
+    setVideoReady(true);
   };
 
   const tags: string[] =
@@ -79,14 +86,6 @@ const Inspiration = () => {
   const highlightFrames: Array<{ url: string; desc?: string }> =
     current?.highlightFrames || [];
 
-  if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-black">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
-
   return (
     <ScreenContainer edges={[]}
       style={{ flex: 1, backgroundColor: 'black' }}
@@ -94,36 +93,46 @@ const Inspiration = () => {
 
       {/* Video Background */}
       {videoUrl ? (
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => setPaused(!paused)}
-          style={StyleSheet.absoluteFill}
-        >
-          <Video
-            ref={videoRef}
-            source={{ uri: sourceUri || videoUrl }}
+        <View style={StyleSheet.absoluteFill}>
+          <VideoPlayer
+            videoUrl={sourceUri || videoUrl}
+            timeStart={startTime}
+            timeEnd={endTime}
+            shouldLoop={true}
+            autoPlay={true}
+            resizeMode={ResizeMode.COVER}
+            onReadyForDisplay={onReadyForDisplay}
             style={StyleSheet.absoluteFill}
-            resizeMode="cover"
-            repeat={!endTime} // Only use native repeat if no custom end time
-            paused={paused}
-            poster={coverUrl}
-            posterResizeMode="cover"
-            onProgress={onProgress}
-            onLoad={onLoad}
-            progressUpdateInterval={50} // Check more frequently for tighter loops
           />
-          {paused && (
-            <View className="absolute inset-0 justify-center items-center bg-black/20">
-              <Ionicons name="play" size={60} color="rgba(255,255,255,0.8)" />
-            </View>
+          
+          {/* Custom Cover Overlay - Prevents the "Flash" */}
+          {!videoReady && coverUrl && (
+            <Image
+              source={{ uri: coverUrl }}
+              style={StyleSheet.absoluteFill}
+              resizeMode="cover"
+            />
           )}
-        </TouchableOpacity>
+        </View>
       ) : (
-        <Image
-          source={{ uri: coverUrl }}
-          style={StyleSheet.absoluteFill}
-          resizeMode="cover"
-        />
+        <View style={StyleSheet.absoluteFill} className="justify-center items-center bg-black">
+          {coverUrl ? (
+            <Image
+              source={{ uri: coverUrl }}
+              style={StyleSheet.absoluteFill}
+              resizeMode="cover"
+            />
+          ) : (
+            <ActivityIndicator size="large" color={colors.primary} />
+          )}
+        </View>
+      )}
+
+      {/* Loading overlay for query (optional, can be removed for even smoother experience) */}
+      {isQueryLoading && !current && (
+        <View className="absolute top-1/2 left-1/2 -ml-4 -mt-4 z-20">
+          <ActivityIndicator size="small" color="white" />
+        </View>
       )}
 
       <TouchableOpacity

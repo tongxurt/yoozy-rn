@@ -44,8 +44,8 @@ export const getConfig = () => {
   const configs = {
     development: {
       ...productionConfig,
-      ENV: "development",
-      API_URL: "https://i-beta.yoozyai.com",
+      // ENV: "development",
+      // API_URL: "https://i-beta.yoozyai.com",
     },
     preview: productionConfig,
     production: productionConfig,

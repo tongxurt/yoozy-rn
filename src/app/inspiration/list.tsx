@@ -109,17 +109,26 @@ export default function InspirationList({ query = "" }: InspirationListProps) {
     };
 
     const renderItem = ({ item, index }: { item: any; index: number }) => {
+        const videoUrl = item.root?.url;
+        const coverUrl = item.segments?.[0]?.startFrame || item.highlightFrames?.[0]?.url || item.coverUrl;
+
         return (
             <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => router.push(`/inspiration/${item._id}`)}
+                onPress={() => router.push({
+                    pathname: `/inspiration/${item._id}` as any,
+                    params: { 
+                        videoUrl: videoUrl ? encodeURIComponent(videoUrl) : '',
+                        coverUrl: coverUrl ? encodeURIComponent(coverUrl) : ''
+                    }
+                })}
                 style={{
                     width: columnWidth,
                 }}
                 className="bg-background rounded-lg overflow-hidden self-start relative"
             >
                 <Image
-                    source={{ uri: item.segments?.[0]?.startFrame || item.highlightFrames?.[0]?.url || item.coverUrl }}
+                    source={{ uri: coverUrl }}
                     className="aspect-[9/12] bg-card"
                     resizeMode="cover"
                 />

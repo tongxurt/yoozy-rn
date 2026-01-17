@@ -365,13 +365,11 @@ const Picker = ({
                                     {item.isVideo ? (
                                         // 渲染视频播放器
                                         <VideoPlayer
-                                            uri={item.targetUri}
-                                            isActive={isCurrentPage}
-                                            itemId={item.id}
+                                            videoUrl={item.targetUri}
+                                            autoPlay={isCurrentPage}
                                             style={{
                                                 flex: 1,
                                             }}
-                                            showControls={true}
                                         />
                                     ) : (
                                         // 渲染图片
