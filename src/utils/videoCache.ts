@@ -3,6 +3,9 @@ import * as FileSystem from 'expo-file-system';
 const VIDEO_CACHE_DIR = `${FileSystem.cacheDirectory}video-cache/`;
 const MAX_CACHE_AGE = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 
+// Global memory cache of currently available local files to allow synchronous checks
+const cachedFiles = new Set<string>();
+
 export const getDeterministicLocalUri = (url: string) => {
   if (!url) return '';
   // Create a simple hash from string to use as filename
@@ -19,6 +22,15 @@ export const getDeterministicLocalUri = (url: string) => {
 };
 
 /**
+ * Synchronous check if a video is likely cached (based on memory set)
+ */
+export const isVideoCachedSync = (url: string): boolean => {
+  if (!url) return false;
+  const localUri = getDeterministicLocalUri(url);
+  return cachedFiles.has(localUri);
+};
+
+/**
  * Initialize cache directory and perform cleanup
  */
 export const initVideoCache = async () => {
@@ -27,6 +39,14 @@ export const initVideoCache = async () => {
     if (!dirInfo.exists) {
       await FileSystem.makeDirectoryAsync(VIDEO_CACHE_DIR, { intermediates: true });
     }
+    
+    // Load existing files into memory set for sync checks
+    const files = await FileSystem.readDirectoryAsync(VIDEO_CACHE_DIR);
+    cachedFiles.clear();
+    files.forEach(file => {
+      cachedFiles.add(`${VIDEO_CACHE_DIR}${file}`);
+    });
+
     // Clean up expired files on startup
     await cleanupCache();
   } catch (e) {
@@ -50,7 +70,7 @@ export const cleanupCache = async () => {
         const age = now - (info.modificationTime * 1000);
         if (age > MAX_CACHE_AGE) {
           await FileSystem.deleteAsync(fileUri, { idempotent: true });
-          // console.log(`[VideoCache] Deleted expired file: ${file}`);
+          cachedFiles.delete(fileUri);
         }
       }
     }
@@ -71,10 +91,12 @@ export const getCachedVideoUri = async (url: string): Promise<string> => {
   if (fileInfo.exists && fileInfo.modificationTime) {
     const age = Date.now() - (fileInfo.modificationTime * 1000);
     if (age <= MAX_CACHE_AGE) {
+      cachedFiles.add(fileUri);
       return fileUri;
     }
     // Expired - delete it
     await FileSystem.deleteAsync(fileUri, { idempotent: true });
+    cachedFiles.delete(fileUri);
   }
   
   return url;
@@ -89,20 +111,25 @@ export const prefetchVideo = async (url: string) => {
   const fileUri = getDeterministicLocalUri(url);
   
   try {
+    // If it's already in our memory set, assume it's fresh
+    if (cachedFiles.has(fileUri)) return;
+
     const fileInfo = await FileSystem.getInfoAsync(fileUri);
     if (fileInfo.exists && fileInfo.modificationTime) {
       const age = Date.now() - (fileInfo.modificationTime * 1000);
       if (age <= MAX_CACHE_AGE) {
+        cachedFiles.add(fileUri);
         return; // Fresh cache exists
       }
       // Expired cache - remove before redownloading
       await FileSystem.deleteAsync(fileUri, { idempotent: true });
+      cachedFiles.delete(fileUri);
     }
 
-    // console.log(`[VideoCache] Prefetching: ${url}`);
+    // Start download
     await FileSystem.downloadAsync(url, fileUri);
+    cachedFiles.add(fileUri);
   } catch (e) {
     // Fail silently for prefetch
-    // console.error(`[VideoCache] Prefetch failed for ${url}`, e);
   }
 };

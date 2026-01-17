@@ -1,6 +1,7 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import Video, { ResizeMode, OnProgressData, OnLoadData, VideoRef } from 'react-native-video';
+import { getCachedVideoUri, prefetchVideo, isVideoCachedSync, getDeterministicLocalUri } from '@/utils/videoCache';
 import { Ionicons } from '@expo/vector-icons';
 
 interface VideoPlayerProps {
@@ -20,36 +21,71 @@ const VideoPlayer = ({
     timeEnd,
     shouldLoop = false,
     resizeMode = ResizeMode.CONTAIN,
-    autoPlay = false,
+    autoPlay = true,
     onReadyForDisplay,
     style
 }: VideoPlayerProps) => {
     const videoRef = useRef<VideoRef>(null);
     const [paused, setPaused] = useState(!autoPlay);
     const [isLoading, setIsLoading] = useState(true);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const isInitialSeekDone = useRef(false);
+    
+    const [resolvedUri, setResolvedUri] = useState<string>(() => {
+        if (isVideoCachedSync(videoUrl)) {
+            return getDeterministicLocalUri(videoUrl);
+        }
+        return videoUrl;
+    });
 
-    // 监听外部 autoPlay 变化
+    // 1. 处理 URL 切换
     useEffect(() => {
+        let isMounted = true;
+        isInitialSeekDone.current = false;
+        setIsLoading(true);
         setPaused(!autoPlay);
-    }, [autoPlay, videoUrl]);
 
-    const handleLoad = (data: OnLoadData) => {
-        setIsLoaded(true);
-        setIsLoading(false);
-        
-        // 双重保障：初始位置跳转
-        if (timeStart > 0) {
+        const resolveSource = async () => {
+            const cachedUri = await getCachedVideoUri(videoUrl);
+            if (isMounted) {
+                setResolvedUri(cachedUri);
+                if (cachedUri === videoUrl) prefetchVideo(videoUrl);
+            }
+        };
+
+        resolveSource();
+        return () => { isMounted = false; };
+    }, [videoUrl]);
+
+    // 2. 处理 timeStart 变化（比如编辑时）
+    useEffect(() => {
+        if (isInitialSeekDone.current) {
             videoRef.current?.seek(timeStart);
+        }
+    }, [timeStart]);
+
+    const performInitialSeek = () => {
+        if (!isInitialSeekDone.current) {
+            videoRef.current?.seek(timeStart);
+            isInitialSeekDone.current = true;
         }
     };
 
+    const handleLoad = (data: OnLoadData) => {
+        setIsLoading(false);
+        performInitialSeek();
+    };
+
+    const handleReadyForDisplay = () => {
+        // ReadyForDisplay 是最稳健的 seek 时机
+        performInitialSeek();
+        if (onReadyForDisplay) onReadyForDisplay();
+    };
+
     const handleProgress = (data: OnProgressData) => {
-        // 片段循环逻辑
-        if (timeEnd !== undefined && data.currentTime >= timeEnd) {
-            if (shouldLoop) {
-                videoRef.current?.seek(timeStart);
-            } else {
+        // 片段循环逻辑：一旦当前时间超过 timeEnd，强制回跳
+        if (!paused && timeEnd !== undefined && data.currentTime >= timeEnd) {
+            videoRef.current?.seek(timeStart);
+            if (!shouldLoop) {
                 setPaused(true);
             }
         }
@@ -60,21 +96,13 @@ const VideoPlayer = ({
             videoRef.current?.seek(timeStart);
         } else {
             setPaused(true);
-        }
-    };
-
-    const handleReadyForDisplay = () => {
-        if (onReadyForDisplay) {
-            onReadyForDisplay();
+            videoRef.current?.seek(timeStart);
         }
     };
 
     const togglePlayPause = () => {
-        if (!isLoaded) return;
         setPaused(!paused);
     };
-
-    const showOverlay = paused || isLoading;
 
     return (
         <View style={[styles.container, style]}>
@@ -85,7 +113,7 @@ const VideoPlayer = ({
             >
                 <Video
                     ref={videoRef}
-                    source={{ uri: videoUrl }}
+                    source={{ uri: resolvedUri }}
                     style={StyleSheet.absoluteFill}
                     resizeMode={resizeMode}
                     paused={paused}
@@ -95,18 +123,17 @@ const VideoPlayer = ({
                     onProgress={handleProgress}
                     onEnd={handleEnd}
                     onReadyForDisplay={handleReadyForDisplay}
-                    progressUpdateInterval={50}
-                    repeat={false} // 我们手动控制 repeat 以支持片段
+                    progressUpdateInterval={50} // 保持高频监测
+                    repeat={false} 
                     playInBackground={false}
                     playWhenInactive={false}
-                    ignoreSilentSwitch="ignore" // 忽略静音键，确保强制有声
+                    ignoreSilentSwitch="ignore"
                     shutterColor="transparent"
                     disableFocus={true}
                     mixWithOthers="mix"
                 />
 
-                {/* 交互反馈层 */}
-                {showOverlay && (
+                {(paused || isLoading) && (
                     <View style={styles.overlay}>
                         {isLoading ? (
                             <ActivityIndicator size="large" color="#fff" />

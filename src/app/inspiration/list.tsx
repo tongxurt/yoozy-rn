@@ -74,14 +74,25 @@ export default function InspirationList({ query = "" }: InspirationListProps) {
 
     useEffect(() => {
         if (flatData.length > 0) {
-            // Prefetch videos in the current view and some ahead
-            // Limit to avoid overwhelming network, e.g., next 10 items
-            flatData.forEach(item => {
+            // 立即触发全局预加载，确保进入详情页前视频已就绪
+            // 我们优先处理前 6 个，然后再异步处理剩余的
+            const topItems = flatData.slice(0, 10);
+            const remainingItems = flatData.slice(10);
+
+            topItems.forEach(item => {
                 const videoUrl = item.root?.url;
-                if (videoUrl) {
-                    void prefetchVideo(videoUrl);
-                }
+                if (videoUrl) void prefetchVideo(videoUrl);
             });
+
+            // 稍微延迟处理后续视频，避免抢占列表首屏图片的带宽
+            const timer = setTimeout(() => {
+                remainingItems.forEach(item => {
+                    const videoUrl = item.root?.url;
+                    if (videoUrl) void prefetchVideo(videoUrl);
+                });
+            }, 2000);
+
+            return () => clearTimeout(timer);
         }
     }, [flatData]);
 

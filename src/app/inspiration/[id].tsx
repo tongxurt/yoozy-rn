@@ -29,7 +29,6 @@ const Inspiration = () => {
   const [previewImages, setPreviewImages] = useState<Array<{ url: string; desc?: string }>>([]);
   const [previewIndex, setPreviewIndex] = useState(0);
   const [videoReady, setVideoReady] = useState(false);
-  const [sourceUri, setSourceUri] = useState<string | null>(null);
 
   const { colors } = useTailwindVars();
 
@@ -52,22 +51,6 @@ const Inspiration = () => {
            current?.highlightFrames?.[0]?.url || 
            current?.root?.coverUrl;
   }, [current, initialCoverUrl]);
-
-  // Updated sourceUri logic
-  // Initial sourceUri setup and update
-  useEffect(() => {
-    let isMounted = true;
-    if (videoUrl) {
-      // 优先显示远程 URL 确保能动，异步检查缓存
-      setSourceUri(videoUrl);
-      getCachedVideoUri(videoUrl).then(uri => {
-        if (isMounted && uri && uri !== videoUrl) {
-          setSourceUri(uri);
-        }
-      });
-    }
-    return () => { isMounted = false; };
-  }, [videoUrl]);
 
   const startTime = useMemo(() => current?.timeStart || 0, [current]);
   const endTime = useMemo(() => current?.timeEnd, [current]);
@@ -95,7 +78,7 @@ const Inspiration = () => {
       {videoUrl ? (
         <View style={StyleSheet.absoluteFill}>
           <VideoPlayer
-            videoUrl={sourceUri || videoUrl}
+            videoUrl={videoUrl}
             timeStart={startTime}
             timeEnd={endTime}
             shouldLoop={true}
