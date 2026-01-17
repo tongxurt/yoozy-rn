@@ -1,9 +1,9 @@
 import {Theme, dark, light} from '@/tailwind.vars';
-import {useColorScheme} from "react-native";
+import { useColorScheme } from 'nativewind';
 
 
 const useTailwindVars = () => {
-    const colorScheme = useColorScheme();
+    const { colorScheme } = useColorScheme();
 
     const themeColors = colorScheme === "dark" ? dark : light;
 

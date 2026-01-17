@@ -8,8 +8,9 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { router, Tabs } from "expo-router";
+import { useColorScheme } from "nativewind";
 import React from "react";
-import { Pressable, Text, useColorScheme, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import "../../global.css";
 
 const TAB_BAR_HEIGHT = 60;
@@ -18,7 +19,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const { t } = useTranslation();
   const { colors } = useTailwindVars();
   const { user } = useAuthUser();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
   const isDark = colorScheme === 'dark';
 

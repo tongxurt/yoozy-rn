@@ -8,6 +8,7 @@ import ErrorFallback from "@/components/ErrorCallback";
 
 import { usePermissionExecutor } from "@/hooks/usePermissionExecutor";
 import { useSettings } from "@/hooks/useSettings";
+import { useThemeMode } from "@/hooks/useThemeMode";
 import AppThemeProvider from "@/providers/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
@@ -125,6 +126,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { colors } = useTailwindVars();
+  useThemeMode();
 
   const { fetchAsync: fetchSettings } = useSettings();
 
