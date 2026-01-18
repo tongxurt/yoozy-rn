@@ -33,61 +33,85 @@ const VideoGenerationJob = ({ index: jobIndex, job, asset, refetch }: JobProps) 
         }
     };
 
+    const renderLoading = (title: string, subtitle: string) => (
+        <View className="flex-1 relative bg-primary/20 rounded-[32px] overflow-hidden items-center justify-center px-8">
+            {/* Background Blur Preview */}
+            {(item?.lastFrame || item?.coverUrl) && (
+                <Image
+                    source={{ uri: item.lastFrame || item.coverUrl }}
+                    className="absolute inset-0 w-full h-full opacity-30"
+                    blurRadius={10}
+                />
+            )}
+            
+            <View className="items-center">
+                <View className="w-20 h-20 bg-primary/20 rounded-full items-center justify-center mb-6">
+                    <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+                
+                <Text className="text-primary text-xl font-black mb-3 tracking-tight">{title}</Text>
+                
+                <View className="bg-white/10 px-4 py-2 rounded-2xl mb-6 border border-white/5">
+                    <Text className="text-gray-400 text-sm font-bold">预计还需 5 分钟</Text>
+                </View>
+
+                <Text className="text-gray-400 text-xs text-center leading-5 px-4 font-medium">
+                    {subtitle}
+                </Text>
+
+                <View className="absolute -bottom-24 w-full">
+                    <View className="flex-row justify-center gap-1">
+                        {[1, 2, 3].map(i => (
+                            <View key={i} className="w-1 h-1 bg-primary/40 rounded-full" />
+                        ))}
+                    </View>
+                </View>
+            </View>
+        </View>
+    );
+
     return (
         <View className="flex-1 p-5">
-                {/* Content */}
-                <View className="flex-1">
-                    {item ? (
-                        <TouchableOpacity
-                            activeOpacity={0.9}
-                            onPress={handlePreview}
-                            className="flex-1 relative bg-gray-100 rounded-xl overflow-hidden border border-gray-100"
-                        >
-                            {item.url && !isRunning ? (
-                                <View className="w-full h-full">
-                                    <Image
-                                        source={{ uri: item.coverUrl || item.lastFrame }}
-                                        className="w-full h-full"
-                                        resizeMode="cover"
-                                    />
-                                    <View className="absolute inset-0 items-center justify-center">
-                                        <View className="w-12 h-12 rounded-full bg-black/40 items-center justify-center backdrop-blur-sm">
-                                            <Feather name="play" size={24} color="white" style={{ marginLeft: 2 }} />
-                                        </View>
+            <View className="flex-1">
+                {(!item || isRunning) ? (
+                    renderLoading(
+                        !item ? "初始化引擎" : "视频生成中",
+                        !item ? "正在为您的创意准备渲染环境..." : "智能 AI 正在进行像素级渲染，请耐心等待"
+                    )
+                ) : (
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={handlePreview}
+                        className="flex-1 relative bg-gray-100 rounded-[32px] overflow-hidden border border-gray-100 shadow-2xl"
+                    >
+                        {item.url ? (
+                            <View className="w-full h-full">
+                                <Image
+                                    source={{ uri: item.coverUrl || item.lastFrame }}
+                                    className="w-full h-full"
+                                    resizeMode="cover"
+                                />
+                                <View className="absolute inset-0 items-center justify-center bg-black/10">
+                                    <View className="w-16 h-16 rounded-full bg-white/20 items-center justify-center backdrop-blur-md border border-white/30">
+                                        <Feather name="play" size={32} color="white" style={{ marginLeft: 4 }} />
                                     </View>
+                                </View>
 
-                                    {editable && (
-                                        <TouchableOpacity 
-                                            onPress={(e) => {
-                                                e.stopPropagation();
-                                                setIsEditing(true);
-                                            }}
-                                            className="absolute bottom-3 right-3 w-10 h-10 bg-primary rounded-full items-center justify-center shadow-md"
-                                        >
-                                            <Feather name="edit-2" size={18} color="white" />
-                                        </TouchableOpacity>
-                                    )}
-                                </View>
-                            ) : (
-                                <View className="w-full h-full items-center justify-center bg-black/5">
-                                    {(item.lastFrame || item.coverUrl) && (
-                                        <Image
-                                            source={{ uri: item.lastFrame || item.coverUrl }}
-                                            className="absolute inset-0 w-full h-full opacity-40"
-                                            blurRadius={1}
-                                        />
-                                    )}
-                                    <ActivityIndicator size="small" color={colors.primary} />
-                                    <Text className="text-[10px] text-gray-500 mt-2 font-bold uppercase">生成中</Text>
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    ) : (
-                        <View className="flex-1 items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                            <ActivityIndicator size="small" color={colors.primary} />
-                            <Text className="text-[10px] text-gray-400 mt-2 font-bold uppercase">初始化任务中...</Text>
-                        </View>
-                    )}
+                                {editable && (
+                                    <TouchableOpacity 
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            setIsEditing(true);
+                                        }}
+                                        className="absolute bottom-6 right-6 w-12 h-12 bg-primary rounded-full items-center justify-center shadow-xl shadow-primary/40 border-4 border-white"
+                                    >
+                                        <Feather name="edit-2" size={20} color="white" />
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        ) : null}
+                    </TouchableOpacity>
+                )}
             </View>
 
             {item && (

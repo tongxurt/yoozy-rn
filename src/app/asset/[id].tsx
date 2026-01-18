@@ -49,10 +49,13 @@ const AssetEditorScreen = () => {
     useEffect(() => {
         if (pages.length > 0) {
             // 延迟执行，确保 PagerView 及其子组件渲染完成，避免 setPage 报错
+            const timer = setTimeout(() => {
                 pagerRef.current?.setPage(maxEnabledPage);
                 setActiveTabIndex(maxEnabledPage);
+            }, 300);
+            return () => clearTimeout(timer);
         }
-    }, [pages.length]);
+    }, [pages.length, maxEnabledPage]);
 
     const handleConfirm = useCallback((job: any) => {
 

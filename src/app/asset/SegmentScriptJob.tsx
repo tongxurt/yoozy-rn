@@ -313,7 +313,7 @@ const ScriptEditor = ({ job, data, asset, refetch, editable }: ScriptEditorProps
     }, [localScript, editable]);
 
     return (
-        <View className="p-4 flex-1">
+        <View className="p-4 flex-1 ">
             <View className="flex-row items-center justify-between mb-4 px-1">
                 <Text className="text-xs text-gray-400 font-bold uppercase tracking-wider">脚本编辑</Text>
                 {saving && <ActivityIndicator size="small" color="#7150FF" />}
@@ -324,7 +324,7 @@ const ScriptEditor = ({ job, data, asset, refetch, editable }: ScriptEditorProps
                 multiline
                 placeholder="输入或粘贴脚本内容..."
                 editable={editable}
-                className={`bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm leading-relaxed flex-1 ${!editable ? 'opacity-80' : ''}`}
+                className={`bg-card p-4  border border-gray-100 rounded-2xl p-4 text-sm leading-relaxed flex-1 ${!editable ? 'opacity-80' : ''}`}
                 style={{ textAlignVertical: 'top' }}
             />
         </View>
@@ -341,10 +341,26 @@ interface SegmentScriptJobProps {
 }
 
 const SegmentScriptJob = ({ index, job, asset, refetch }: SegmentScriptJobProps) => {
+    const { colors } = useTailwindVars();
     const data = job?.dataBus?.segmentScript;
     const editable = job.status === 'confirming';
+    const isRunning = job.status === 'running' || !data;
 
-    if (!data) return null;
+    if (isRunning) {
+        return (
+            <View className="flex-1 p-5">
+                <View className="flex-1 bg-card rounded-[24px] border border-dashed border-gray-200 items-center justify-center">
+                    <View className="bg-primary/10 w-16 h-16 rounded-full items-center justify-center mb-4">
+                        <ActivityIndicator size="small" color={colors.primary} />
+                    </View>
+                    <Text className="text-gray-800 text-base font-bold mb-2">脚本生成中</Text>
+                    <Text className="text-gray-400 text-xs text-center px-10 leading-5">
+                        智能 AI 正在为您构思创意分镜，请稍后...
+                    </Text>
+                </View>
+            </View>
+        );
+    }
 
     if (data?.segments?.length > 0) {
         return (
