@@ -12,7 +12,7 @@ import {
     View
 } from "react-native";
 import PagerView from 'react-native-pager-view';
-import VideoGenerationEditorDrawer from "./VideoGenerationEditorDrawer";
+import VideoGenerationEditorDrawer from "./components/VideoGenerationEditorDrawer";
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

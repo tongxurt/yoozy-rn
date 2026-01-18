@@ -12,7 +12,7 @@ import {
     View
 } from "react-native";
 import PagerView from 'react-native-pager-view';
-import KeyFrameEditorDrawer from "./KeyFrameEditorDrawer";
+import KeyFrameEditorDrawer from "./components/KeyFrameEditorDrawer";
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

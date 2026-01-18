@@ -121,7 +121,7 @@ const AssetEditorScreen = () => {
 
     return (
         <ScreenContainer>
-            <ScreenHeader title={workflowConfig[asset?.workflow?.name]?.label || "任务详情"} />
+            <ScreenHeader title={workflowConfig[asset?.workflow?.name || asset?.category]?.label || "任务详情"} />
             <PagerView
                 ref={pagerRef}
                 style={{ flex: 1 }}

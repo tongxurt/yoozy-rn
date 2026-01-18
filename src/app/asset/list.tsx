@@ -46,8 +46,8 @@ const AssetList = () => {
         // Logic: If workflow exists and status is NOT completed, it is creating.
         const isCreating = item?.workflow?.status !== 'completed';
 
-        const workflowType = item.workflow?.name;
-        const workflowLabel = workflowConfig[workflowType as keyof typeof workflowConfig]?.label || '智能生视频';
+        const workflowName = item.workflow?.name ;
+        const workflowLabel = workflowConfig[workflowName]?.label;
 
         const iconUrl = item.commodity?.images?.[0];
 
@@ -63,10 +63,8 @@ const AssetList = () => {
                 >
                     {/* Header: Workflow Label */}
                     <Text className="text-sm text-muted-foreground font-medium">{workflowLabel}</Text>
-                    <Text className="text-sm text-muted-foreground font-medium">{JSON.stringify(item.workflow)}</Text>
 
-                    {/* Title Row */}
-                    <View className="flex-row items-center gap-2 mb-1">
+                    {/* <View className="flex-row items-center gap-2 mb-1">
                         <View className="w-6 h-6 rounded-md bg-muted items-center justify-center overflow-hidden">
                             {iconUrl ? (
                                 <Image source={{ uri: iconUrl }} className="w-full h-full" resizeMode="cover" />
@@ -77,10 +75,10 @@ const AssetList = () => {
                         <Text className="text-md text-foreground max-w-[220px]" numberOfLines={1}>
                             {item.title || item.commodity?.title}
                         </Text>
-                    </View>
+                    </View> */}
 
                     {/* Main Content Card */}
-                    <View className={`w-[130px] aspect-[9/16] rounded-[24px] overflow-hidden relative ${isCreating ? 'bg-[#F5F3FF]' : 'bg-muted'}`}>
+                    <View className={`w-[130px] aspect-[9/16] rounded-xl overflow-hidden relative ${isCreating ? 'bg-[#F5F3FF]' : 'bg-muted'}`}>
                         {coverUrl && !isCreating ? (
                             <Image
                                 source={{ uri: coverUrl }}
