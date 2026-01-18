@@ -2,7 +2,7 @@ import { ConfigContext, ExpoConfig } from "@expo/config";
 
 const config = ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "Yoozy",
+  name: "予之",
   slug: "yoozy-cbn4rtgddfys-lbvlkdpi",
   version: "2.0.10",
   runtimeVersion: "2.0.10",
