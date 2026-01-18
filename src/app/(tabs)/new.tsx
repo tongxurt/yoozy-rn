@@ -18,21 +18,21 @@ const FEATURE_ITEMS = [
     subtitle: "复刻同款爆款视频",
     route: "/create/segment-replication",
   },
-  {
-    id: "video-generation",
-    icon: "play",
-    sparkle: true,
-    title: "输入灵感, 智能生视频",
-    route: "/create/video-generation",
-  },
-  {
-    id: "ai-design",
-    icon: "apps",
-    sparkle: true,
-    title: "AI 图片设计",
-    route: "/ai-design",
-    badge: "限时免费",
-  },
+  // {
+  //   id: "video-generation",
+  //   icon: "play",
+  //   sparkle: true,
+  //   title: "输入灵感, 智能生视频",
+  //   route: "/create/video-generation",
+  // },
+  // {
+  //   id: "ai-design",
+  //   icon: "apps",
+  //   sparkle: true,
+  //   title: "AI 图片设计",
+  //   route: "/ai-design",
+  //   badge: "限时免费",
+  // },
 ];
 
 // 普通功能项组件
