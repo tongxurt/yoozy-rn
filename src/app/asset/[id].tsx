@@ -8,7 +8,7 @@ import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
@@ -36,13 +36,25 @@ const AssetEditorScreen = () => {
 
     const { asset, pages, maxEnabledPage } = useMemo(() => {
         const asset = d?.data?.data;
-        const pages = asset?.workflow?.jobs;
+        const pages = asset?.workflow?.jobs || [];
 
-        const currentJobIndex = pages?.findIndex((x: any) => x.status === "confirming" || x.status === "running");
-        const maxEnabledPage = currentJobIndex === -1 ? pages.length - 1 : currentJobIndex;
+        const currentJobIndex = pages.findIndex((x: any) => x.status === "confirming" || x.status === "running");
+        const maxEnabledPage = currentJobIndex === -1 ? (pages.length > 0 ? pages.length - 1 : 0) : currentJobIndex;
 
         return { asset, pages, maxEnabledPage };
     }, [d]);
+
+    // 进入页面或数据更新后，自动定位到最后一个可用 Tab
+    useEffect(() => {
+        if (!isLoading && pages.length > 0) {
+            // 延迟一小会儿执行，确保 PagerView 已经渲染完成
+            const timer = setTimeout(() => {
+                pagerRef.current?.setPage(maxEnabledPage);
+                setActiveTabIndex(maxEnabledPage);
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoading, maxEnabledPage, pages.length]);
 
     const handleConfirm = useCallback((job: any) => {
 
