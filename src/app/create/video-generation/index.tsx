@@ -87,8 +87,8 @@ export default function VideoGenerationScreen() {
 
     return (
         <ScreenContainer stackScreenProps={{
-            animation: "fade",
-            animationDuration: 1,
+            animation: "fade_from_bottom",
+            animationDuration: 100,
         }}>
             {/* Header */}
             <ScreenHeader title="智能生视频" />

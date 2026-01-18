@@ -26,13 +26,13 @@ const FEATURE_ITEMS = [
     subtitle: "一键保存无水印原片",
     route: "/toolkit/douyin_downloader",
   },
-  // {
-  //   id: "video-generation",
-  //   icon: "play",
-  //   sparkle: true,
-  //   title: "输入灵感, 智能生视频",
-  //   route: "/create/video-generation",
-  // },
+  {
+    id: "video-generation",
+    icon: "play",
+    sparkle: true,
+    title: "输入灵感, 智能生视频",
+    route: "/create/video-generation",
+  },
   // {
   //   id: "ai-design",
   //   icon: "apps",

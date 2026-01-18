@@ -25,6 +25,7 @@ import useTailwindVars from '@/hooks/useTailwindVars';
 import { extractLink } from '@/utils/url';
 import { ResizeMode } from 'react-native-video';
 import instance from "@/providers/api";
+import ScreenContainer from '@/components/ScreenContainer';
 
 const getDouyinVideoUrl = (params: { url?: string }) => {
     return instance.request<any>({
@@ -126,7 +127,10 @@ const DouyinDownloader = () => {
     };
 
     return (
-        <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }} edges={['top']}>
+        <ScreenContainer  stackScreenProps={{
+            animation: "fade_from_bottom",
+            animationDuration: 100,
+        }} edges={['top']}>
             {/* Custom Header - Replicates ScreenHeader without the Navigation Context issue */}
             <View className="px-5 pb-4 flex-row justify-between items-center">
                 <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>抖音去水印下载</Text>
@@ -259,7 +263,7 @@ const DouyinDownloader = () => {
                     </Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </ScreenContainer>
     );
 };
 

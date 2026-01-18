@@ -253,8 +253,8 @@ const SegmentReplication = () => {
     return (
         <ScreenContainer
             stackScreenProps={{
-                animation: "fade",
-                animationDuration: 1,
+                animation: "fade_from_bottom",
+                animationDuration: 100,
             }} >
             {/* Header */}
             <ScreenHeader title="复刻灵感" />

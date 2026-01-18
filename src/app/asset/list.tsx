@@ -78,7 +78,7 @@ const AssetList = () => {
                     </View> */}
 
                     {/* Main Content Card */}
-                    <View className={`w-[130px] aspect-[9/16] rounded-xl overflow-hidden relative ${isCreating ? 'bg-[#F5F3FF]' : 'bg-muted'}`}>
+                    <View className={`w-[130px] aspect-[3/4] rounded-xl overflow-hidden relative ${isCreating ? 'bg-[#F5F3FF]' : 'bg-muted'}`}>
                         {coverUrl && !isCreating ? (
                             <Image
                                 source={{ uri: coverUrl }}
