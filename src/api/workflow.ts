@@ -1,4 +1,5 @@
 import instance from "@/providers/api";
+import { runOnUIImmediately } from "react-native-reanimated/lib/typescript/threads";
 
 
 export const updatePrompt = async (params: { id: string }) => {
@@ -11,14 +12,6 @@ export const updatePrompt = async (params: { id: string }) => {
     });
 }
 
-
-export const replaceWorkflow = async (params: any) => {
-    return instance.request<any>({
-        url: `/api/proj/v1/workflows`,
-        method: "PUT",
-        data: params,
-    });
-}
 
 
 export const cancelWorkflow = async (params: { id: string }) => {
@@ -59,12 +52,13 @@ export const backWorkflowJob = async (params: { id: string, index: number }) => 
 
 
 
-export const confirmWorkflowJob = async (params: { id: string, index: number }) => {
+export const confirmWorkflowJob = async (params: { id: string, index: number, runImmediately?: boolean }) => {
     return instance.request<any>({
         url: `/api/proj/v1/workflows/${params.id}/jobs/${params.index || 0}`,
         method: "PATCH",
         data: {
             action: "confirm",
+            runImmediately: params.runImmediately,
         },
     });
 }

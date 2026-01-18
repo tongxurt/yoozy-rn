@@ -9,7 +9,7 @@ const CommodityScreen = () => {
     
     return (
         <ScreenContainer edges={['top']} stackScreenProps={{headerShown: true, title: '我的商品'}}>
-            <CommodityListScreen style={{paddingTop: 5}} />
+            <CommodityListScreen />
         </ScreenContainer>
     )
 }
