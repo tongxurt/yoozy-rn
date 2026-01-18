@@ -22,15 +22,18 @@ export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
 
     useEffect(() => {
         if (options?.fetchImmediately) {
-            fetch()
+            refreshUser()
         }
     }, [])
 
 
-    const fetch = () => {
-        refetch().then((data) => {
-            console.log(data?.data?.data);
-            setUser(data?.data?.data?.data);
+    const refreshUser = () => {
+        return refetch().then((data) => {
+            const userData = data?.data?.data?.data || data?.data?.data;
+            if (userData) {
+                setUser(userData);
+            }
+            return userData;
         });
     };
 
@@ -38,5 +41,6 @@ export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
         isLoading,
         user,
         setUser,
+        refreshUser,
     };
 };

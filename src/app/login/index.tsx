@@ -27,6 +27,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { Toast } from "react-native-toast-notifications";
 import { z } from "zod";
 import Error from "@/components/RormValidationError";
+import { useAuthUser } from "@/hooks/useAuthUser";
 
 type LoginType = "email" | "phone";
 
@@ -36,6 +37,7 @@ export default function LoginScreen() {
   const [countdown, setCountdown] = useState(0);
   const [isAgreed, setIsAgreed] = useState(false);
   const { colors } = useTailwindVars();
+  const { refreshUser } = useAuthUser();
 
   const { t } = useTranslation();
 
@@ -129,7 +131,8 @@ export default function LoginScreen() {
     }
   }, [isLoginSuccess]);
 
-  const onLoginSuccess = () => {
+  const onLoginSuccess = async () => {
+    await refreshUser();
     if (router.canGoBack()) {
       router.back();
     } else {
