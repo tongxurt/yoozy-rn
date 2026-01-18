@@ -15,6 +15,7 @@ import KeyFramesGenerationJob from "./KeyFramesGenerationJob";
 import SegmentScriptJob from "./SegmentScriptJob";
 import RemixJob from "./RemixJob";
 import VideoSegmentsGenerationJob from "./VideoSegmentsGenerationJob";
+import VideoGenerationJob from "./VideoGenerationJob";
 
 const AssetEditorScreen = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -46,15 +47,12 @@ const AssetEditorScreen = () => {
 
     // 进入页面或数据更新后，自动定位到最后一个可用 Tab
     useEffect(() => {
-        if (!isLoading && pages.length > 0) {
-            // 延迟一小会儿执行，确保 PagerView 已经渲染完成
-            const timer = setTimeout(() => {
+        if (pages.length > 0) {
+            // 延迟执行，确保 PagerView 及其子组件渲染完成，避免 setPage 报错
                 pagerRef.current?.setPage(maxEnabledPage);
                 setActiveTabIndex(maxEnabledPage);
-            }, 100);
-            return () => clearTimeout(timer);
         }
-    }, [isLoading, maxEnabledPage, pages.length]);
+    }, [pages.length]);
 
     const handleConfirm = useCallback((job: any) => {
 
@@ -157,12 +155,15 @@ const AssetEditorScreen = () => {
                 {
                     pages?.map((job: any, index: number) => {
                         return (
-                            <View key={index} className="bg-card m-[16px] flex-1 overflow-hidden rounded-[24px] border border-gray-100">
+                            // <View key={index} className="bg-card m-[16px] flex-1 overflow-hidden rounded-[24px] border border-gray-100">
+                            <View key={index} className="">
+
                                 {/* <Text className="text-gray-500 text-sm leading-relaxed mb-6">{JSON.stringify(job.dataBus?.videoGenerations)} </Text> */}
                                 <View className="flex-1">
                                     {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
                                     {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                    {job.name === 'videoSegmentsGenerationJob' || job.name === 'videoGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'videoSegmentsGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'videoGenerationJob' && <VideoGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                     {job.name === 'videoSegmentsRemixJob' && <RemixJob index={index} job={job} asset={asset} refetch={refetch} />}
                                 </View>
                                 {
