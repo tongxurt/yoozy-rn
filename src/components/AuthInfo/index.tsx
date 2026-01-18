@@ -10,15 +10,15 @@ const AuthInfo = () => {
 
     if (user) {
         return (
-            <TouchableOpacity activeOpacity={0.9} onPress={() => router.push("/settings")}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => router.push("/user/my")}>
                 <LatterAvatar  size={30} name={user._id!} />
             </TouchableOpacity>
         )
     }
 
     return (
-        <TouchableOpacity activeOpacity={0.9} onPress={() => router.push("/")}>
-
+        <TouchableOpacity activeOpacity={0.9} onPress={() => router.push("/login")}>
+            {/* <FontAwesome5 name="user-circle" size={20} color={colors.foreground} /> */}
         </TouchableOpacity>
     )
 }

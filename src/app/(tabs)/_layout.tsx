@@ -98,14 +98,6 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="commodity"
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <FontAwesome5 name="briefcase" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
           name="new"
           options={{
             tabBarIcon: ({ size, color }) => (
@@ -123,14 +115,6 @@ export default function TabLayout() {
             headerShown: true,
             tabBarIcon: ({ size, color }) => (
               <FontAwesome5 name="history" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="my"
-          options={{
-            tabBarIcon: ({ size, color }) => (
-              <FontAwesome5 name="user-alt" size={size} color={color} />
             ),
           }}
         />

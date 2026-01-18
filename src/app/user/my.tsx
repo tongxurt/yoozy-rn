@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Stack } from "react-native-flex-layout";
+import { ScreenHeader } from "@/components/ScreenHeader";
 
 export default function MyScreen() {
   const { colors } = useTailwindVars();
@@ -26,6 +27,17 @@ export default function MyScreen() {
   const { t } = useTranslation();
 
   const menuItems: any[][] = [
+    [
+      {
+        title: "tab.commodity",
+        onPress: () => {
+          router.push("/commodity/screen");
+        },
+        icon: (size: number, color: string) => (
+          <MaterialIcons name="shopping-bag" size={size} color={color} />
+        ),
+      },
+    ],
     [
       {
         title: "contactUs",
@@ -112,7 +124,8 @@ export default function MyScreen() {
   ];
 
   return (
-    <ScreenContainer >
+    <ScreenContainer edges={['top']} stackScreenProps={{ headerShown: true, title: "" }}>
+      {/* <ScreenHeader title={t('tab.my')} closeable={true} /> */}
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
