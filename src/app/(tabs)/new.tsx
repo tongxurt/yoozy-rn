@@ -18,6 +18,14 @@ const FEATURE_ITEMS = [
     subtitle: "复刻同款爆款视频",
     route: "/create/segment-replication",
   },
+  {
+    id: "douyin-downloader",
+    icon: "download-outline",
+    sparkle: false,
+    title: "抖音去水印下载",
+    subtitle: "一键保存无水印原片",
+    route: "/toolkit/douyin_downloader",
+  },
   // {
   //   id: "video-generation",
   //   icon: "play",

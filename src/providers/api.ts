@@ -59,7 +59,9 @@ instance.interceptors.response.use(
     } else {
       switch (response.data?.code) {
         case "UNAUTHORIZED":
-          router.navigate("/login");
+          setTimeout(() => {
+            router.navigate("/login");
+          }, 0);
           return Promise.reject(response.data.message || response.data.code);
         // case 10404:
         //     // nav.navigate('Store')

@@ -1,8 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import {getUser} from '@/api/api';
 import useGlobal from '@/hooks/useGlobal';
-import {useCallback, useEffect} from "react";
-import {useFocusEffect} from "expo-router";
+import {useEffect} from "react";
 
 
 export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
@@ -21,11 +20,11 @@ export const useAuthUser = (options?: { fetchImmediately?: boolean }) => {
     //
     // }, []);
 
-    useFocusEffect(useCallback(() => {
+    useEffect(() => {
         if (options?.fetchImmediately) {
             fetch()
         }
-    }, []))
+    }, [])
 
 
     const fetch = () => {

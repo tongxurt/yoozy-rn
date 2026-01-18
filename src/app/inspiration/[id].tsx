@@ -40,7 +40,7 @@ const Inspiration = () => {
   });
 
   const current = data?.data?.data;
-  
+
   // Use passed params if available, otherwise use query data
   const videoUrl = useMemo(() => {
     return (initialVideoUrl ? decodeURIComponent(initialVideoUrl) : null) || current?.root?.url;
@@ -48,8 +48,8 @@ const Inspiration = () => {
 
   const coverUrl = useMemo(() => {
     return (initialCoverUrl ? decodeURIComponent(initialCoverUrl) : null) || 
-           current?.highlightFrames?.[0]?.url || 
-           current?.root?.coverUrl;
+    current?.highlightFrames?.[0]?.url ||
+    current?.root?.coverUrl;
   }, [current, initialCoverUrl]);
 
   const startTime = useMemo(() => current?.timeStart || 0, [current]);
@@ -100,11 +100,11 @@ const Inspiration = () => {
       ) : (
         <View style={StyleSheet.absoluteFill} className="justify-center items-center bg-black">
           {coverUrl ? (
-            <Image
-              source={{ uri: coverUrl }}
-              style={StyleSheet.absoluteFill}
-              resizeMode="cover"
-            />
+        <Image
+          source={{ uri: coverUrl }}
+          style={StyleSheet.absoluteFill}
+          resizeMode="cover"
+        />
           ) : (
             <ActivityIndicator size="large" color={colors.primary} />
           )}

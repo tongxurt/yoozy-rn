@@ -135,11 +135,11 @@ const VideoPlayer = ({
 
                 {(paused || isLoading) && (
                     <View style={styles.overlay}>
-                        {isLoading ? (
+                            {isLoading ? (
                             <ActivityIndicator size="large" color="#fff" />
-                        ) : (
+                            ) : (
                             <Ionicons name="play" size={60} color="rgba(255,255,255,0.8)" />
-                        )}
+                            )}
                     </View>
                 )}
             </TouchableOpacity>
