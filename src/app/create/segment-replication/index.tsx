@@ -166,7 +166,7 @@ const SegmentReplication = () => {
     const [isCreating, setIsCreating] = useState(false);
 
     // New Footer Logic
-    const [workflowName, setWorkflowName] = useState<'VideoReplication' | 'VideoReplication2'>('VideoReplication');
+    const [workflowName, setWorkflowName] = useState<'VideoReplication' | 'VideoReplication2'>('VideoReplication2');
     const footerAnim = React.useRef(new Animated.Value(0)).current;
 
     const canSubmit = !!selectedCommodity && !!selectedInspiration;
@@ -333,10 +333,9 @@ const SegmentReplication = () => {
                         )}
                     </TouchableOpacity>
 
-                    <View>
                         <View className="flex-row items-center gap-3 ">
                             <Text className="text-base font-bold text-gray-900 leading-none">开始生成</Text>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 onPress={() => {
                                     if (Platform.OS === 'ios') {
                                         ActionSheetIOS.showActionSheetWithOptions(
@@ -361,9 +360,8 @@ const SegmentReplication = () => {
                                     {workflowName === 'VideoReplication' ? '标准版' : '专业版'}
                                 </Text>
                                 <Feather name="chevron-down" size={10} color="#666" />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
-                    </View>
                 </BlurView>
             </Animated.View>
 
