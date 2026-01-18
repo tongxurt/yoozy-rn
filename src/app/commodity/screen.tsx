@@ -8,9 +8,8 @@ const CommodityScreen = () => {
     const { t } = useTranslation();
     
     return (
-        <ScreenContainer edges={['top']}>
-            <ScreenHeader title={t('tab.commodity')} closeable={true} />
-            <CommodityListScreen />
+        <ScreenContainer edges={['top']} stackScreenProps={{headerShown: true, title: '我的商品'}}>
+            <CommodityListScreen style={{paddingTop: 5}} />
         </ScreenContainer>
     )
 }

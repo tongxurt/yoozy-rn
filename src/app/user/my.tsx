@@ -129,8 +129,6 @@ export default function MyScreen() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-      // style={{overflow: "hidden"}}
-      // contentContainerStyle={{overflow: "visible"}}
       >
         {/* 用户信息区域 */}
         {user ? (

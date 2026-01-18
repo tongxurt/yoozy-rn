@@ -173,7 +173,7 @@ export default function CommodityListScreen() {
 
     // 商品列表
     return (
-        <View className="flex-1 bg-background">
+        <View className="flex-1 bg-background mt-4">
             {/* Search Header */}
             <View style={{ paddingHorizontal: containerPadding, paddingBottom: 10 }}>
                 <View className="flex-row items-center gap-3">

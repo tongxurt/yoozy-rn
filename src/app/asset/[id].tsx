@@ -146,11 +146,11 @@ const AssetEditorScreen = () => {
                     pages?.map((job: any, index: number) => {
                         return (
                             <View key={index} className="bg-card m-[16px] flex-1 overflow-hidden rounded-[24px] border border-gray-100">
-                                {/* <Text className="text-gray-500 text-sm leading-relaxed mb-6">{JSON.stringify(job)} </Text> */}
+                                {/* <Text className="text-gray-500 text-sm leading-relaxed mb-6">{JSON.stringify(job.dataBus?.videoGenerations)} </Text> */}
                                 <View className="flex-1">
                                     {job.name === 'segmentScriptJob' && <SegmentScriptJob index={index} job={job} asset={asset} refetch={refetch} />}
                                     {job.name === 'keyFramesGenerationJob' && <KeyFramesGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
-                                    {job.name === 'videoSegmentsGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
+                                    {job.name === 'videoSegmentsGenerationJob' || job.name === 'videoGenerationJob' && <VideoSegmentsGenerationJob index={index} job={job} asset={asset} refetch={refetch} />}
                                     {job.name === 'videoSegmentsRemixJob' && <RemixJob index={index} job={job} asset={asset} refetch={refetch} />}
                                 </View>
                                 {

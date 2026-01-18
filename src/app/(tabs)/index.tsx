@@ -1,6 +1,7 @@
 import InspirationList from "@/app/inspiration/list";
 import TemplateList from "@/app/template/list";
 import ScreenContainer from "@/components/ScreenContainer";
+import { ScreenHeader } from "@/components/ScreenHeader";
 import useTailwindVars from "@/hooks/useTailwindVars";
 import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -35,18 +36,7 @@ export default function HomeScreen() {
     <ScreenContainer edges={['top']} >
       {/* Premium Header Area - Clean & Spacious */}
 
-
-      <View className={"px-5 pb-4 flex-row justify-between items-center"}>
-            <Text className="text-[22px] font-bold" style={{ color: colors.foreground }}>{'灵感库'}</Text>
-            <View className={"flex-row items-center gap-5"}>
-            <TouchableOpacity onPress={() => router.push('/search')} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-            <Feather name="search" size={20} color={colors.foreground} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.navigate('/user/my')} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-            <FontAwesome5 name="user-circle" size={20} color={colors.foreground} />
-          </TouchableOpacity>
-            </View>
-        </View>
+    <ScreenHeader title={'灵感库'}  closeable={false}/>
 
       {/* Content Area */}
       <View className="flex-1">

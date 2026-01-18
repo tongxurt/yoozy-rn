@@ -14,10 +14,10 @@ export const aspectRatioConfig: Record<string, string> = {
 }
 
 export const workflowConfig: Record<string, any> = {
-    VideoReplication: {
+    videoReplication: {
         label: '视频复刻',
     },
-    VideoReplication2: {
+   videoReplication2: {
         label: '视频复刻',
     },
     VideoGeneration: {

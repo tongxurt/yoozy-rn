@@ -44,12 +44,12 @@ const AssetList = () => {
     const renderItem = ({ item, index }: { item: any; index: number }) => {
         const coverUrl = item.coverUrl || item.commodity?.media?.[0]?.url;
         // Logic: If workflow exists and status is NOT completed, it is creating.
-        const isCreating = item?.status !== 'completed';
+        const isCreating = item?.workflow?.status !== 'completed';
 
-        const workflowType = item.workflow?.type || 'videoGeneration';
+        const workflowType = item.workflow?.name;
         const workflowLabel = workflowConfig[workflowType as keyof typeof workflowConfig]?.label || '智能生视频';
 
-        const iconUrl = item.commodity?.images?.[0] || item.workflow?.dataBus?.segmentScript?.images?.[0];
+        const iconUrl = item.commodity?.images?.[0];
 
         return (
             <Animated.View
@@ -63,6 +63,7 @@ const AssetList = () => {
                 >
                     {/* Header: Workflow Label */}
                     <Text className="text-sm text-muted-foreground font-medium">{workflowLabel}</Text>
+                    <Text className="text-sm text-muted-foreground font-medium">{JSON.stringify(item.workflow)}</Text>
 
                     {/* Title Row */}
                     <View className="flex-row items-center gap-2 mb-1">

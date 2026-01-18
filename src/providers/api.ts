@@ -26,13 +26,16 @@ instance.interceptors.request.use(
     // config.headers.set('Version', Constants.expoConfig.version ?? '')
     // config.headers.set('U-Version', conf.version)
 
-    console.log(`--------- ${new Date().valueOf()} http sending request...`);
-    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.method);
-    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.baseURL);
-    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.url);
-    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.params);
-    console.log(`--------- ${new Date().valueOf()} http sending request...`, config.data);
-    // console.log(`--------- ${new Date().valueOf()} http sending request...`, config.headers);
+    if (config.method !== "get") {
+      console.log(`--------- ${new Date().valueOf()} http sending request...`);
+      console.log(`--------- ${new Date().valueOf()} http sending request...`, config.method);
+      console.log(`--------- ${new Date().valueOf()} http sending request...`, config.baseURL);
+      console.log(`--------- ${new Date().valueOf()} http sending request...`, config.url);
+      console.log(`--------- ${new Date().valueOf()} http sending request...`, config.params);
+      console.log(`--------- ${new Date().valueOf()} http sending request...`, config.data);
+      // console.log(`--------- ${new Date().valueOf()} http sending request...`, config.headers);
+    }
+
 
     return config;
   },

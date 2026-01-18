@@ -231,6 +231,7 @@ const SegmentReplication = () => {
             const payload: any = {
                 commodityId: selectedCommodity._id,
                 segmentId: selectedInspiration._id,
+                workflowName: workflowName,
             };
 
             const session = await createAssetV2(payload);
