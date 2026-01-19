@@ -10,7 +10,7 @@
     "build:android:production:local": "eas build --platform android --profile production --clear-cache --local",
     "tips": "expo 我们解决了很多工作，一般不需要手动，如果遇到各种证书问题 可以去掉--non-interactive 重新生成证书",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "ios": "expo run:ios --no-install",
     "web": "expo start --web",
     "lint": "expo lint",
     "submit:ios": "eas submit --platform ios"

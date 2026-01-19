@@ -1,13 +1,13 @@
 PODS:
-  - Airwallex (6.1.9):
-    - Airwallex/AirwallexPaymentSheet (= 6.1.9)
-  - airwallex-payment-react-native (0.1.1):
-    - Airwallex (~> 6.1.6)
+  - Airwallex (6.3.0):
+    - Airwallex/AirwallexPaymentSheet (= 6.3.0)
+  - airwallex-payment-react-native (0.1.5):
+    - Airwallex (~> 6.3.0)
     - React-Core
-  - Airwallex/AirwallexCore (6.1.9)
-  - Airwallex/AirwallexPayment (6.1.9):
+  - Airwallex/AirwallexCore (6.3.0)
+  - Airwallex/AirwallexPayment (6.3.0):
     - Airwallex/AirwallexCore
-  - Airwallex/AirwallexPaymentSheet (6.1.9):
+  - Airwallex/AirwallexPaymentSheet (6.3.0):
     - Airwallex/AirwallexPayment
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
@@ -16,7 +16,7 @@ PODS:
   - EXAV (15.1.7):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - EXConstants (17.1.7):
+  - EXConstants (17.1.8):
     - ExpoModulesCore
   - EXImageLoader (5.1.0):
     - ExpoModulesCore
@@ -24,7 +24,7 @@ PODS:
   - EXJSONUtils (0.15.0)
   - EXManifests (0.16.6):
     - ExpoModulesCore
-  - Expo (53.0.24):
+  - Expo (53.0.25):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -67,7 +67,7 @@ PODS:
     - ExpoModulesCore
   - ExpoHaptics (14.1.4):
     - ExpoModulesCore
-  - ExpoHead (5.1.8):
+  - ExpoHead (5.1.10):
     - ExpoModulesCore
   - ExpoIap (2.5.4-rc.1):
     - ExpoModulesCore
@@ -2085,7 +2085,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCPicker (2.11.1):
+  - RNCPicker (2.11.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2109,7 +2109,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNDeviceInfo (14.0.4):
+  - RNDeviceInfo (14.1.1):
     - React-Core
   - RNGestureHandler (2.24.0):
     - DoubleConversion
@@ -2136,7 +2136,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNPermissions (5.4.2):
+  - RNPermissions (5.4.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2384,7 +2384,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNVectorIcons (10.2.0):
+  - RNVectorIcons (10.3.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2917,17 +2917,17 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Airwallex: dc4dab72416421a5fdd69c88c66710943ead83ec
-  airwallex-payment-react-native: 4de4688bc34577788fdfafa7c55b47c790241574
+  Airwallex: 387fd4376ac339c8baa3893b528a852820e6b542
+  airwallex-payment-react-native: ee0a907b5c89d52342ee28f06f94f9a3803b0618
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EASClient: fe396f88189ce51edd819abe12df16c99e98bcd2
   EXAV: ae28256069c4cdde93d185c007d8f68d92902c2e
-  EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
+  EXConstants: d3d551cb154718f5161c4247304e96aa59f6cca7
   EXImageLoader: 4d3d3284141f1a45006cc4d0844061c182daf7ee
   EXJSONUtils: 1d3e4590438c3ee593684186007028a14b3686cd
   EXManifests: 691a779b04e4f2c96da46fb9bef4f86174fefcb5
-  Expo: d3564df7b0ef8dc572a99297772cf8b7e14941a9
+  Expo: b4bfe9e34445fbe61b9cda126da776b7ac114601
   ExpoAppleAuthentication: 4d2e0c88a4463229760f1fbb9a937a810efb6863
   ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
   ExpoBlur: 3c8885b9bf9eef4309041ec87adec48b5f1986a9
@@ -2936,7 +2936,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 7f92f7be2f5c5ed40a7c9efc8fa30821181d9d63
   ExpoFont: cf508bc2e6b70871e05386d71cab927c8524cc8e
   ExpoHaptics: 0ff6e0d83cd891178a306e548da1450249d54500
-  ExpoHead: 8c23ab7e63e8cf1431b2e4c57f4ebe06b66ee2e5
+  ExpoHead: f85951372332180434f1aae973f6e3c94fccbed4
   ExpoIap: 79cd67aac8e1bf63c445ef45c00c396be894a194
   ExpoImage: b0b4a838c62bb9d5438bb475cccc85619a5f59dc
   ExpoImagePicker: 0963da31800c906e01c03e25d7c849f16ebf02a2
@@ -3036,14 +3036,14 @@ SPEC CHECKSUMS:
   ReactCodegen: 3d5c9def468f7df3b90b05d3098ab8d47d76c62e
   ReactCommon: 4c22936ee38ecf885efc95ac5832f430f27e0271
   RNCAsyncStorage: 646c1bf2ebfc78d6632a3b0399f471fba8101e73
-  RNCPicker: c424533f7747c9463b35d294328e7b2b4d2baf31
-  RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
+  RNCPicker: d957426e631657b70d391c4193db87c91c8406b3
+  RNDeviceInfo: bcce8752b5043a623fe3c26789679b473f705d3c
   RNGestureHandler: 8ff2b1434b0ff8bab28c8242a656fb842990bbc8
-  RNPermissions: 913e830a18973804e2ca7cd38786e8d0c8f821eb
+  RNPermissions: 298c197829862f0f5fa41db8e51be213e8715176
   RNReanimated: a3f55346df73f35c38bf0b446294d3d0b1ac8cf9
   RNScreens: 90b905d545a5ebbe976985702b8a39e3475727b2
   RNSVG: 4470464e129f6bc58b78b961850b054dbbea8ef7
-  RNVectorIcons: fe9afebb925c9ce70f441b611d679e402ecb3f6e
+  RNVectorIcons: d7d40d54aa3281f36b840bc1caaefa163166af34
   SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
@@ -3061,6 +3061,6 @@ SPEC CHECKSUMS:
   StripeUICore: 186f245526e86ab02578abcc6bb6d27cc34084c6
   Yoga: b37eeaa6148984cac70ecaf8022bb209e03296cb
 
-PODFILE CHECKSUM: 32dd87c9982445508952aef7037b03a359ef4732
+PODFILE CHECKSUM: 868baf01f35aa8ec9f2392f3ff89c7df74fde9aa
 
 COCOAPODS: 1.16.2
